@@ -8,6 +8,9 @@ import theme from '@/styles/theme';
 export const metadata = {
   title: 'Arcadia',
   description: '심리적으로 지친 이들을 위한 유토피아',
+  icons: {
+    icon: "../../public/images/favicon.ico",
+  },
 }
 
 export default function RootLayout({ children }) {
