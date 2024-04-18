@@ -48,8 +48,7 @@ const StyledTextEditor = styled.div`
   }
 `;
 
-const TextEditor = () => {
-  const [text, setText] = useState('');
+const TextEditor = ({ value, onChange }) => { // value: 사용자가 입력한 내용, onChage: value를 변경하기 위한 함수
   const quillRef = useRef();
   const maxCharacters = 500; //입력 최대 글자수
 
@@ -57,7 +56,7 @@ const TextEditor = () => {
     const newText = editor.getText();
     
     if (newText.length <= maxCharacters) {
-      setText(newText);
+      onChange(newText); // 변경된 텍스트를 상위 컴포넌트로 전달
     } else {// 최대 글자수를 초과한 경우에는 이전 텍스트를 유지, 추가 입력 제한
       const limitedText = text.slice(0, maxCharacters);
       // Quill Editor의 내용을 이전 내용으로 되돌림
@@ -76,7 +75,7 @@ const TextEditor = () => {
         onChange={handleChange}
       />
       <p>
-        {text.length}/{maxCharacters}
+        {value.length}/{maxCharacters}
       </p>
     </StyledTextEditor>
   );

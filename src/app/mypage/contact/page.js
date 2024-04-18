@@ -9,13 +9,14 @@ import dynamic from 'next/dynamic';
 
 const TextEditorNoSSR = dynamic(() => import('@/components/textEditor/page.js'), {
     ssr: false
-  });
+});
 
 function Contact() {
     const [editorContent, setEditorContent] = useState(''); // 텍스트 에디터에서 입력한 내용
 
     // 등록 버튼을 클릭했을 때 실행될 함수
     const handleSubmit = () => {
+        console.log('텍스트 에디터 값:', editorContent); 
         fetch('/mypage/${UserId}/Consulting', {
             method: 'POST',
             body: JSON.stringify({ content: editorContent }),
@@ -33,20 +34,25 @@ function Contact() {
             .catch(error => {
                 console.error('오류 발생', error);
             });
-        }
+    }
 
-        return (
-            <>
+    return (
+        <>
+            <Stack direction="column" alignItems="center" spacing={2}>
                 <TextEditorNoSSR
-                    value={editorContent} // 현재 에디터의 내용을 전달
+                    value={editorContent}
                     onChange={setEditorContent}
                 />
-                <Button variant="contained" color="success" onClick={handleSubmit}>
+                <Button
+                    variant="contained"
+                    color="success"
+                    onClick={handleSubmit}>
                     등록
                 </Button>
-            </>
-        )
-    
+            </Stack>
+        </>
+    )
+
 };
 
 export default Contact;
