@@ -39,8 +39,8 @@ const formats = [ // 모든 format은 Quill 편집기에서 활성화되고 허�
 
 const StyledTextEditor = styled.div`
   width: 70%;
-  aspect-ratio: 1 / 1;
   margin: 0 auto;
+  height: fit-content;
 
   .ql-editor {
     min-height: 400px;
