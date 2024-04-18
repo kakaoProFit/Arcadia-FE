@@ -1,7 +1,6 @@
 // 매칭 신청서 페이지
 "use client"
 
-// import TextEditor from "@/components/textEditor/page.js";
 import { useState } from 'react';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -10,13 +9,18 @@ import dynamic from 'next/dynamic';
 const TextEditorNoSSR = dynamic(() => import('@/components/textEditor/page.js'), {
     ssr: false
 });
+// react-quill을 동적으로 임포트
+const QuillEditor = dynamic(() => import('react-quill'), {
+    ssr: false
+});
 
 function Contact() {
     const [editorContent, setEditorContent] = useState(''); // 텍스트 에디터에서 입력한 내용
+    console.log(editorContent);
 
     // 등록 버튼을 클릭했을 때 실행될 함수
     const handleSubmit = () => {
-        console.log('텍스트 에디터 값:', editorContent); 
+        console.log('텍스트 에디터 값:', editorContent);
         fetch('/mypage/${UserId}/Consulting', {
             method: 'POST',
             body: JSON.stringify({ content: editorContent }),
@@ -49,6 +53,11 @@ function Contact() {
                     onClick={handleSubmit}>
                     등록
                 </Button>
+                <QuillEditor
+                    theme="snow"
+                    value={editorContent}
+                    readOnly={true} // 편집 불가능
+                />
             </Stack>
         </>
     )
