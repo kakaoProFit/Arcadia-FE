@@ -2,7 +2,7 @@
 
 import 'react-quill/dist/quill.snow.css';
 import styled from 'styled-components';
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 
 const modules = { // Quill의 동작과 기능을 사용자 정의
@@ -52,15 +52,19 @@ const TextEditor = ({ value, onChange }) => { // value: 사용자가 입력한 �
   const quillRef = useRef();
   const maxCharacters = 500; //입력 최대 글자수
 
+  const [displayCounting, setDisplayCounting] = useState("0"); // 글자 수를 화면에 보이기 위한 변수
+
   const handleChange = (content, delta, source, editor) => {
-    const newText = editor.getText();
+    const newText = content;
+    const quillEditor = quillRef.current.getEditor();
+    const counting = quillEditor.getText(); // Quill 에디터의 내용을 가져옴
+    setDisplayCounting(counting);
     
-    if (newText.length <= maxCharacters) {
+    if (counting.length <= maxCharacters) {
       onChange(newText); // 변경된 텍스트를 상위 컴포넌트로 전달
     } else {// 최대 글자수를 초과한 경우에는 이전 텍스트를 유지, 추가 입력 제한
-      const limitedText = newText.slice(0, maxCharacters);
+      const limitedText = counting.slice(0, maxCharacters);
       // Quill Editor의 내용을 이전 내용으로 되돌림
-      const quillEditor = quillRef.current.getEditor();
       quillEditor.setText(limitedText);
     }
   };
@@ -75,7 +79,8 @@ const TextEditor = ({ value, onChange }) => { // value: 사용자가 입력한 �
         onChange={handleChange}
       />
       <p>
-        {value.length}/{maxCharacters}
+        {/* quill은 기본적으로 1글자를 차지하고 있음. 그래서 -1 해서 카운트 함. */}
+        {displayCounting.length-1}/{maxCharacters} 
       </p>
     </StyledTextEditor>
   );
