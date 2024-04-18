@@ -9,7 +9,7 @@ const QuillWrapper = dynamic(() => import('react-quill'), {
     loading: () => <p>Loading ...</p>,
 });
 
-const modules = {
+const modules = { //모듈을 사용하면 Quill의 동작과 기능을 사용자 정의할 수 있다.
     toolbar: [
       [{ header: '1' }, { header: '2' }, { font: [] }],
       [{ size: [] }],
@@ -29,7 +29,7 @@ const modules = {
     },
   }
 
-  const formats = [
+  const formats = [ //에디터에서 지원하는 서식(글꼴, 헤더, 목록 등)을 정의
     'header',
     'font',
     'size',
