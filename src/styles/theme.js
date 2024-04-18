@@ -3,10 +3,10 @@ import { createTheme } from '@mui/material/styles'
 
 const theme = createTheme({
   palette: {
-    kakao: {
+    yellow: {
       main: '#FFD700', // 노란색
     },
-    naver: {
+    green: {
       main: '#069729', // 초록색
     },
   },
