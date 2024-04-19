@@ -52,7 +52,6 @@ const ReadTextEditor = ({ value }) => { // value: 사용자가 입력한 내용,
   return (
     <StyledTextEditor>
       <ReactQuill
-        // ref={quillRef}
         modules={modules}
         formats={formats}
         theme="snow"
