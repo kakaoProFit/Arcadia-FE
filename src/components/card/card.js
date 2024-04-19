@@ -10,10 +10,15 @@ import ButtonBase from '@mui/material/ButtonBase'
 import Avatar from '@mui/material/Avatar'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import { yellow, blue } from '@mui/material/colors'
 import Favorite from '@mui/icons-material/Favorite'
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder'
-import { Checkbox, Container, Grid } from '@mui/material'
+import { Checkbox, Grid, Button } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import LockIcon from '@mui/icons-material/Lock'
@@ -46,6 +51,8 @@ export default function DiaryCard(props) {
   const [isMain, setIsMain] = useState(false)
   // 프로필 이미지가 있는지 확인하는 state 변수
   const [haveProfileImage, setHaveProfileImage] = useState(false)
+  // 
+  const [open, setOpen] = useState(false);
 
   //공감 버튼 이벤트 핸들러
   const favoriteEventHandler = () => {
@@ -58,9 +65,22 @@ export default function DiaryCard(props) {
     // 프로필 조회 페이지로 이동하는 Link
   }
 
-  // 해야할 일 2
-  // edit버튼 누르면 routing
-  // 삭제 버튼 누르면 삭제 dialog + 확인 누르면 api 호출하고 다시 wrapper에서 뿌려야 할듯
+  // 삭제 버튼 클릭 이벤트 핸들러
+  const handleDeleteClickOpen = () => {
+      setOpen(true);
+  };
+
+  // dialog "취소" 이벤트 핸들러
+  const handleDialogClose = () => {
+      setOpen(false);
+  };
+  // dialog "확인" 이벤트 핸들러
+  const handleDiaryDelete = () => {
+      setOpen(false);
+      // 삭제할 내용 서버에 전달하는 api
+      // wrapper를 다시 구성해서 화면을 뿌려주는 부분 
+  }
+
   return (
     <Card key={key} sx={{ maxWidth: 250, maxHeight: 425 }}>
       <CardActionArea href="/mypage/myinfo">
@@ -127,9 +147,31 @@ export default function DiaryCard(props) {
           >
             <EditIcon />
           </IconButton>
-          <IconButton aria-label="delete">
+          <IconButton aria-label="delete" onClick={handleDeleteClickOpen}>
             <DeleteIcon />
           </IconButton>
+          <Dialog
+            open={open}
+            onClose={handleDialogClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            >
+            <DialogTitle id="alert-dialog-title">
+            {"정말로 삭제하시겠습니까? "}
+            </DialogTitle>
+            <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+                (+복구 방법이 있다면 안내문장)
+            </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              {/* 여기는 함수를 바꿔줘야 함. 그래야 API호출 가능 */}
+            <Button onClick={handleDiaryDelete}>삭제</Button>
+            <Button onClick={handleDialogClose} autoFocus>
+                취소
+            </Button>
+            </DialogActions>
+        </Dialog>
           <Checkbox sx={{ marginLeft: 'auto' }} />
         </CardActions>
       )}
