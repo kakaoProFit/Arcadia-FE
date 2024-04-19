@@ -4,32 +4,32 @@ import React from 'react';
 import { Alert, Button, TextField, FormControlLabel, Checkbox, Link, Paper, Box, Grid, Typography } from '@mui/material';
 import { useForm, useController } from 'react-hook-form';
 
-const loginRules = {
-  email: {
-      required: '이메일을 입력해주세요.',
-      pattern: {
-          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-          message: "올바른 이메일 주소를 입력해주세요"
-      }
-  },
-  password: {
-      required: '비밀번호를 입력해주세요.',
-      minLength: {
-          value: 8,
-          message: "비밀번호는 최소 8자 이상이어야 합니다."
-      },
-      maxLength: {
-          value: 20,
-          message: "비밀번호는 최대 20자 이하여야 합니다."
-      },
-      pattern: {
-          value: /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
-          message: "비밀번호는 영문 소문자, 숫자, 특수문자를 포함해야 합니다."
-      }
-  }
-}
-
 function ValidInput({ control, name, ruleName }) {
+  const rules = {
+    email: {
+        required: '이메일을 입력해주세요.',
+        pattern: {
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            message: "올바른 이메일 주소를 입력해주세요"
+        }
+    },
+    password: {
+        required: '비밀번호를 입력해주세요.',
+        minLength: {
+            value: 8,
+            message: "비밀번호는 최소 8자 이상이어야 합니다."
+        },
+        maxLength: {
+            value: 20,
+            message: "비밀번호는 최대 20자 이하여야 합니다."
+        },
+        pattern: {
+            value: /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
+            message: "비밀번호는 영문 소문자, 숫자, 특수문자를 포함해야 합니다."
+        }
+    }
+  }
+
   const {
     field,
     fieldState: { invalid, isTouched, isDirty, error},
@@ -37,7 +37,7 @@ function ValidInput({ control, name, ruleName }) {
   } = useController({
     name,
     control,
-    rules: loginRules[ruleName]
+    rules: rules[ruleName]
   });
   return (
     <>
@@ -65,8 +65,6 @@ const ValidForm = () => {
   const { register, handleSubmit, control } = methods;
   const submitHandler = (data) => {
     // 데이터 처리
-    console.log(data);
-    console.log('로그인 데이터 제출');
   };
   return(
     <Box component="form" onSubmit={methods.handleSubmit(submitHandler)} style={{ mt: 1 }}>
@@ -87,6 +85,10 @@ const ValidForm = () => {
           네이버 로그인
         </Button>
       </Box>
+      <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="자동 로그인"
+              />
     </Box>
   )
 }
@@ -101,10 +103,6 @@ export default function SignIn() {
               로그인
             </Typography>
               <ValidForm />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="자동 로그인"
-              />
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">
