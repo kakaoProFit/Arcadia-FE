@@ -20,7 +20,7 @@ const CustomTableCell = styled(TableCell)(() => ({
   textAlign: 'center',
 }))
 
-function MyInfoTable({ userInfo }) {
+function MyInfoTable({ userInfo, image }) {
   const [editedUserInfo, setEditedUserInfo] = useState({ ...userInfo }); // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태 변수
   const [editMode, setEditMode] = useState(Array(5).fill(false)); // 각 행의 수정 모드를 저장하는 배열
 
@@ -65,8 +65,8 @@ function MyInfoTable({ userInfo }) {
                   sx={{ borderBottom: '1px solid black' }}
                 >
                   <img
-                    src="/images/testArgoImage.png"
-                    alt="test"
+                    src={image}
+                    alt="image"
                     style={{ width: '35%', height: 'auto' }}
                   />
                 </TableCell>

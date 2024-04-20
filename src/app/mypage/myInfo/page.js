@@ -55,7 +55,7 @@ function MyInfo() {
       </div>
       <Stack direction="column" alignItems="center" spacing={2}>
         {userInfo ? ( // userInfo가 존재하면 MyInfoTable을 렌더링
-          <MyInfoTable userInfo={userInfo} />
+          <MyInfoTable userInfo={userInfo} image="/images/testArgoImage.png" />
         ) : (
           <p>Loading...</p> // userInfo가 없을 때는 로딩 표시
         )}
