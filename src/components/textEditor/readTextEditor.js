@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import 'react-quill/dist/quill.snow.css';
 import styled from 'styled-components';
@@ -6,7 +6,8 @@ import ReactQuill from 'react-quill';
 import Button from '@mui/material/Button';
 import { useRouter } from 'next/navigation';
 
-const modules = { // Quill의 동작과 기능을 사용자 정의
+const modules = {
+  // Quill의 동작과 기능을 사용자 정의
   toolbar: [
     [{ header: '1' }, { header: '2' }, { font: [] }],
     [{ size: [] }],
@@ -22,9 +23,10 @@ const modules = { // Quill의 동작과 기능을 사용자 정의
   clipboard: {
     matchVisual: false,
   },
-};
+}
 
-const formats = [ // 모든 format은 Quill 편집기에서 활성화되고 허용
+const formats = [
+  // 모든 format은 Quill 편집기에서 활성화되고 허용
   'header',
   'font',
   'size',
@@ -36,7 +38,7 @@ const formats = [ // 모든 format은 Quill 편집기에서 활성화되고 허�
   'list',
   'bullet',
   'indent',
-];
+]
 
 const StyledTextEditor = styled.div`
   width: 70%;
@@ -55,6 +57,7 @@ const StyledTextEditor = styled.div`
 
 const ReadTextEditor = ( props ) => { // value: 사용자가 입력한 내용, onChage: value를 변경하기 위한 함수
   const router = useRouter();
+
   return (
     <StyledTextEditor>
       <ReactQuill
@@ -66,7 +69,8 @@ const ReadTextEditor = ( props ) => { // value: 사용자가 입력한 내용, o
       />
       <Button variant="contained" onClick={() => router.push("/matching")}>수정</Button> 
     </StyledTextEditor>
-  );
-};
+  )
+}
 
 export default ReadTextEditor;
+
