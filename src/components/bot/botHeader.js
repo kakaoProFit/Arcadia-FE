@@ -1,5 +1,5 @@
 // components/Header.tsx
-import styled from "styled-components";
+import styled from 'styled-components'
 
 const HeaderContainer = styled.div`
   background: rgb(92, 130, 255);
@@ -19,7 +19,7 @@ const HeaderContainer = styled.div`
     font-size: 1.5rem;
     color: #ffffff;
   }
-`;
+`
 
 function botHeader() {
   return (
@@ -27,7 +27,7 @@ function botHeader() {
       <i className="ri-arrow-left-s-line" />
       <i className="ri-close-line" />
     </HeaderContainer>
-  );
+  )
 }
 
-export default botHeader;
+export default botHeader

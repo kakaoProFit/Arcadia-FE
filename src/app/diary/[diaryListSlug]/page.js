@@ -4,9 +4,9 @@ import DiaryDatePicker from '@/components/date-picker/date-picker'
 
 export default function DiaryListPage() {
   // 라우팅 가이드라인
-  // 목록 조회 부분도 diary/[slug] 부분으로 모두 이동할듯?
-  // 아마 [..slug] 써서 이중으로 목록 조회 이후의 페이지도 표현해야 할거고
-  // 내용 조회 페이지는 diary/view/제목 이런 식으로 빼줘야 할 것 같음.
+  // 목록 조회 : diary/[diaryListSlug]
+  // 일기 nav는 default로 diary/mydiary, 게시판 nav는 default로 diary/community 로 이동
+  // 내용 조회 페이지는 diary/[diaryListSlug]/[diaryContentSlug]
 
   //더미 데이터
   // API 호출로 데이터 받아서 뿌릴 예정
@@ -19,7 +19,8 @@ export default function DiaryListPage() {
       isPublic: false,
       updateDate: '2024-04-17',
       hits: 76,
-      summary: '오늘 하루 전체적으로 보람찼다. 이유는 ...',
+      summary:
+        '오늘 하루 전체적으로 보람찼다. 이유는 오늘 벚꽃이 아름답기 때문이었다.',
     },
     {
       title: '보람찬 하루',

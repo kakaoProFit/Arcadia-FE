@@ -138,7 +138,7 @@ export default function DiaryCard(props) {
             조회수 : {hits}
           </Typography>
           <Typography variant="body2" mt={1} sx={{ fontSize: 12 }}>
-            {summary}
+            {`${summary}`.substring(0, 25)}
           </Typography>
         </CardContent>
       )}
