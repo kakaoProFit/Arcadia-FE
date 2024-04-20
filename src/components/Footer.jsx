@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Box, Container, Grid, Typography } from "@mui/material";
+import TestChatBot from './bot/ChatBot';
 
 function Footer() {
     return (
@@ -24,7 +25,7 @@ function Footer() {
                         Arcadia
                     </Typography>
                 </Grid>
-
+                <TestChatBot />
             </Grid>
         </Container>
     </Box>
