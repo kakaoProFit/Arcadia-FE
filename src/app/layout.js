@@ -1,8 +1,11 @@
+
 import '../styles/globals.css'
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter'
-import { ThemeProvider } from '@mui/material/styles'
-import { CssBaseline } from '@mui/material'
-import theme from '@/styles/theme'
+import { ThemeProvider } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
+import theme from '@/styles/theme';
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 export const metadata = {
   title: 'Arcadia',
@@ -12,17 +15,22 @@ export const metadata = {
   },
 }
 
+
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
-        <AppRouterCacheProvider options={{ key: 'css' }}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            {children}
-          </ThemeProvider>
-        </AppRouterCacheProvider>
-      </body>
+    <html>
+        <ThemeProvider theme={theme}>
+            <CssBaseline/>
+            <body>
+              <header>
+                <Header />
+              </header>
+              {children}
+              <footer>
+                <Footer />
+              </footer>
+            </body>
+        </ThemeProvider>
     </html>
-  )
+  );
 }
