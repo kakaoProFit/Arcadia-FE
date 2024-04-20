@@ -10,11 +10,11 @@ import ButtonBase from '@mui/material/ButtonBase'
 import Avatar from '@mui/material/Avatar'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
 import { yellow, blue } from '@mui/material/colors'
 import Favorite from '@mui/icons-material/Favorite'
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder'
@@ -24,7 +24,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import LockIcon from '@mui/icons-material/Lock'
 import LockOpenIcon from '@mui/icons-material/LockOpen'
 import { useRouter } from 'next/navigation'
-import { usePathname } from "next/navigation";
+import { usePathname } from 'next/navigation'
 
 export default function DiaryCard(props) {
   // props 전달
@@ -40,15 +40,15 @@ export default function DiaryCard(props) {
     summary,
   } = props
 
-  // 현재 url을 확인하는 훅, 쿼리 값은 제외 
+  // 현재 url을 확인하는 훅, 쿼리 값은 제외
   const pathname = usePathname()
   // 메인 페이지인지 확인하여 저장
-  const isMain =  pathname === '/' ? true : false
+  const isMain = pathname === '/' ? true : false
   //router 주입
   const router = useRouter()
 
   // 삭제 버튼 클릭시 dialog의 open 여부 결정 state
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
   // Notice : 이 state들은 임시. 이후에 page.js나 api 등을 통해 받아옴.
   // 로그인 여부를 확인하기 위한 state 변수
   const [isLoggedIn, setIsLoggedIn] = useState(true)
@@ -56,7 +56,6 @@ export default function DiaryCard(props) {
   const [isYours, setIsYours] = useState(true)
   // 프로필 이미지가 있는지 확인하는 state 변수
   const [haveProfileImage, setHaveProfileImage] = useState(false)
-
 
   //공감 버튼 이벤트 핸들러
   const favoriteEventHandler = () => {
@@ -71,18 +70,18 @@ export default function DiaryCard(props) {
 
   // 삭제 버튼 클릭 이벤트 핸들러
   const handleDeleteClickOpen = () => {
-      setOpen(true);
-  };
+    setOpen(true)
+  }
 
   // dialog "취소" 이벤트 핸들러
   const handleDialogClose = () => {
-      setOpen(false);
-  };
+    setOpen(false)
+  }
   // dialog "확인" 이벤트 핸들러
   const handleDiaryDelete = () => {
-      setOpen(false);
-      // 삭제할 내용 서버에 전달하는 api
-      // wrapper를 다시 구성해서 화면을 뿌려주는 부분 
+    setOpen(false)
+    // 삭제할 내용 서버에 전달하는 api
+    // wrapper를 다시 구성해서 화면을 뿌려주는 부분
   }
 
   return (
@@ -159,23 +158,23 @@ export default function DiaryCard(props) {
             onClose={handleDialogClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
-            >
+          >
             <DialogTitle id="alert-dialog-title">
-            {"정말로 삭제하시겠습니까? "}
+              {'정말로 삭제하시겠습니까? '}
             </DialogTitle>
             <DialogContent>
-            <DialogContentText id="alert-dialog-description">
+              <DialogContentText id="alert-dialog-description">
                 (+복구 방법이 있다면 안내문장)
-            </DialogContentText>
+              </DialogContentText>
             </DialogContent>
             <DialogActions>
               {/* 여기는 함수를 바꿔줘야 함. 그래야 API호출 가능 */}
-            <Button onClick={handleDiaryDelete}>삭제</Button>
-            <Button onClick={handleDialogClose} autoFocus>
+              <Button onClick={handleDiaryDelete}>삭제</Button>
+              <Button onClick={handleDialogClose} autoFocus>
                 취소
-            </Button>
+              </Button>
             </DialogActions>
-        </Dialog>
+          </Dialog>
           <Checkbox sx={{ marginLeft: 'auto' }} />
         </CardActions>
       )}
