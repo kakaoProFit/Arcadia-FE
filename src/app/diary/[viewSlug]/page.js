@@ -10,7 +10,13 @@ const ReadDirInquery = dynamic(() => import('@/components/readDiary/readDirInque
 function DirInquery(props) {
     console.log(props.params.viewSlug);
 
-    let response_data = "<h2>일기 조회</h2>"
+    let response_data = {
+        diaryId: 1,
+        writer: "홍길동",
+        title: "일기란 무엇인가",
+        content: "<h2>오늘의 일기</h2>\n<p>날이 좋았다.</p>",
+        dirViews: "100" //조회수
+    }
 
     const handleGetConsultingSpecification = () => {
         fetch('/diary/list/DirInquery', {
