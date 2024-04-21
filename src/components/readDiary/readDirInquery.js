@@ -85,7 +85,7 @@ const ReadDirInquery = (props) => {
   useEffect(() => {
     // 로컬 스토리지에서 현재 로그인된 사용자 정보를 가져옵니다.
     const loggedInUser = localStorage.getItem('userId');
-    setCurrentUser("홍길동"); 
+    setCurrentUser("홍길동");
   }, []);
 
   const isCurrentUserAuthor = currentUser === props.props.writer; //현재 로그인된 user의 ID와 게시글 작성자의 ID가 같은지 아닌지 판별
@@ -103,6 +103,10 @@ const ReadDirInquery = (props) => {
           <InfoItem>
             <InfoText>조회수: {props.props.dirViews}</InfoText>
           </InfoItem>
+          {/* 일기 작성자ID = 로그인된 사용자ID 일때만 아래 수정 버튼 활성화 */}
+          {isCurrentUserAuthor && (
+            <ModifyButton diaryId={props.props.diaryId} />
+          )}
         </InfoWrapper>
         {/* 일기 본문 */}
         <ReactQuill
@@ -118,10 +122,6 @@ const ReadDirInquery = (props) => {
           <ShareButton diaryId={props.props.diaryId} />
         </InfoWrapper>
       </StyledTextEditor>
-      {/* 일기 작성자ID = 로그인된 사용자ID 일때만 아래 수정 버튼 활성화 */}
-      {isCurrentUserAuthor && (
-        <ModifyButton diaryId={props.props.diaryId} />
-      )}
     </>
   )
 }
