@@ -1,10 +1,10 @@
 'use client'
 
-import 'react-quill/dist/quill.snow.css';
-import styled from 'styled-components';
-import ReactQuill from 'react-quill';
-import Button from '@mui/material/Button';
-import { useRouter } from 'next/navigation';
+import 'react-quill/dist/quill.snow.css'
+import styled from 'styled-components'
+import ReactQuill from 'react-quill'
+import Button from '@mui/material/Button'
+import { useRouter } from 'next/navigation'
 
 const modules = {
   // Quill의 동작과 기능을 사용자 정의
@@ -53,10 +53,11 @@ const StyledTextEditor = styled.div`
   > * {
     margin-bottom: 20px; /* 버튼과 에디터 사이 간격 */
   }
-`;
+`
 
-const ReadTextEditor = ( props ) => { // value: 사용자가 입력한 내용, onChage: value를 변경하기 위한 함수
-  const router = useRouter();
+const ReadTextEditor = (props) => {
+  // value: 사용자가 입력한 내용, onChage: value를 변경하기 위한 함수
+  const router = useRouter()
 
   return (
     <StyledTextEditor>
@@ -67,10 +68,11 @@ const ReadTextEditor = ( props ) => { // value: 사용자가 입력한 내용, o
         readOnly={true} // 편집 불가능
         value={props.props} // 백엔드 측에서 조회된 내용 표시
       />
-      <Button variant="contained" onClick={() => router.push("/matching")}>수정</Button> 
+      <Button variant="contained" onClick={() => router.push('/matching')}>
+        수정
+      </Button>
     </StyledTextEditor>
   )
 }
 
-export default ReadTextEditor;
-
+export default ReadTextEditor
