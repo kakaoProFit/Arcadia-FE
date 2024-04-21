@@ -1,12 +1,12 @@
 'use client'
 
-import 'react-quill/dist/quill.snow.css';
-import styled from 'styled-components';
-import ReactQuill from 'react-quill';
-import LikeButton from './likeButton';
-import ShareButton from './shareButton';
-import ModifyButton from './modifyButton';
-import { useEffect, useState } from 'react';
+import 'react-quill/dist/quill.snow.css'
+import styled from 'styled-components'
+import ReactQuill from 'react-quill'
+import LikeButton from './likeButton'
+import ShareButton from './shareButton'
+import ModifyButton from './modifyButton'
+import { useEffect, useState } from 'react'
 
 const modules = {
   // Quill의 동작과 기능을 사용자 정의
@@ -55,7 +55,7 @@ const StyledTextEditor = styled.div`
   > * {
     margin-bottom: 20px; /* 버튼과 에디터 사이 간격 */
   }
-`;
+`
 
 const InfoWrapper = styled.div`
   display: flex;
@@ -63,32 +63,31 @@ const InfoWrapper = styled.div`
   align-items: end;
 
   justify-content: flex-end; /* 내용을 오른쪽으로 이동 */
-
-`;
+`
 const InfoTitle = styled.div`
   display: flex;
   flex-direction: row;
   align-items: end;
 
-  justify-content: center; 
-`;
+  justify-content: center;
+`
 const InfoItem = styled.div`
   margin-right: 20px;
-`;
-const InfoText = styled.p` 
+`
+const InfoText = styled.p`
   font-size: 14px; //글자 크기 조정
-`;
+`
 
 const ReadDirInquery = (props) => {
+  const [currentUser, setCurrentUser] = useState('홍길동') //추후 홍길동 부분 null값으로 바꾸기
 
-  const [currentUser, setCurrentUser] = useState("홍길동");
   useEffect(() => {
     // 로컬 스토리지에서 현재 로그인된 사용자 정보를 가져옵니다.
-    const loggedInUser = localStorage.getItem('userId');
-    setCurrentUser("홍길동");
-  }, []);
+    const loggedInUser = localStorage.getItem('userId')
+    setCurrentUser('홍길동') // 추후에 홍길동 부분 loggedInUser로 바꾸기
+  }, [])
 
-  const isCurrentUserAuthor = currentUser === props.props.writer; //현재 로그인된 user의 ID와 게시글 작성자의 ID가 같은지 아닌지 판별
+  const isCurrentUserAuthor = currentUser === props.props.writer //현재 로그인된 user의 ID와 게시글 작성자의 ID가 같은지 아닌지 판별
 
   return (
     <>
@@ -126,5 +125,4 @@ const ReadDirInquery = (props) => {
   )
 }
 
-export default ReadDirInquery;
-
+export default ReadDirInquery

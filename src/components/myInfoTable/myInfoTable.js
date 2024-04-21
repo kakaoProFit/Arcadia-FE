@@ -13,7 +13,7 @@ import { styled } from '@mui/system'
 import Button from '@mui/material/Button'
 import { useState, useEffect } from 'react'
 import TextField from '@mui/material/TextField'
-import axios from 'axios'; 
+import axios from 'axios'
 
 const CustomTableCell = styled(TableCell)(() => ({
   borderRight: '1px solid black', // borderRight 속성 추가
@@ -21,36 +21,36 @@ const CustomTableCell = styled(TableCell)(() => ({
 }))
 
 function MyInfoTable({ userInfo, image }) {
-  const [editedUserInfo, setEditedUserInfo] = useState({ ...userInfo }); // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태 변수
-  const [editMode, setEditMode] = useState(Array(5).fill(false)); // 각 행의 수정 모드를 저장하는 배열
+  const [editedUserInfo, setEditedUserInfo] = useState({ ...userInfo }) // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태 변수
+  const [editMode, setEditMode] = useState(Array(5).fill(false)) // 각 행의 수정 모드를 저장하는 배열
 
   const handleEdit = (index) => {
     setEditMode((prevModes) =>
-      prevModes.map((mode, i) => (i === index ? !mode : mode))
-    );
-  };
+      prevModes.map((mode, i) => (i === index ? !mode : mode)),
+    )
+  }
 
   useEffect(() => {
     if (!editMode) {
-      setEditedUserInfo({ ...userInfo }); // 수정 모드 해제 시 원래 정보로 복구
+      setEditedUserInfo({ ...userInfo }) // 수정 모드 해제 시 원래 정보로 복구
     }
-  }, [editMode, userInfo]);
+  }, [editMode, userInfo])
 
   const handleSave = () => {
-    console.log("editedUserInfo: ", editedUserInfo);
+    console.log('editedUserInfo: ', editedUserInfo)
 
     axios
       .put(endpoint, editedUserInfo) // 추후 endpoint url 추가.
       .then((response) => {
-        console.log('저장 성공', response.data);
+        console.log('저장 성공', response.data)
         setEditMode((prevModes) =>
-          prevModes.map((mode, i) => (i === index ? false : mode))
-        );
+          prevModes.map((mode, i) => (i === index ? false : mode)),
+        )
       })
       .catch((error) => {
-        console.error('에러', error);
-      });
-  };
+        console.error('에러', error)
+      })
+  }
 
   return (
     <div>
@@ -86,8 +86,8 @@ function MyInfoTable({ userInfo, image }) {
                       onChange={(event) => {
                         setEditedUserInfo({
                           ...editedUserInfo,
-                          userNickname: event.target.value
-                        });
+                          userNickname: event.target.value,
+                        })
                       }}
                     />
                   ) : (
@@ -95,10 +95,7 @@ function MyInfoTable({ userInfo, image }) {
                   )}
                 </CustomTableCell>
                 <CustomTableCell style={{ width: '15%' }}>
-                  <Button
-                    variant="contained"
-                    onClick={() => handleEdit(0)}
-                  >
+                  <Button variant="contained" onClick={() => handleEdit(0)}>
                     {editMode[0] ? '완료' : '수정'}
                   </Button>
                 </CustomTableCell>
@@ -114,8 +111,8 @@ function MyInfoTable({ userInfo, image }) {
                       onChange={(event) => {
                         setEditedUserInfo({
                           ...editedUserInfo,
-                          userEmail: event.target.value
-                        });
+                          userEmail: event.target.value,
+                        })
                       }}
                     />
                   ) : (
@@ -123,10 +120,7 @@ function MyInfoTable({ userInfo, image }) {
                   )}
                 </CustomTableCell>
                 <CustomTableCell>
-                  <Button
-                    variant="contained"
-                    onClick={() => handleEdit(1)}
-                  >
+                  <Button variant="contained" onClick={() => handleEdit(1)}>
                     {editMode[1] ? '완료' : '수정'}
                   </Button>
                 </CustomTableCell>
@@ -142,19 +136,16 @@ function MyInfoTable({ userInfo, image }) {
                       onChange={(event) => {
                         setEditedUserInfo({
                           ...editedUserInfo,
-                          introduction: event.target.value
-                        });
+                          introduction: event.target.value,
+                        })
                       }}
                     />
                   ) : (
                     editedUserInfo.introduction // 수정 모드가 아닐 때는 텍스트만 표시
-                  )}  
-                </CustomTableCell> 
+                  )}
+                </CustomTableCell>
                 <CustomTableCell>
-                  <Button
-                    variant="contained"
-                    onClick={() => handleEdit(2)}
-                  >
+                  <Button variant="contained" onClick={() => handleEdit(2)}>
                     {editMode[2] ? '완료' : '수정'}
                   </Button>
                 </CustomTableCell>
@@ -170,8 +161,8 @@ function MyInfoTable({ userInfo, image }) {
                       onChange={(event) => {
                         setEditedUserInfo({
                           ...editedUserInfo,
-                          userGender: event.target.value
-                        });
+                          userGender: event.target.value,
+                        })
                       }}
                     />
                   ) : (
@@ -179,10 +170,7 @@ function MyInfoTable({ userInfo, image }) {
                   )}
                 </CustomTableCell>
                 <CustomTableCell>
-                  <Button
-                    variant="contained"
-                    onClick={() => handleEdit(3)}
-                  >
+                  <Button variant="contained" onClick={() => handleEdit(3)}>
                     {editMode[3] ? '완료' : '수정'}
                   </Button>
                 </CustomTableCell>
@@ -190,7 +178,7 @@ function MyInfoTable({ userInfo, image }) {
               <TableRow>
                 <CustomTableCell>연락처</CustomTableCell>
                 <CustomTableCell>
-                 {editMode[4] ? ( // 수정 모드일 때만 입력 필드 표시
+                  {editMode[4] ? ( // 수정 모드일 때만 입력 필드 표시
                     <TextField
                       value={editedUserInfo.userPhone}
                       fullWidth
@@ -198,8 +186,8 @@ function MyInfoTable({ userInfo, image }) {
                       onChange={(event) => {
                         setEditedUserInfo({
                           ...editedUserInfo,
-                          userPhone: event.target.value
-                        });
+                          userPhone: event.target.value,
+                        })
                       }}
                     />
                   ) : (
@@ -207,10 +195,7 @@ function MyInfoTable({ userInfo, image }) {
                   )}
                 </CustomTableCell>
                 <CustomTableCell>
-                  <Button
-                    variant="contained"
-                    onClick={() => handleEdit(4)}
-                  >
+                  <Button variant="contained" onClick={() => handleEdit(4)}>
                     {editMode[4] ? '완료' : '수정'}
                   </Button>
                 </CustomTableCell>
@@ -218,9 +203,9 @@ function MyInfoTable({ userInfo, image }) {
             </TableBody>
           </Table>
         </TableContainer>
-          <Button variant="contained" onClick={handleSave}>
-            저장
-          </Button>
+        <Button variant="contained" onClick={handleSave}>
+          저장
+        </Button>
       </Stack>
     </div>
   )
