@@ -24,6 +24,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import LockIcon from '@mui/icons-material/Lock'
 import LockOpenIcon from '@mui/icons-material/LockOpen'
 import { useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 export default function DiaryCard(props) {
   // props 전달
@@ -39,20 +40,22 @@ export default function DiaryCard(props) {
     summary,
   } = props
 
+  // 현재 url을 확인하는 훅, 쿼리 값은 제외
+  const pathname = usePathname()
+  // 메인 페이지인지 확인하여 저장
+  const isMain = pathname === '/' ? true : false
   //router 주입
   const router = useRouter()
 
+  // 삭제 버튼 클릭시 dialog의 open 여부 결정 state
+  const [open, setOpen] = useState(false)
   // Notice : 이 state들은 임시. 이후에 page.js나 api 등을 통해 받아옴.
   // 로그인 여부를 확인하기 위한 state 변수
   const [isLoggedIn, setIsLoggedIn] = useState(true)
   // 자신의 일기임을 확인하기 위한 state 변수
   const [isYours, setIsYours] = useState(true)
-  // 메인페이지와 아닌 페이지를 구분하기 위한 state 변수
-  const [isMain, setIsMain] = useState(false)
   // 프로필 이미지가 있는지 확인하는 state 변수
   const [haveProfileImage, setHaveProfileImage] = useState(false)
-  //
-  const [open, setOpen] = useState(false)
 
   //공감 버튼 이벤트 핸들러
   const favoriteEventHandler = () => {
