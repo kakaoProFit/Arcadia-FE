@@ -1,6 +1,7 @@
 import { Grid } from '@mui/material'
 import DiaryCard from '@/components/card/card'
 import DiaryDatePicker from '@/components/date-picker/date-picker'
+import DiaryListTab from '@/components/tab/tab'
 
 export default function DiaryListPage() {
   // 라우팅 가이드라인
@@ -72,6 +73,13 @@ export default function DiaryListPage() {
   // 화면 사이즈 xs사이즈일때 1개, sm: 2개, md : 4개, lg : 6개(5개만 부르면 됨)
   return (
     <>
+      <br />
+      <br />
+      <br />
+      <DiaryDatePicker />
+      <br />
+      <br />
+      <br />
       <Grid
         container
         rowSpacing={2}
@@ -96,10 +104,7 @@ export default function DiaryListPage() {
           </Grid>
         ))}
       </Grid>
-      <br />
-      <br />
-      <br />
-      <DiaryDatePicker />
+      
     </>
   )
 }
