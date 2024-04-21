@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { green } from "@mui/material/colors";
 
 
 export default function DiaryListTab() {
@@ -43,6 +44,8 @@ export default function DiaryListTab() {
                 value={tabNum}
                 aria-label="nav tabs"
                 role="navigation"
+                textColor="secondary"
+                indicatorColor="secondary"
             >
             {tabProps.map((it, index) => (
                 <Tab
