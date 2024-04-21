@@ -1,20 +1,30 @@
-// 상담 신청서 조회 페이지
+// 일기 조회(자세히 보기) 페이지
 import dynamic from 'next/dynamic'
 import Stack from '@mui/material/Stack'
+import Comment from '@/components/comment/comment'
 
 // react-quill을 동적으로 임포트
-const ReadTextEditor = dynamic(
-  () => import('@/components/textEditor/readTextEditor.js'),
+const ReadDirInquery = dynamic(
+  () => import('@/components/readDiary/readDirInquery.js'),
   {
     ssr: false,
   },
 )
 
-function Contact() {
-  let response_data = '<h2>Hello World</h2>'
+function DirInquery(props) {
+  console.log(props.params.viewSlug)
+
+  let response_data = {
+    // 게시글 테스트 데이터
+    diaryId: 1,
+    writer: '홍길동',
+    title: '일기란 무엇인가',
+    content: '<h2>오늘의 일기</h2>\n<p>날이 좋았다.</p>',
+    dirViews: '100', //조회수
+  }
 
   const handleGetConsultingSpecification = () => {
-    fetch('/mypage/${UserId}/Consulting', {
+    fetch('/diary/list/DirInquery', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -38,17 +48,15 @@ function Contact() {
   return (
     <div>
       <div style={{ marginLeft: '15%' }}>
-        <h2>마이 페이지</h2>
-      </div>
-      <div style={{ marginLeft: '15%' }}>
-        <p>탭 컨포넌트 들어갈 자리</p>
+        <h2>일기 조회</h2>
       </div>
       <Stack direction="column" alignItems="center" spacing={2}>
-        <ReadTextEditor theme="snow" props={response_data} />
+        <ReadDirInquery theme="snow" props={response_data} />
+        {/* 일기의 ID를 넘겨, 해당 일기에 대한 comment 조회 */}
+        <Comment props={response_data.diaryId} />
       </Stack>
     </div>
   )
 }
 
-export default Contact
-
+export default DirInquery
