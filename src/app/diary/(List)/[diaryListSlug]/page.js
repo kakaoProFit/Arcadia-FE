@@ -89,7 +89,8 @@ export default function DiaryListPage() {
         justifyContent="center"
       >
         {CARD_DUMMY_DATA.map((it, index) => (
-          <Grid item xs={12} sm={6} md={3} lg={2} key={index}>
+          // <Grid item xs={12} sm={6} md={3} lg={2} key={index}>
+          <Grid item xs={2}>
             <DiaryCard
               key={index}
               title={it.title}
