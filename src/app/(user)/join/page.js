@@ -40,7 +40,7 @@ function ValidInput({ control, name, ruleName }) {
       required: '닉네임을 입력해주세요.',
       minLength: {
         value: 4,
-        message: '닉네임은 최소 8자 이상이어야 합니다.',
+        message: '닉네임은 최소 4자 이상이어야 합니다.',
       },
       maxLength: {
         value: 8,
