@@ -9,7 +9,8 @@ export default function DiaryListTab() {
   const pathname = usePathname()
   // 탭 props 생성
   let tabProps = []
-  // mydiary 페이지라면
+
+  // 각 라우팅에 맞는 탭을 생성
   if (
     pathname === '/diary/mydiary' ||
     pathname === '/diary/weekly-report' ||
@@ -28,18 +29,40 @@ export default function DiaryListTab() {
       { label: '공유 일기', href: '/diary/community' },
       { label: '친구 일기', href: '/diary/friends-diary' },
     ]
+  } else if (
+    pathname === '/mypage/diary' ||
+    pathname === '/mypage/contact' ||
+    pathname === '/mypage/myInfo' ||
+    pathname === '/mypage/setting'
+  ) {
+    tabProps = [
+      {label: '일기 조회', href: '/mypage/diary'},
+      {label: '상담 신청서 조회', href: '/mypage/contact'},
+      {label: '내 정보', href: '/mypage/myInfo'},
+      {label: '설정', href: '/mypage/setting'},
+    ]
   }
 
   // 걀극 하드코딩으로 tab 움직임을 설정함.
   let tabNum = 0
-  if (pathname === '/diary/mydiary' || pathname === '/diary/community') {
+  if (pathname === '/diary/mydiary' || 
+    pathname === '/diary/community' ||
+    pathname === '/mypage/diary'
+  ) {
     tabNum = 0
   } else if (
     pathname === '/diary/weekly-report' ||
-    pathname === '/diary/friends-diary'
+    pathname === '/diary/friends-diary' ||
+    pathname === '/mypage/contact'
   ) {
     tabNum = 1
-  } else if (pathname === '/diary/monthly-report') tabNum = 2
+  } else if (pathname === '/diary/monthly-report' ||
+            pathname === '/mypage/myInfo'
+  ) {
+    tabNum = 2
+  } else if (pathname === '/mypage/setting'){
+    tabNum = 3
+  }
 
   return (
     <Box sx={{ width: '100%' }}>
