@@ -1,5 +1,3 @@
-export default function WeeklyReportPage(){
-    return (
-        <h1>weekly</h1>
-    )
+export default function WeeklyReportPage() {
+  return <h1>weekly</h1>
 }

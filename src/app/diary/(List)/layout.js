@@ -1,10 +1,10 @@
-import DiaryListTab from "@/components/tab/tab";
+import DiaryListTab from '@/components/tab/tab'
 
-export default function DiaryListLayout({children}) {
-    return (
-        <>
-            <DiaryListTab />
-            {children}
-        </>
-    )
+export default function DiaryListLayout({ children }) {
+  return (
+    <>
+      <DiaryListTab />
+      {children}
+    </>
+  )
 }

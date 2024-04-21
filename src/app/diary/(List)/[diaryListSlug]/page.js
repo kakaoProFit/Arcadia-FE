@@ -104,7 +104,6 @@ export default function DiaryListPage() {
           </Grid>
         ))}
       </Grid>
-      
     </>
   )
 }
