@@ -12,7 +12,7 @@ const ReadDirInquery = dynamic(
 )
 
 function DirInquery(props) {
-  console.log("viewSlug: ", props.params.viewSlug) //viewSlug는 /diary/content/[viewSlug] 임. 따라서 일기 ID
+  console.log('viewSlug: ', props.params.viewSlug) //viewSlug는 /diary/content/[viewSlug] 임. 따라서 일기 ID
 
   let response_data = {
     // 게시글 테스트 데이터

@@ -36,16 +36,17 @@ export default function DiaryListTab() {
     pathname === '/mypage/setting'
   ) {
     tabProps = [
-      {label: '일기 조회', href: '/mypage/diary'},
-      {label: '상담 신청서 조회', href: '/mypage/contact'},
-      {label: '내 정보', href: '/mypage/myInfo'},
-      {label: '설정', href: '/mypage/setting'},
+      { label: '일기 조회', href: '/mypage/diary' },
+      { label: '상담 신청서 조회', href: '/mypage/contact' },
+      { label: '내 정보', href: '/mypage/myInfo' },
+      { label: '설정', href: '/mypage/setting' },
     ]
   }
 
   // 걀극 하드코딩으로 tab 움직임을 설정함.
   let tabNum = 0
-  if (pathname === '/diary/mydiary' || 
+  if (
+    pathname === '/diary/mydiary' ||
     pathname === '/diary/community' ||
     pathname === '/mypage/diary'
   ) {
@@ -56,11 +57,12 @@ export default function DiaryListTab() {
     pathname === '/mypage/contact'
   ) {
     tabNum = 1
-  } else if (pathname === '/diary/monthly-report' ||
-            pathname === '/mypage/myInfo'
+  } else if (
+    pathname === '/diary/monthly-report' ||
+    pathname === '/mypage/myInfo'
   ) {
     tabNum = 2
-  } else if (pathname === '/mypage/setting'){
+  } else if (pathname === '/mypage/setting') {
     tabNum = 3
   }
 
