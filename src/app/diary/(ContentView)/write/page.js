@@ -12,12 +12,13 @@ const TextEditor = dynamic(
 
 const baseUrl = "/diary/list/DirCreate" //일기 등록할 때 버튼에 쓰일 url
 const submitUrl = "/diary/1" // 등록 후에 list로 이동. 첫페이지로 고정 이동
+const anonPost = false // 일기를 익명으로 할건지 아닌지 판별. 기본값은 false
 
 export default function DiaryWritePage() {
   return (
     <>
       <Stack direction="column" alignItems="center" spacing={2}>
-        <TextEditor baseUrl={baseUrl} submitUrl={submitUrl} />
+        <TextEditor baseUrl={baseUrl} submitUrl={submitUrl} anonPost={anonPost} />
       </Stack>
     </>
   );

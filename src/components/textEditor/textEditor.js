@@ -4,10 +4,12 @@
 
 import 'react-quill/dist/quill.snow.css'
 import styled from 'styled-components'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import ReactQuill from 'react-quill'
 import Button from '@mui/material/Button'
 import { useRouter } from 'next/navigation'
+import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 const modules = {
   // Quill의 동작과 기능을 사용자 정의. 화면에 tool이 보이게 함.
@@ -54,14 +56,20 @@ const StyledTextEditor = styled.div`
   }
 `
 
-const TextEditor = (url) => {
-  // value: 사용자가 입력한 내용, onChage: value를 변경하기 위한 함수
+const TextEditor = (props) => { // props에는 baseUrl, submitUrl, (anonPost: 생략가능) 의 데이터가 넘어옴
   const quillRef = useRef()
   const maxCharacters = 500 //입력 최대 글자수
   const router = useRouter()
 
+  const [isAnonPost, setIsAnonPost] = useState(props.anonPost); // 사용자가 익명 여부 선택하는 것을 관리할 state
+
   const [displayCounting, setDisplayCounting] = useState('0') // 글자 수를 화면에 보이기 위한 변수
   const [writingContent, setWritingContent] = useState('')
+
+  const toggleAnonymous = () => {
+    console.log("익명 여부: ", !isAnonPost)
+    setIsAnonPost(!isAnonPost); // 사용자가 익명 여부 선택함에 따른 state 저장
+  }
 
   const handleChange = (content, delta, source, editor) => {
     const newText = content
@@ -84,14 +92,14 @@ const TextEditor = (url) => {
   // 등록 버튼을 클릭했을 때 실행될 함수
   const handleSubmit = () => {
     console.log(writingContent) //작성된 내용물
-    console.log("baseUrl: ", url.baseUrl) //각 페이지에서 이 컴포넌트를 쓸 때 url도 넘겨줘야함. 그럼 해당 url로 post요청 가능
-    console.log("submitUrl: ", url.submitUrl) // post 요청 후에 해당 글의 자세히 보기 페이지로 이동
+    console.log("baseUrl: ", props.baseUrl) //각 페이지에서 이 컴포넌트를 쓸 때 url도 넘겨줘야함. 그럼 해당 url로 post요청 가능
+    console.log("submitUrl: ", props.submitUrl) // post 요청 후에 해당 글의 자세히 보기 페이지로 이동
 
-    router.push(url.submitUrl) // 아직 백엔드 연결 안됐으니, 테스트로 라우팅 바로 가능하도록 함. 추후 제거
+    router.push(props.submitUrl) // 아직 백엔드 연결 안됐으니, 테스트로 라우팅 바로 가능하도록 함. 추후 제거
 
-    fetch(url.baseUrl, { // 등록 요청
+    fetch(props.baseUrl, { // 등록 요청
       method: 'POST',
-      body: JSON.stringify({ content: writingContent }),
+      body: JSON.stringify({ content: writingContent, isAnonPost: isAnonPost }), //작성 내용이랑 익명여부 전달
       headers: {
         'Content-Type': 'application/json',
       },
@@ -99,7 +107,7 @@ const TextEditor = (url) => {
       .then((response) => {
         if (response.ok) {
           console.log('전송 성공!')
-          router.push(url.submitUrl)
+          router.push(props.submitUrl)
         } else {
           console.error('전송 실패')
         }
@@ -111,6 +119,15 @@ const TextEditor = (url) => {
 
   return (
     <StyledTextEditor>
+      {(props.anonPost !== undefined) && ( // anonPost라는 props가 있을때만 익명 스위치 표시. (=일기)
+        <FormControlLabel
+          control={<Switch checked={isAnonPost} onChange={toggleAnonymous} />}
+          label="익명"
+          onChange={(e) => {
+            
+          }}
+        />
+      )}
       <ReactQuill
         ref={quillRef}
         modules={modules}
