@@ -1,4 +1,5 @@
-// 이 컴포넌트 쓰려면 <TextEditorNoSSR url={baseUrl}/> 이런식으로 해당 페이지에서 post 요청 보낼 url넘겨줘야함.
+// 이 컴포넌트 쓰려면 <TextEditorNoSSR url={baseUrl}/> 이런식으로 해당 페이지에서 post 요청 보낼 url넘겨줘야함. 
+// 참고 파일 필요하면 /diary/(ContentView)/write/page.js 에서 사용하는 거 참고.
 
 'use client'
 
