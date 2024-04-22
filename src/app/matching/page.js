@@ -10,11 +10,13 @@ const TextEditorNoSSR = dynamic(
   },
 )
 
+const baseUrl = "/mypage/${UserId}/Consulting" //매칭 신청서 등록할 때 버튼에 쓰일 url
+
 function Matching() {
   return (
     <>
       <Stack direction="column" alignItems="center" spacing={2}>
-        <TextEditorNoSSR />
+        <TextEditorNoSSR url={baseUrl}/>
       </Stack>
     </>
   )

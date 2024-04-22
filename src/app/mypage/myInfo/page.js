@@ -1,4 +1,4 @@
-// 상담 신청서 조회 페이지
+// 내 정보 페이지
 
 import Stack from '@mui/material/Stack'
 import * as React from 'react'

@@ -1,3 +1,5 @@
+// 이 컴포넌트 쓰려면 <TextEditorNoSSR url={baseUrl}/> 이런식으로 해당 페이지에서 post 요청 보낼 url넘겨줘야함.
+
 'use client'
 
 import 'react-quill/dist/quill.snow.css'
@@ -51,24 +53,24 @@ const StyledTextEditor = styled.div`
   }
 `
 
-const TextEditor = () => {
+const TextEditor = (baseUrl) => {
   // value: 사용자가 입력한 내용, onChage: value를 변경하기 위한 함수
   const quillRef = useRef()
   const maxCharacters = 500 //입력 최대 글자수
 
   const [displayCounting, setDisplayCounting] = useState('0') // 글자 수를 화면에 보이기 위한 변수
-  const [consultingContent, setConsultingContent] = useState('')
+  const [writingContent, setWritingContent] = useState('')
 
   const handleChange = (content, delta, source, editor) => {
     const newText = content
     const quillEditor = quillRef.current.getEditor()
     const counting = quillEditor.getText() // Quill 에디터의 내용을 가져옴
 
-    setConsultingContent(consultingContent)
+    setWritingContent(writingContent)
     setDisplayCounting(counting)
 
     if (counting.length <= maxCharacters) {
-      setConsultingContent(newText) // 변경된 텍스트를 상위 컴포넌트로 전달
+      setWritingContent(newText) // 변경된 텍스트를 상위 컴포넌트로 전달
     } else {
       // 최대 글자수를 초과한 경우에는 이전 텍스트를 유지, 추가 입력 제한
       const limitedText = counting.slice(0, maxCharacters)
@@ -79,11 +81,12 @@ const TextEditor = () => {
 
   // 등록 버튼을 클릭했을 때 실행될 함수
   const handleSubmit = () => {
-    console.log(consultingContent)
+    console.log(writingContent) //작성된 내용물
+    console.log("baseUrl: ", baseUrl.url) //각 페이지에서 이 컴포넌트를 쓸 때 url도 넘겨줘야함. 그럼 해당 url로 post요청 가능
 
-    fetch('/mypage/${UserId}/Consulting', {
+    fetch(baseUrl.url, {
       method: 'POST',
-      body: JSON.stringify({ content: consultingContent }),
+      body: JSON.stringify({ content: writingContent }),
       headers: {
         'Content-Type': 'application/json',
       },
