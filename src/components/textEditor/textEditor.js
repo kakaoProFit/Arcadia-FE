@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import { useRef, useState } from 'react'
 import ReactQuill from 'react-quill'
 import Button from '@mui/material/Button'
+import { useRouter } from 'next/navigation'
 
 const modules = {
   // Quill의 동작과 기능을 사용자 정의. 화면에 tool이 보이게 함.
@@ -53,10 +54,11 @@ const StyledTextEditor = styled.div`
   }
 `
 
-const TextEditor = (baseUrl) => {
+const TextEditor = (url) => {
   // value: 사용자가 입력한 내용, onChage: value를 변경하기 위한 함수
   const quillRef = useRef()
   const maxCharacters = 500 //입력 최대 글자수
+  const router = useRouter()
 
   const [displayCounting, setDisplayCounting] = useState('0') // 글자 수를 화면에 보이기 위한 변수
   const [writingContent, setWritingContent] = useState('')
@@ -82,9 +84,12 @@ const TextEditor = (baseUrl) => {
   // 등록 버튼을 클릭했을 때 실행될 함수
   const handleSubmit = () => {
     console.log(writingContent) //작성된 내용물
-    console.log("baseUrl: ", baseUrl.url) //각 페이지에서 이 컴포넌트를 쓸 때 url도 넘겨줘야함. 그럼 해당 url로 post요청 가능
+    console.log("baseUrl: ", url.baseUrl) //각 페이지에서 이 컴포넌트를 쓸 때 url도 넘겨줘야함. 그럼 해당 url로 post요청 가능
+    console.log("submitUrl: ", url.submitUrl) // post 요청 후에 해당 글의 자세히 보기 페이지로 이동
 
-    fetch(baseUrl.url, {
+    router.push(url.submitUrl) // 아직 백엔드 연결 안됐으니, 테스트로 라우팅 바로 가능하도록 함. 추후 제거
+
+    fetch(url.baseUrl, { // 등록 요청
       method: 'POST',
       body: JSON.stringify({ content: writingContent }),
       headers: {
@@ -94,6 +99,7 @@ const TextEditor = (baseUrl) => {
       .then((response) => {
         if (response.ok) {
           console.log('전송 성공!')
+          router.push(url.submitUrl)
         } else {
           console.error('전송 실패')
         }
