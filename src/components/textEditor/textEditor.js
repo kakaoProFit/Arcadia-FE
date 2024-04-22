@@ -62,6 +62,7 @@ const TextEditor = (props) => { // props에는 baseUrl, submitUrl, (anonPost: �
   const router = useRouter()
 
   const [isAnonPost, setIsAnonPost] = useState(props.anonPost); // 사용자가 익명 여부 선택하는 것을 관리할 state
+  const [isWriteForm, setIsWriteForm] = useState(props.writeForm); // 사용자가 일기 폼 여부 선택
 
   const [displayCounting, setDisplayCounting] = useState('0') // 글자 수를 화면에 보이기 위한 변수
   const [writingContent, setWritingContent] = useState('')
@@ -69,6 +70,11 @@ const TextEditor = (props) => { // props에는 baseUrl, submitUrl, (anonPost: �
   const toggleAnonymous = () => {
     console.log("익명 여부: ", !isAnonPost)
     setIsAnonPost(!isAnonPost); // 사용자가 익명 여부 선택함에 따른 state 저장
+  }
+
+  const toggleWriteForm = () => {
+    console.log("작성 폼 여부: ", !isWriteForm)
+    setIsWriteForm(!isWriteForm); // 사용자가 익명 여부 선택함에 따른 state 저장
   }
 
   const handleChange = (content, delta, source, editor) => {
@@ -123,9 +129,12 @@ const TextEditor = (props) => { // props에는 baseUrl, submitUrl, (anonPost: �
         <FormControlLabel
           control={<Switch checked={isAnonPost} onChange={toggleAnonymous} />}
           label="익명"
-          onChange={(e) => {
-            
-          }}
+        />
+      )}
+      {(props.writeForm !== undefined) && ( // writeForm이라는 props가 있을때만 폼 스위치 표시. (=일기)
+        <FormControlLabel
+          control={<Switch checked={isWriteForm} onChange={toggleWriteForm} />}
+          label="작성 폼"
         />
       )}
       <ReactQuill
