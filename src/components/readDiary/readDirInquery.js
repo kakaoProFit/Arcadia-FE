@@ -78,7 +78,8 @@ const InfoText = styled.p`
   font-size: 14px; //글자 크기 조정
 `
 
-const ReadDirInquery = (props) => { //json형식의 일기 데이터를 받음.
+const ReadDirInquery = (props) => {
+  //json형식의 일기 데이터를 받음.
   const [currentUser, setCurrentUser] = useState('홍길동') //추후 홍길동 부분 null값으로 바꾸기
   const [isPsyAnlz, setIsPsyAnlz] = useState(false) //분석 화면일 땐 필요없는 버튼들을 없애기 위해 사용하는 state
 
@@ -89,10 +90,9 @@ const ReadDirInquery = (props) => { //json형식의 일기 데이터를 받음.
 
     // props.psyAnlz_boolean가 true라면, isPsyAnalz를 true로 바꾸면서, 이 컴포넌트가 '일기 분석 페이지'용도로 쓰일 수 있게 함.
     if (props.psyAnlz_boolean == true) {
-      console.log("dddddd: ", props.psyAnlz_boolean)
-      setIsPsyAnlz(props.psyAnlz_boolean);
+      console.log('dddddd: ', props.psyAnlz_boolean)
+      setIsPsyAnlz(props.psyAnlz_boolean)
     }
-
   }, [])
 
   const isCurrentUserAuthor = currentUser === props.props.writer //현재 로그인된 user의 ID와 게시글 작성자의 ID가 같은지 아닌지 판별
@@ -111,7 +111,7 @@ const ReadDirInquery = (props) => { //json형식의 일기 데이터를 받음.
             <InfoText>조회수: {props.props.dirViews}</InfoText>
           </InfoItem>
           {/* 일기 작성자ID = 로그인된 사용자ID 일때만 아래 수정 버튼 활성화 */}
-          { !isPsyAnlz && isCurrentUserAuthor && (
+          {!isPsyAnlz && isCurrentUserAuthor && (
             <ModifyButton diaryId={props.props.diaryId} />
           )}
         </InfoWrapper>
@@ -125,7 +125,7 @@ const ReadDirInquery = (props) => { //json형식의 일기 데이터를 받음.
         />
         <InfoWrapper>
           {/* 이거 우선 어떻게 diaryId가 넘어올지 모르는데, 여기로 diary id 넘겨줘야함. */}
-          { !isPsyAnlz && (
+          {!isPsyAnlz && (
             <>
               <LikeButton diaryId={props.props.diaryId} />
               <ShareButton diaryId={props.props.diaryId} />
