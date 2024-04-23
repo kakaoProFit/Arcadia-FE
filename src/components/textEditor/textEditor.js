@@ -26,6 +26,7 @@ const modules = {
       { list: 'bullet' },
       { indent: '-1' },
       { indent: '+1' },
+      { background: [] },
     ],
     ['clean'],
   ],
@@ -53,10 +54,16 @@ const StyledTextEditor = styled.div`
   width: 70%;
   margin: 0 auto;
   height: fit-content;
+  
+
+  .ql-toolbar {
+    background-color: white; /* 툴바 배경색을 흰색으로 설정 */
+  }
 
   .ql-editor {
     min-height: 400px;
     font-size: 16px;
+    background-color: white; /* 편집 영역 배경색을 흰색으로 설정 */
   }
 `
 const questions = [
