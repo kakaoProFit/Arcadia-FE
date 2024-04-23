@@ -38,7 +38,7 @@ const pages = [
 const settings = [
   {
     'page': '마이 페이지',
-    'href': '/mypage',
+    'href': '/mypage/myInfo',
   },
   {
     'page': '로그아웃',
