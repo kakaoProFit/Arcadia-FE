@@ -78,7 +78,7 @@ const InfoText = styled.p`
   font-size: 14px; //글자 크기 조정
 `
 
-const ReadDirInquery = (props) => {
+const ReadDirInquery = (props) => { //json형식의 일기 데이터를 받음.
   const [currentUser, setCurrentUser] = useState('홍길동') //추후 홍길동 부분 null값으로 바꾸기
 
   useEffect(() => {
