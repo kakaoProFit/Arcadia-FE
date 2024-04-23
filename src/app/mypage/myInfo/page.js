@@ -12,11 +12,11 @@ const MyInfoTable = dynamic(
 )
 
 const testData = {
-  userNickname: '아르고1',
-  userEmail: '아르고2',
-  introduction: '아르고3', //이거 소개라는게 한줄소개 같은데, 용어사전에 없어서 걍 introduction으로 해놨음.
-  userGender: '아르고4',
-  userPhone: '아르고5',
+  userNickname: '홍길동',
+  userEmail: 'honggildong@naver.com',
+  introduction: '아버지를 아버지라 부르지 못하고..', //이거 소개라는게 한줄소개 같은데, 용어사전에 없어서 걍 introduction으로 해놨음.
+  userGender: 'Male',
+  userPhone: '010-1111-1111',
 }
 
 function MyInfo() {
@@ -47,13 +47,10 @@ function MyInfo() {
 
   return (
     <div>
-      <div style={{ marginLeft: '15%' }}>
+      {/* <div style={{ marginLeft: '15%', marginTop: '2.5%', marginBottom: '2.5%' }}>
         <h2>내 정보</h2>
-      </div>
-      <div style={{ marginLeft: '15%' }}>
-        <p>탭 컨포넌트 들어갈 자리</p>
-      </div>
-      <Stack direction="column" alignItems="center" spacing={2}>
+      </div> */}
+      <Stack direction="column" alignItems="center" spacing={2} style={{marginTop: '20px'}}>
         {userInfo ? ( // userInfo가 존재하면 MyInfoTable을 렌더링
           <MyInfoTable userInfo={userInfo} image="/images/testArgoImage.png" />
         ) : (

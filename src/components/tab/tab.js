@@ -32,14 +32,14 @@ export default function DiaryListTab() {
   } else if (
     pathname === '/mypage/diary' ||
     pathname === '/mypage/contact' ||
-    pathname === '/mypage/myInfo' ||
-    pathname === '/mypage/setting'
+    pathname === '/mypage/myInfo' // ||
+    // pathname === '/mypage/setting'
   ) {
     tabProps = [
       { label: '일기 조회', href: '/mypage/diary' },
       { label: '상담 신청서 조회', href: '/mypage/contact' },
       { label: '내 정보', href: '/mypage/myInfo' },
-      { label: '설정', href: '/mypage/setting' },
+      // { label: '설정', href: '/mypage/setting' },
     ]
   }
 
@@ -62,9 +62,10 @@ export default function DiaryListTab() {
     pathname === '/mypage/myInfo'
   ) {
     tabNum = 2
-  } else if (pathname === '/mypage/setting') {
-    tabNum = 3
-  }
+  } 
+  // else if (pathname === '/mypage/setting') {
+  //   tabNum = 3
+  // }
 
   return (
     <Box sx={{ width: '100%' }}>
