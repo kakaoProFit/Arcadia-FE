@@ -42,7 +42,7 @@ function Comment(props) {
 
   const handleCommentSubmit = () => {
     if (commentRef.current.value === '댓글을 입력하세요...') {
-        return; // "댓글을 입력하세요..."일 때는 저장 버튼 클릭 무시
+      return // "댓글을 입력하세요..."일 때는 저장 버튼 클릭 무시
     }
 
     // 댓글 추가
