@@ -20,7 +20,7 @@ import Link from 'next/link'
 const pages = [
   {
     'page': '일기',
-    'href': '/diary',
+    'href': '/diary/mydiary',
   },
   {
     'page': '게시판',
@@ -38,7 +38,7 @@ const pages = [
 const settings = [
   {
     'page': '마이 페이지',
-    'href': '/mypage',
+    'href': '/mypage/myInfo',
   },
   {
     'page': '로그아웃',
