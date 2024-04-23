@@ -20,7 +20,7 @@ import Link from 'next/link'
 const pages = [
   {
     'page': '일기',
-    'href': '/diary',
+    'href': '/diary/mydiary',
   },
   {
     'page': '게시판',
