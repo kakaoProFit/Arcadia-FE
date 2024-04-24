@@ -17,7 +17,7 @@ export default function DiaryPagination(props) {
         setCurrentPage(Number(params.get('page')))
         // 일단은 하드코딩으로 새로고침이 됨.
         // 추후에 클라이언트 사이드로 랜더링할 수 있도록 하고 page가 바뀌면 데이터를 갈아끼우는 부분이 page.js에 필요함
-        router.replace(`http://localhost:3000/${pathname}?page=${params.get('page')}`)
+        router.replace(`${pathname}?page=${params.get('page')}`)
     };
     // page.js에서 받은 게시물 개수 props
     const {diaryCount} = props
@@ -30,7 +30,8 @@ export default function DiaryPagination(props) {
         <Container sx={{
             display:'flex',
             alignItems:'center',
-            justifyContent:'center'
+            justifyContent:'center',
+            mb:3
         }}>
             <Pagination 
                 count={pageCount} 
