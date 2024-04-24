@@ -20,7 +20,7 @@ pipeline {
                 script {
                     dockerImage = docker.build repository + ":$BUILD_NUMBER"
                 }
-                sh 'docker iamage -t repository:$BUILD_NUMBER repository:latest'
+                sh 'docker image -t repository:$BUILD_NUMBER repository:latest'
             }
         }
         stage('Login'){
