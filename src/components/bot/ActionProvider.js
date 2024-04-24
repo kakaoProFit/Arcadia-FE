@@ -1,34 +1,43 @@
+'use client'
 import React from 'react'
-import getChatBotResponse from './GetChatBotResponse'
+import { useState } from 'react'
 
 const ActionProvider = ({ createChatBotMessage, setState, children }) => {
-  const getData = getChatBotResponse()
+  const [answer, setAnswer] = useState(null)
 
-  const getResponse = () => {
-    // get api
-    const message = createChatBotMessage(getData.data.message)
-    setState((prev) => ({
-      ...prev,
-      messages: [...prev.messages, message],
-    }))
-  }
-
-  const postChat = async (message) => {
-    const response = await fetch('/api/chatbot', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ message }),
-    })
-    const data = await response.json()
-    return data
-  }
+  const postChat = async (question) => { // 질문 보내기
+    try {
+      const response = await fetch('http://localhost:8000/question', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "question": question,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('HTTP error ' + response.status);
+      }
+  
+      const data = await response.json();
+      await setAnswer(data.chat_history.content);
+      const message = createChatBotMessage(data.chat_history.content);
+      await setState((prev) => ({
+        ...prev,
+        messages: [...prev.messages, message],
+      }));
+    } catch (error) {
+      console.error('API 요청 중 에러 발생:', error);
+      // 에러 처리
+    }
+  };
   return (
     <div>
       {React.Children.map(children, (child) => {
         return React.cloneElement(child, {
-          actions: { getResponse, postChat },
+          actions: { postChat },
         })
       })}
     </div>

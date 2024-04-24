@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import React from 'react'
 import {
@@ -14,53 +14,10 @@ import {
   Typography,
 } from '@mui/material'
 import { useForm, useController } from 'react-hook-form'
+import JoinRules from '@/constants/Rules/JoinRules'
 
-
+const rules = JoinRules
 function ValidInput({ control, name, ruleName }) {
-  const rules = {
-    email: {
-      required: '이메일을 입력해주세요.',
-      pattern: {
-        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-        message: '올바른 이메일 주소를 입력해주세요',
-      },
-    },
-    password: {
-      required: '비밀번호를 입력해주세요.',
-      minLength: {
-        value: 8,
-        message: '비밀번호는 최소 8자 이상이어야 합니다.',
-      },
-      maxLength: {
-        value: 20,
-        message: '비밀번호는 최대 20자 이하여야 합니다.',
-      },
-      pattern: {
-        value: /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
-        message: '비밀번호는 영문 소문자, 숫자, 특수문자를 포함해야 합니다.',
-      },
-    },
-    nickname: {
-      required: '닉네임을 입력해주세요.',
-      minLength: {
-        value: 4,
-        message: '닉네임은 최소 4자 이상이어야 합니다.',
-      },
-      maxLength: {
-        value: 8,
-        message: '닉네임은 최대 8자 이하여야 합니다.',
-      },
-    },
-    phone: {
-      required: '휴대폰 번호를 입력해주세요.',
-      pattern: {
-        value: /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
-        message: '휴대폰 번호는 영문 소문자, 숫자, 특수문자를 포함해야 합니다.',
-      },
-    },
-    birth: { required: '생년월일을 입력해주세요.' },
-  }
-
   const {
     field,
     fieldState: { invalid, isTouched, isDirty, error },
@@ -70,6 +27,7 @@ function ValidInput({ control, name, ruleName }) {
     control,
     rules: rules[ruleName],
   })
+
   return (
     <>
       <TextField
@@ -97,17 +55,22 @@ const ValidForm = () => {
   const submitHandler = (data) => {
     // 데이터 처리
   }
+  const inputFields = [
+    { name: 'email', ruleName: 'email' },
+    { name: 'password', ruleName: 'password' },
+    { name: 'nickname', ruleName: 'nickname' },
+    { name: 'phone', ruleName: 'phone' },
+    { name: 'birth', ruleName: 'birth' },
+  ]
   return (
     <Box
       component="form"
       onSubmit={methods.handleSubmit(submitHandler)}
       style={{ mt: 1 }}
     >
-      <ValidInput control={control} name="email" ruleName="email" />
-      <ValidInput control={control} name="password" ruleName="password" />
-      <ValidInput control={control} name="nickname" ruleName="nickname" />
-      <ValidInput control={control} name="phone" ruleName="phone" />
-      <ValidInput control={control} name="birth" ruleName="birth" />
+      {inputFields.map((field, index) => (
+        <ValidInput key={index} control={control} {...field} />
+      ))}
       <Box mb={1}>
         <Button
           color="primary"
@@ -147,9 +110,9 @@ export default function SignUp() {
         sm={4}
         md={7}
         component={Paper}
-        elevation={6}
+        elevation={0}
         square
-        style={{ padding: '10vh' }}
+        style={{ padding: '10vh', backgroundColor: 'transparent'}}
       >
         <Box
           style={{

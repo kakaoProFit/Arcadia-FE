@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Grid, Avatar, IconButton, Button, Typography } from '@mui/material'
 import { ArrowBack, ArrowForward } from '@mui/icons-material'
 import Image from 'next/image'
+import Link from 'next/link'
 import styles from '@/page.module.css'
 import { generateData } from '@/constants/SpecialistDummy'
 
@@ -49,15 +50,18 @@ export default function Page() {
         </Grid>
         {avatars.slice(startIndex, startIndex + 5).map((avatar, index) => (
           <Grid key={index} item>
-            <Avatar
-              alt={avatar.name}
-              src={avatar.image}
-              sx={{
-                width: 200,
-                height: 200,
-                cursor: 'pointer',
-              }}
-            />
+            <Link href="/matching/request">
+              <Avatar
+                href="/matching/request"
+                alt={avatar.name}
+                src={avatar.image}
+                sx={{
+                  width: 200,
+                  height: 200,
+                  cursor: 'pointer',
+                }}
+              />
+            </Link>
           </Grid>
         ))}
         <Grid item>
@@ -78,7 +82,7 @@ export default function Page() {
       </Grid>
       <Grid container justifyContent="center">
         <Grid item>
-          <Button>더 많은 전문가 찾기</Button>
+          <Button href="/matching/find">더 많은 전문가 찾기</Button>
         </Grid>
       </Grid>
     </div>

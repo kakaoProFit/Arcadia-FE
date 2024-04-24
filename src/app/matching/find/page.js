@@ -57,7 +57,11 @@ export default function AvatarList() {
             <Typography variant="h6">지역:</Typography>
           </Grid>
           <Grid item>
-            <Select value={selectedRegion} onChange={handleRegionChange}>
+            <Select
+              value={selectedRegion}
+              size="small"
+              onChange={handleRegionChange}
+            >
               <MenuItem value="전체">전체</MenuItem>
               {regions.map((region) => (
                 <MenuItem key={region} value={region}>
@@ -70,7 +74,11 @@ export default function AvatarList() {
             <Typography variant="h6">증상:</Typography>
           </Grid>
           <Grid item>
-            <Select value={selectedSymptom} onChange={handleSymptomChange}>
+            <Select
+              value={selectedSymptom}
+              size="small"
+              onChange={handleSymptomChange}
+            >
               <MenuItem value="전체">전체</MenuItem>
               {symptom.map((s) => (
                 <MenuItem key={s} value={s}>
