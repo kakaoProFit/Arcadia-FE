@@ -20,7 +20,7 @@ pipeline {
                 script {
                     dockerImage = docker.build repository + ":$BUILD_NUMBER"
                 }
-                sh 'docker image tag repository:$BUILD_NUMBER repository:latest'
+                sh 'docker image tag $repository:$BUILD_NUMBER $repository:latest'
             }
         }
         stage('Login'){
@@ -32,6 +32,7 @@ pipeline {
             steps { 
                 script {
                     sh 'docker push $repository:$BUILD_NUMBER' //docker push
+                    sh 'docker rmi $(docker images -q $repository)'
                 } 
             }
         } 
