@@ -3,8 +3,7 @@ import { Box, Tabs, Tab, Paper } from '@mui/material'
 import Link from 'next/link'
 
 export default function DiaryListTab(props) {
-
-  const {tabNum, tabProps} = props;
+  const { tabNum, tabProps } = props
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -12,7 +11,7 @@ export default function DiaryListTab(props) {
         value={tabNum}
         aria-label="nav tabs"
         role="navigation"
-        TabIndicatorProps={{ style: { background: "#1e3269" } }}
+        TabIndicatorProps={{ style: { background: '#1e3269' } }}
         textColor="inherit"
       >
         {tabProps.map((it, index) => (

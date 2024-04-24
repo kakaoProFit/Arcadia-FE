@@ -2,7 +2,7 @@ import { Grid } from '@mui/material'
 import DiaryCard from '@/components/card/card'
 import DiaryPagination from '@/components/pagination/pagination'
 
-export default function DiaryListPage({searchParams}) {
+export default function DiaryListPage({ searchParams }) {
   // 라우팅 가이드라인
   // 목록 조회 : diary/[diaryListSlug]
   // 일기 nav는 default로 diary/mydiary, 게시판 nav는 default로 diary/community 로 이동
@@ -80,7 +80,7 @@ export default function DiaryListPage({searchParams}) {
         alignItems="center"
         justifyContent="center"
         sx={{
-          mb:5
+          mb: 5,
         }}
       >
         {CARD_DUMMY_DATA.map((it, index) => (
