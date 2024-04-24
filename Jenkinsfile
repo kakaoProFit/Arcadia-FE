@@ -37,7 +37,6 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh 'docker rm -f $CONTAINER_NAME'
-                sh 'docker images | grep $CONTAINER_NAME | awk '{print $3}' | docker rmi -f'
                 sh 'docker run -d -p 3000:3000 --name $CONTAINER_NAME $repository'
             }
         }
