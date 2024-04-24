@@ -15,7 +15,6 @@ export default function TabContainer() {
   if (
     pathname === '/diary/monthly-report' ||
     pathname === '/diary/weekly-report' ||
-    pathname === '/mypage/diary' ||
     pathname === '/mypage/contact' ||
     pathname === '/mypage/myInfo'
   ) {
@@ -95,7 +94,7 @@ export default function TabContainer() {
         justifyContent="space-between"
         sx={{ ml: 11, mr: 17, mt: 6, mb: 3 }}
       >
-        <Typography variant="h2">{tabProps[tabNum].title}</Typography>
+        <Typography variant="h3">{tabProps[tabNum].title}</Typography>
         {pathCheck && (
           <Button
             variant="contained"
