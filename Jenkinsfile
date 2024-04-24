@@ -32,6 +32,7 @@ pipeline {
             steps { 
                 script {
                     sh 'docker push $repository:$BUILD_NUMBER' //docker push
+                    sh 'docker push $repository:latest'
                     // sh 'docker rmi $repository:$previous_build_number'
                 } 
             }
