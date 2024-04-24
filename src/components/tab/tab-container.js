@@ -51,12 +51,12 @@ export default function TabContainer() {
       { label: '친구 일기', href: '/diary/friends-diary', title: '게시판' },
     ]
   } else if (
-    pathname === '/mypage/diary' ||
+    pathname === '/mypage/my-diary' ||
     pathname === '/mypage/contact' ||
     pathname === '/mypage/myInfo'
   ) {
     tabProps = [
-      { label: '일기 조회', href: '/mypage/diary', title: '마이 페이지' },
+      { label: '일기 조회', href: '/mypage/my-diary', title: '마이 페이지' },
       {
         label: '상담 신청서 조회',
         href: '/mypage/contact',
@@ -71,7 +71,7 @@ export default function TabContainer() {
   if (
     pathname === '/diary/mydiary' ||
     pathname === '/diary/community' ||
-    pathname === '/mypage/diary'
+    pathname === '/mypage/my-diary'
   ) {
     tabNum = 0
   } else if (

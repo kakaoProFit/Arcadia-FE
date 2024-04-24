@@ -5,8 +5,8 @@ import { CARD_DUMMY_DATA } from '@/constants/CardDummy'
 
 export default function DiaryListPage({ searchParams }) {
   // 현재 url 매개 변수를 받아옴.
-  const query = searchParams?.query || ''
-  const currentPage = Number(searchParams?.page) || 1
+  // const query = searchParams?.query || ''
+  // const currentPage = Number(searchParams?.page) || 1
 
   //더미 데이터
   // API 호출로 데이터 받아서 뿌릴 예정
