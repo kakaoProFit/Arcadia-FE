@@ -3,11 +3,12 @@ import DiaryCard from '@/components/card/card'
 import DiaryPagination from '@/components/pagination/pagination'
 import { CARD_DUMMY_DATA } from '@/constants/CardDummy'
 
-function MyPageDiaryList() {
+export default function MyPageDiary({ searchParams }) {
+
   // 현재 url 매개 변수를 받아옴.
   // const query = searchParams?.query || ''
   // const currentPage = Number(searchParams?.page) || 1
-  
+
   //더미 데이터
   // API 호출로 데이터 받아서 뿌릴 예정
   const CARD = CARD_DUMMY_DATA
@@ -15,8 +16,9 @@ function MyPageDiaryList() {
   // 해당 사용자 또는 불러온 일기 개수
   let itemCount = 50
 
+  // 이후 로그인 토큰 확인해서 로그인 여부, 사용자 이름 props로 전달해야 함.
   return (
-    <div>
+    <>
       <Grid
         container
         rowSpacing={2}
@@ -44,8 +46,6 @@ function MyPageDiaryList() {
         ))}
       </Grid>
       <DiaryPagination diaryCount={itemCount} />
-    </div>
+    </>
   )
 }
-
-export default MyPageDiaryList;

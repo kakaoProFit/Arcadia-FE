@@ -83,14 +83,17 @@ const ReadDirInquery = (props) => {
   const [currentUser, setCurrentUser] = useState('홍길동') //추후 홍길동 부분 null값으로 바꾸기
   const [isPsyAnlz, setIsPsyAnlz] = useState(false) //분석 화면일 땐 필요없는 버튼들을 없애기 위해 사용하는 state
 
+  const [contents, setContents] = useState('')
   useEffect(() => {
     // 로컬 스토리지에서 현재 로그인된 사용자 정보를 가져옵니다.
     const loggedInUser = localStorage.getItem('userId')
     setCurrentUser('홍길동') // 추후에 홍길동 부분 loggedInUser로 바꾸기
+    setContents(JSON.parse(localStorage.getItem('content'))) 
+    // console.log('test ', contents)
 
     // props.psyAnlz_boolean가 true라면, isPsyAnalz를 true로 바꾸면서, 이 컴포넌트가 '일기 분석 페이지'용도로 쓰일 수 있게 함.
     if (props.psyAnlz_boolean == true) {
-      console.log('dddddd: ', props.psyAnlz_boolean)
+      // console.log('dddddd: ', props.psyAnlz_boolean)
       setIsPsyAnlz(props.psyAnlz_boolean)
     }
   }, [])
@@ -121,7 +124,7 @@ const ReadDirInquery = (props) => {
           formats={formats}
           theme="snow"
           readOnly={true} // 편집 불가능
-          value={props.props.content} // 백엔드 측에서 조회된 내용 표시
+          value={contents} // 백엔드 측에서 조회된 내용 표시
         />
         <InfoWrapper>
           {/* 이거 우선 어떻게 diaryId가 넘어올지 모르는데, 여기로 diary id 넘겨줘야함. */}
