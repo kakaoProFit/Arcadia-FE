@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import styles from '../page.module.css'
 import {
   AppBar,
   Box,
@@ -63,7 +64,11 @@ function Header() {
   }
 
   return (
-    <AppBar position="static" color="green">
+    <AppBar
+      position="fixed"
+      elevation={0}
+      style={{ background: 'rgba(225, 225, 225, 0.8)', boxShadow: 'none' }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Link href="/">
@@ -77,7 +82,7 @@ function Header() {
           <Link href="/">
             <Typography
               variant="h6"
-              sx={{ fontWeight: 700, color: 'white' }}
+              sx={{ fontWeight: 700, fontSize:'26px', color: 'black' }}
               href="/"
             >
               아르카디아
@@ -97,7 +102,8 @@ function Header() {
                 href={page.href}
                 key={page.page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                color="inherit"
+                sx={{fontWeight:'400', fontSize:'21px', my: 2, color: 'black', display: 'block' }}
               >
                 {page.page}
               </Button>
@@ -106,7 +112,11 @@ function Header() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar
+                  alt="Remy Sharp"
+                  src="/images/user1.jpg"
+                  sx={{ ml: 3 }}
+                />
               </IconButton>
             </Tooltip>
             <Menu

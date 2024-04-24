@@ -14,33 +14,11 @@ import {
   Typography,
 } from '@mui/material'
 import { useForm, useController } from 'react-hook-form'
+import LoginRules from '@/constants/Rules/LoginRules'
+import styles from '@/page.module.css'
 
+const rules = LoginRules
 function ValidInput({ control, name, ruleName }) {
-  const rules = {
-    email: {
-      required: '이메일을 입력해주세요.',
-      pattern: {
-        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-        message: '올바른 이메일 주소를 입력해주세요',
-      },
-    },
-    password: {
-      required: '비밀번호를 입력해주세요.',
-      minLength: {
-        value: 8,
-        message: '비밀번호는 최소 8자 이상이어야 합니다.',
-      },
-      maxLength: {
-        value: 20,
-        message: '비밀번호는 최대 20자 이하여야 합니다.',
-      },
-      pattern: {
-        value: /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
-        message: '비밀번호는 영문 소문자, 숫자, 특수문자를 포함해야 합니다.',
-      },
-    },
-  }
-
   const {
     field,
     fieldState: { invalid, isTouched, isDirty, error },
@@ -72,6 +50,11 @@ function ValidInput({ control, name, ruleName }) {
 }
 
 const ValidForm = () => {
+  const inputFields = [
+    { name: 'email', ruleName: 'email' },
+    { name: 'password', ruleName: 'password' },
+  ]
+
   const methods = useForm()
   const { register, handleSubmit, control } = methods
   const submitHandler = (data) => {
@@ -81,7 +64,7 @@ const ValidForm = () => {
     <Box
       component="form"
       onSubmit={methods.handleSubmit(submitHandler)}
-      style={{ mt: 1 }}
+      style={{ mt: 1, backgroundColor: 'transparent'}}
     >
       <ValidInput control={control} name="email" ruleName="email" />
       <ValidInput control={control} name="password" ruleName="password" />
@@ -122,12 +105,25 @@ const ValidForm = () => {
         control={<Checkbox value="remember" color="primary" />}
         label="자동 로그인"
       />
+      <Grid container>
+        <Grid item xs>
+          <Link href="#" variant="body2">
+            비밀번호 재설정
+          </Link>
+        </Grid>
+        <Grid item>
+          <Link href="/join" variant="body2">
+            {'회원가입'}
+          </Link>
+        </Grid>
+      </Grid>
     </Box>
   )
 }
 
 export default function SignIn() {
   return (
+    <div className={styles.main}>
     <Grid container component="main" style={{ height: '100vh' }}>
       <Grid
         item
@@ -135,9 +131,9 @@ export default function SignIn() {
         sm={4}
         md={7}
         component={Paper}
-        elevation={6}
+        elevation={0}
         square
-        style={{ padding: '10vh' }}
+        style={{ padding: '10vh', backgroundColor: 'transparent'}}
       >
         <Box
           style={{
@@ -152,18 +148,6 @@ export default function SignIn() {
             로그인
           </Typography>
           <ValidForm />
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                비밀번호 재설정
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="/join" variant="body2">
-                {'회원가입'}
-              </Link>
-            </Grid>
-          </Grid>
         </Box>
       </Grid>
       <Grid
@@ -172,12 +156,13 @@ export default function SignIn() {
         sm={8}
         md={5}
         style={{
-          backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'fit',
-          backgroundPosition: 'center',
+          backgroundImage: `url('/images/user5.jpg')`, // url() 함수를 사용하여 이미지 경로 설정
+          backgroundSize: 'cover', // 이미지를 컨테이너에 맞게 조절
+          backgroundRepeat: 'no-repeat', // 이미지 반복 방지
+          backgroundPosition: 'center', // 이미지를 가운데로 정렬
         }}
       />
     </Grid>
+    </div>
   )
 }

@@ -1,12 +1,7 @@
-// 일기 심리분석 결과 보는 페이지
-
-//import ReadDirInquery from "@/components/readDiary/readDirInquery"
 import axios from 'axios'
-import Grid from '@mui/material/Unstable_Grid2'
-import { Box } from '@mui/material'
-import TextField from '@mui/material/TextField'
-import MusicPlayer from '@/components/musicPlayer/musicPlayer'
-import Memo from '@/components/memo/memo'
+import { Box, Grid, TextField } from '@mui/material'
+import Player from '@/components/musicPlayer/Player'
+import Mem from '@/components/memo/Mem'
 import dynamic from 'next/dynamic'
 
 const ReadDirInquery = dynamic(
@@ -88,7 +83,7 @@ function PsyAnlz() {
               md={13}
               style={{ marginLeft: '0%', marginTop: '4%' }}
             >
-              <Memo props={response_data} />
+              <Mem props={response_data} />
             </Grid>
 
             <Grid xs={20} md={20} style={{ marginTop: '5%' }}>
@@ -115,7 +110,7 @@ function PsyAnlz() {
           </Grid>
         </Grid>
       </Box>
-      <MusicPlayer props={response_data.musicUrl} />
+      <Player props={response_data.musicUrl} />
     </div>
   )
 }

@@ -5,13 +5,14 @@ import { Button } from '@mui/material'
 import axios from 'axios'
 import { useState } from 'react'
 
-function Memo(props) {
+function Mem(props) {
+  
   const [memoText, setMemoText] = useState('')
 
   const handleClick = () => {
     // memoText 상태값을 서버로 보냄
     axios
-      .post('/api/memo', { memo: memoText, diaryId: props.props.diaryId }) // 일기 ID를 통해 각 일기에 대한 메모 입력
+      .post('/api/memo', { memo: memoText, diaryId: props.diaryId }) // 일기 ID를 통해 각 일기에 대한 메모 입력
       .then((response) => {
         console.log('메모가 성공적으로 전송되었습니다.')
       })
@@ -52,4 +53,4 @@ function Memo(props) {
   )
 }
 
-export default Memo
+export default Mem
