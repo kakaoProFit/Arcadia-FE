@@ -62,7 +62,7 @@ export default function DiaryListTab() {
     pathname === '/mypage/myInfo'
   ) {
     tabNum = 2
-  } 
+  }
   // else if (pathname === '/mypage/setting') {
   //   tabNum = 3
   // }

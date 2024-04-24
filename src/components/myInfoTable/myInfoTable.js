@@ -13,7 +13,7 @@ import Button from '@mui/material/Button'
 import { useState, useEffect } from 'react'
 import TextField from '@mui/material/TextField'
 import axios from 'axios'
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid'
 import { Box } from '@mui/material'
 import MyInfoCard from '../card/myInfoCard'
 
@@ -27,9 +27,8 @@ function MyInfoTable({ userInfo, image }) {
   const [editMode, setEditMode] = useState(Array(5).fill(false)) // 각 행의 수정 모드를 저장하는 배열
   const [isEditMode, setIsEditMode] = useState(false)
 
-
   const handleEdit = () => {
-    setEditMode(Array(5).fill(true)); // 모든 요소를 true로 설정하여 수정 모드로 변경
+    setEditMode(Array(5).fill(true)) // 모든 요소를 true로 설정하여 수정 모드로 변경
     setIsEditMode(true) // 수정 모드에 들어온 것을 확인 -> 저장 버튼으로 변경
   }
 
@@ -41,16 +40,15 @@ function MyInfoTable({ userInfo, image }) {
 
   const handleSave = () => {
     console.log('editedUserInfo: ', editedUserInfo)
-    setEditMode(Array(5).fill(false)); // 수정 모드 해제
-    setIsEditMode(false); // 수정 모드 해제
-
+    setEditMode(Array(5).fill(false)) // 수정 모드 해제
+    setIsEditMode(false) // 수정 모드 해제
 
     axios
       .put(endpoint, editedUserInfo) // 추후 endpoint url 추가.
       .then((response) => {
         console.log('저장 성공', response.data)
-        setEditMode(Array(5).fill(false));
-        setIsEditMode(false); // 수정 모드 해제
+        setEditMode(Array(5).fill(false))
+        setIsEditMode(false) // 수정 모드 해제
       })
       .catch((error) => {
         console.error('에러', error)
@@ -63,16 +61,19 @@ function MyInfoTable({ userInfo, image }) {
     { label: '소개', key: 'introduction' },
     { label: '성별', key: 'userGender' },
     { label: '연락처', key: 'userPhone' },
-  ];
+  ]
 
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={5} columnSpacing={2}>
-          <Grid item xs={6} md={6} sx={{ width: '565px', mb:3 }}>
+          <Grid item xs={6} md={6} sx={{ width: '565px', mb: 3 }}>
             <Stack direction="column" alignItems="center" spacing={2}>
               <TableContainer component={Paper}>
-                <Table sx={{ width: 490, border: 1 }} aria-label="spanning table">
+                <Table
+                  sx={{ width: 490, border: 1 }}
+                  aria-label="spanning table"
+                >
                   <TableHead>
                     <TableRow>
                       <TableCell
@@ -111,19 +112,26 @@ function MyInfoTable({ userInfo, image }) {
                             editedUserInfo[row.key] // 수정 모드가 아닐 때는 텍스트만 표시
                           )}
                         </CustomTableCell>
-
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               </TableContainer>
-              <Button variant="contained" onClick={isEditMode ? handleSave : handleEdit}>
+              <Button
+                variant="contained"
+                onClick={isEditMode ? handleSave : handleEdit}
+              >
                 {isEditMode ? '저장' : '수정'}
               </Button>
             </Stack>
           </Grid>
-          <Grid item xs={6} md={6} >
-            <Grid container spacing={1} sx={{ flexGrow: 1, alignItems: 'right' }} direction="column">
+          <Grid item xs={6} md={6}>
+            <Grid
+              container
+              spacing={1}
+              sx={{ flexGrow: 1, alignItems: 'right' }}
+              direction="column"
+            >
               <Grid item xs={3} md={6}>
                 <MyInfoCard />
               </Grid>

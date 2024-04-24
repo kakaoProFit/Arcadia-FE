@@ -54,7 +54,6 @@ const StyledTextEditor = styled.div`
   width: 70%;
   margin: 0 auto;
   height: fit-content;
-  
 
   .ql-toolbar {
     background-color: white; /* 툴바 배경색을 흰색으로 설정 */
