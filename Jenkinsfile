@@ -6,7 +6,7 @@ pipeline {
         CONTAINER_NAME = 'arcadia_homepage'
         giturl = 'https://github.com/kakaoProFit/Arcadia-FE'
         gitbranch = 'release'
-        previous_build_number=$((build_number - 1))
+        previous_build_number= build_number - 1
     }
     agent any 	// 사용 가능한 에이전트에서 이 파이프라인 또는 해당 단계를 실행
     stages {
