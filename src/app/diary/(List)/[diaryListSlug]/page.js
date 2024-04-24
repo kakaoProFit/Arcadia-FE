@@ -4,7 +4,6 @@ import DiaryPagination from '@/components/pagination/pagination'
 import { CARD_DUMMY_DATA } from '@/constants/CardDummy'
 
 export default function DiaryListPage({ searchParams }) {
-
   // 현재 url 매개 변수를 받아옴.
   const query = searchParams?.query || ''
   const currentPage = Number(searchParams?.page) || 1
@@ -30,8 +29,6 @@ export default function DiaryListPage({ searchParams }) {
         }}
       >
         {CARD.map((it, index) => (
-          // 기존에는 사이즈마다 다르게 했으나 pagination 구현하면서 일단은 개수 제한을 그냥 둠
-          // <Grid item xs={12} sm={6} md={3} lg={2} key={index}>
           <Grid item xs={2} key={index}>
             <DiaryCard
               key={index}
