@@ -1,6 +1,5 @@
 import { Grid } from '@mui/material'
 import DiaryCard from '@/components/card/card'
-import DiaryDatePicker from '@/components/date-picker/date-picker'
 import DiaryPagination from '@/components/pagination/pagination'
 import { CARD_DUMMY_DATA } from '@/constants/CardDummy'
 
