@@ -1,5 +1,4 @@
 // 일기 작성 페이지
-
 import Stack from '@mui/material/Stack'
 import dynamic from 'next/dynamic'
 

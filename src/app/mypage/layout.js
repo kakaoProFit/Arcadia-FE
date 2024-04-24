@@ -1,9 +1,9 @@
-import DiaryListTab from '@/components/tab/tab'
+import TabContainer from '@/components/tab/tab-container'
 
 export default function DiaryListLayout({ children }) {
   return (
     <>
-      <DiaryListTab />
+      <TabContainer />
       {children}
     </>
   )
