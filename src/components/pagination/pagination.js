@@ -1,7 +1,7 @@
 'use client'
-import { useState } from "react"
-import { Container, Pagination } from "@mui/material"
-import { useSearchParams, usePathname, useRouter } from "next/navigation"
+import { useState } from 'react'
+import { Container, Pagination } from '@mui/material'
+import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 
 export default function DiaryPagination(props) {
 

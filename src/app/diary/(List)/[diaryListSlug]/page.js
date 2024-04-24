@@ -84,7 +84,7 @@ export default function DiaryListPage({searchParams}) {
         }}
       >
         {CARD_DUMMY_DATA.map((it, index) => (
-          // 기존에는 사이즈마다 다르게 했으나 pagination 구현하면서 일단은 개수 제한을 그냥 둠 
+          // 기존에는 사이즈마다 다르게 했으나 pagination 구현하면서 일단은 개수 제한을 그냥 둠
           // <Grid item xs={12} sm={6} md={3} lg={2} key={index}>
           <Grid item xs={2} key={index}>
             <DiaryCard
@@ -101,7 +101,7 @@ export default function DiaryListPage({searchParams}) {
           </Grid>
         ))}
       </Grid>
-      <DiaryPagination diaryCount={itemCount}/>
+      <DiaryPagination diaryCount={itemCount} />
     </>
   )
 }

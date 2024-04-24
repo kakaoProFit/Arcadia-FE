@@ -23,7 +23,7 @@ function DirInquery(props) {
     dirViews: '100', //조회수
   }
 
-  const handleGetConsultingSpecification = () => {
+  const handleGetSpecification = () => {
     fetch('/diary/list/DirInquery', {
       method: 'GET',
       headers: {

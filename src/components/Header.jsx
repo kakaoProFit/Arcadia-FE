@@ -17,8 +17,34 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 
-const pages = ['일기', '게시판', '매칭', '고객센터']
-const settings = ['마이 페이지', '로그아웃']
+const pages = [
+  {
+    page: '일기',
+    href: '/diary/mydiary',
+  },
+  {
+    page: '게시판',
+    href: '/board',
+  },
+  {
+    page: '매칭',
+    href: '/matching',
+  },
+  {
+    page: '고객센터',
+    href: '/customer-service',
+  },
+]
+const settings = [
+  {
+    page: '마이 페이지',
+    href: '/mypage/myInfo',
+  },
+  {
+    page: '로그아웃',
+    href: '/logout',
+  },
+]
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = useState(null)
@@ -68,11 +94,12 @@ function Header() {
             {/* 페이지 목록 */}
             {pages.map((page) => (
               <Button
-                key={page}
+                href={page.href}
+                key={page.page}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {page.page}
               </Button>
             ))}
           </Box>
@@ -99,9 +126,11 @@ function Header() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
+                <Link key={setting.page} href={setting.href} passHref>
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">{setting.page}</Typography>
+                  </MenuItem>
+                </Link>
               ))}
             </Menu>
           </Box>

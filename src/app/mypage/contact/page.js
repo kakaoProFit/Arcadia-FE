@@ -37,13 +37,12 @@ function Contact() {
 
   return (
     <div>
-      <div style={{ marginLeft: '15%' }}>
-        <h2>마이 페이지</h2>
-      </div>
-      <div style={{ marginLeft: '15%' }}>
-        <p>탭 컨포넌트 들어갈 자리</p>
-      </div>
-      <Stack direction="column" alignItems="center" spacing={2}>
+      <Stack
+        direction="column"
+        alignItems="center"
+        spacing={2}
+        style={{ marginTop: '4%', marginBottom: '3%' }}
+      >
         <ReadTextEditor theme="snow" props={response_data} />
       </Stack>
     </div>
