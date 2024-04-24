@@ -19,35 +19,34 @@ import Link from 'next/link'
 
 const pages = [
   {
-    'page': '일기',
-    'href': '/diary/mydiary',
+    page: '일기',
+    href: '/diary/mydiary',
   },
   {
-    'page': '게시판',
-    'href': '/board',
+    page: '게시판',
+    href: '/board',
   },
   {
-    'page': '매칭',
-    'href': '/matching',
+    page: '매칭',
+    href: '/matching',
   },
   {
-    'page': '고객센터',
-    'href': '/customer-service',
-  }
+    page: '고객센터',
+    href: '/customer-service',
+  },
 ]
 const settings = [
   {
-    'page': '마이 페이지',
-    'href': '/mypage/myInfo',
+    page: '마이 페이지',
+    href: '/mypage/myInfo',
   },
   {
-    'page': '로그아웃',
-    'href': '/logout',
-  }
+    page: '로그아웃',
+    href: '/logout',
+  },
 ]
 
 function Header() {
-  
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
 
@@ -95,13 +94,13 @@ function Header() {
             {/* 페이지 목록 */}
             {pages.map((page) => (
               <Button
-              href={page.href}
-              key={page.page}
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              {page.page}
-            </Button>
+                href={page.href}
+                key={page.page}
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                {page.page}
+              </Button>
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
@@ -129,9 +128,7 @@ function Header() {
               {settings.map((setting) => (
                 <Link key={setting.page} href={setting.href} passHref>
                   <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">
-                      {setting.page}
-                    </Typography>
+                    <Typography textAlign="center">{setting.page}</Typography>
                   </MenuItem>
                 </Link>
               ))}

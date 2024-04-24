@@ -37,8 +37,12 @@ function Contact() {
 
   return (
     <div>
-    
-      <Stack direction="column" alignItems="center" spacing={2} style={{marginTop: '4%', marginBottom: '3%'}}>
+      <Stack
+        direction="column"
+        alignItems="center"
+        spacing={2}
+        style={{ marginTop: '4%', marginBottom: '3%' }}
+      >
         <ReadTextEditor theme="snow" props={response_data} />
       </Stack>
     </div>

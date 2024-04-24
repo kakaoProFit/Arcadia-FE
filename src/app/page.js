@@ -68,84 +68,94 @@ export default function Home() {
     },
   ]
 
-  const DisplayCard = ({cardData}) => {
-    const dis = cardData.slice(0, 6);
+  const DisplayCard = ({ cardData }) => {
+    const dis = cardData.slice(0, 6)
 
     return (
       <Grid container spacing={2}>
-      {dis.map((it, index) => (
-        <Grid key={index} item xs={4}>
-          <DiaryCard
-            title={it.title}
-            nickname={it.nickname}
-            cardImage={it.cardImage}
-            avatarImage={it.avatarImage}
-            isPublic={it.isPublic}
-            updateDate={it.updateDate}
-            hits={it.updateDate}
-            summary={it.summary}
-          />
+        {dis.map((it, index) => (
+          <Grid key={index} item xs={4}>
+            <DiaryCard
+              title={it.title}
+              nickname={it.nickname}
+              cardImage={it.cardImage}
+              avatarImage={it.avatarImage}
+              isPublic={it.isPublic}
+              updateDate={it.updateDate}
+              hits={it.updateDate}
+              summary={it.summary}
+            />
+          </Grid>
+        ))}
+        <Grid item xs={12} style={{ textAlign: 'center' }}>
+          <Button variant="contained" color="green" size="large">
+            더보기
+          </Button>
         </Grid>
-      ))}
-      <Grid item xs={12} style={{ textAlign: 'center' }}>
-        <Button variant="contained" color="green" size="large">더보기</Button>
       </Grid>
-    </Grid>
     )
   }
 
   return (
     <div className={styles.main}>
       <h1>메인 페이지</h1>
-      <Grid container spacing={2} sx={{ marginLeft: 'auto', marginRight: 'auto' }}>
-          {/* 좌상단 */}
-          <Grid item="item" xs={6}>
-              <Box p={2}>
-                <Typography
-                variant="h6"
-                sx={{ fontWeight: 700, color: 'black' }}
-                href="/">
-                  공유 일기
-                </Typography>
-                <DisplayCard cardData={card1} />
-              </Box>
-          </Grid>
-          {/* 우상단 */}
-          <Grid item="item" xs={6}>
-              <Box p={2}>
-                <Typography
-                variant="h6"
-                sx={{ fontWeight: 700, color: 'black' }}
-                href="/">
-                  급상승 일기
-                </Typography>
-                <DisplayCard cardData={card1} />
-              </Box>
-          </Grid>
-          {/* 좌하단 */}
-          <Grid item="item" xs={6}>
-              <Box p={2}>
-              <Typography
-                variant="h6"
-                sx={{ fontWeight: 700, color: 'black' }}
-                href="/">
-                  최신 일기
-                </Typography>
-                <DisplayCard cardData={card1} />
-              </Box>
-          </Grid>
-          {/* 우하단 */}
-          <Grid item="item" xs={6}>
-              <Box p={2}>
-              <Typography
-                variant="h6"
-                sx={{ fontWeight: 700, color: 'black' }}
-                href="/">
-                  인기 일기
-                </Typography>
-                <DisplayCard cardData={card1} />
-              </Box>
-          </Grid>
+      <Grid
+        container
+        spacing={2}
+        sx={{ marginLeft: 'auto', marginRight: 'auto' }}
+      >
+        {/* 좌상단 */}
+        <Grid item="item" xs={6}>
+          <Box p={2}>
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: 700, color: 'black' }}
+              href="/"
+            >
+              공유 일기
+            </Typography>
+            <DisplayCard cardData={card1} />
+          </Box>
+        </Grid>
+        {/* 우상단 */}
+        <Grid item="item" xs={6}>
+          <Box p={2}>
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: 700, color: 'black' }}
+              href="/"
+            >
+              급상승 일기
+            </Typography>
+            <DisplayCard cardData={card1} />
+          </Box>
+        </Grid>
+        {/* 좌하단 */}
+        <Grid item="item" xs={6}>
+          <Box p={2}>
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: 700, color: 'black' }}
+              href="/"
+            >
+              최신 일기
+            </Typography>
+            <DisplayCard cardData={card1} />
+          </Box>
+        </Grid>
+        {/* 우하단 */}
+        <Grid item="item" xs={6}>
+          <Box p={2}>
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: 700, color: 'black' }}
+              href="/"
+            >
+              인기 일기
+            </Typography>
+            <DisplayCard cardData={card1} />
+          </Box>
+        </Grid>
       </Grid>
     </div>
   )

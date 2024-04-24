@@ -1,4 +1,3 @@
-
 import Stack from '@mui/material/Stack'
 import dynamic from 'next/dynamic'
 import { Grid, Typography } from '@mui/material'
@@ -17,16 +16,24 @@ const submitUrl = '/mypage/matching' // 신청서 작성 완료 후 등록하면
 export default function Page() {
   return (
     <div className={styles.main}>
-      <Grid container spacing={2} sx={{ marginLeft: 'auto', marginRight: 'auto' }}>
-        <Typography component="h1" variant="h3" sx = {{ fontWeight: 700 }}>
+      <Grid
+        container
+        spacing={2}
+        sx={{ marginLeft: 'auto', marginRight: 'auto' }}
+      >
+        <Typography component="h1" variant="h3" sx={{ fontWeight: 700 }}>
           매칭 신청서 작성
         </Typography>
         <Grid item xs={12}>
-          <Stack direction="column" alignItems="center" sx={{ width: '100%', paddingTop: '20px' }}>
+          <Stack
+            direction="column"
+            alignItems="center"
+            sx={{ width: '100%', paddingTop: '20px' }}
+          >
             <TextEditorNoSSR
               baseUrl={baseUrl}
               submitUrl={submitUrl}
-              sx={{ width: '100%', height: '600px'}}
+              sx={{ width: '100%', height: '600px' }}
             />
           </Stack>
         </Grid>
