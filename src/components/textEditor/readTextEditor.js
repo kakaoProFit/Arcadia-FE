@@ -68,7 +68,10 @@ const ReadTextEditor = (props) => {
         readOnly={true} // 편집 불가능
         value={props.props} // 백엔드 측에서 조회된 내용 표시
       />
-      <Button variant="contained" onClick={() => router.push('/matching/write')}>
+      <Button
+        variant="contained"
+        onClick={() => router.push('/matching/write')}
+      >
         수정
       </Button>
     </StyledTextEditor>
