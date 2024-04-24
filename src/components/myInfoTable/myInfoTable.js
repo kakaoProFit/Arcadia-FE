@@ -13,7 +13,7 @@ import Button from '@mui/material/Button'
 import { useState, useEffect } from 'react'
 import TextField from '@mui/material/TextField'
 import axios from 'axios'
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Grid';
 import { Box } from '@mui/material'
 import MyInfoCard from '../card/myInfoCard'
 
@@ -68,69 +68,68 @@ function MyInfoTable({ userInfo, image }) {
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={5} columnSpacing={2}>
-        <Grid item xs={6} md={6} sx={{width: '600px'}}>
-        <Stack direction="column" alignItems="center" spacing={2}>
-        <TableContainer component={Paper}>
-          <Table sx={{ width: 600, border: 1 }} aria-label="spanning table">
-            <TableHead>
-              <TableRow>
-                <TableCell
-                  align="center"
-                  colSpan={3}
-                  sx={{ borderBottom: '1px solid black' }}
-                >
-                  <img
-                    src={image}
-                    alt="image"
-                    style={{ width: '35%', height: 'auto' }}
-                  />
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row, index) => (
-                <TableRow key={index}>
-                  <CustomTableCell style={{ width: '15%' }}>
-                    {row.label}
-                  </CustomTableCell>
-                  <CustomTableCell style={{ width: '70%' }}>
-                    {editMode[index] ? ( // 수정 모드일 때만 입력 필드 표시
-                      <TextField
-                        value={editedUserInfo[row.key]}
-                        fullWidth
-                        sx={{ border: 'none' }}
-                        onChange={(event) => {
-                          setEditedUserInfo({
-                            ...editedUserInfo,
-                            [row.key]: event.target.value,
-                          })
-                        }}
-                      />
-                    ) : (
-                      editedUserInfo[row.key] // 수정 모드가 아닐 때는 텍스트만 표시
-                    )}
-                  </CustomTableCell>
+        <Grid container spacing={5} columnSpacing={2}>
+          <Grid item xs={6} md={6} sx={{ width: '565px', mb:3 }}>
+            <Stack direction="column" alignItems="center" spacing={2}>
+              <TableContainer component={Paper}>
+                <Table sx={{ width: 490, border: 1 }} aria-label="spanning table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell
+                        align="center"
+                        colSpan={3}
+                        sx={{ borderBottom: '1px solid black' }}
+                      >
+                        <img
+                          src={image}
+                          alt="image"
+                          style={{ width: '35%', height: 'auto' }}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {rows.map((row, index) => (
+                      <TableRow key={index}>
+                        <CustomTableCell style={{ width: '15%' }}>
+                          {row.label}
+                        </CustomTableCell>
+                        <CustomTableCell style={{ width: '70%' }}>
+                          {editMode[index] ? ( // 수정 모드일 때만 입력 필드 표시
+                            <TextField
+                              value={editedUserInfo[row.key]}
+                              fullWidth
+                              sx={{ border: 'none' }}
+                              onChange={(event) => {
+                                setEditedUserInfo({
+                                  ...editedUserInfo,
+                                  [row.key]: event.target.value,
+                                })
+                              }}
+                            />
+                          ) : (
+                            editedUserInfo[row.key] // 수정 모드가 아닐 때는 텍스트만 표시
+                          )}
+                        </CustomTableCell>
 
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Button variant="contained" onClick={isEditMode ? handleSave : handleEdit}>
-          {isEditMode ? '저장' : '수정'}
-        </Button>
-      </Stack>
-        </Grid>
-        <Grid item xs={6} md={6}>
-        <h2>ddddddddddddddddddddddddddddddddddddddddd</h2>
-          <Grid container spacing={1} sx={{flexGrow: 1}} direction="column">
-            <Grid item xs={3} md={6}>
-              <MyInfoCard />
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <Button variant="contained" onClick={isEditMode ? handleSave : handleEdit}>
+                {isEditMode ? '저장' : '수정'}
+              </Button>
+            </Stack>
+          </Grid>
+          <Grid item xs={6} md={6} >
+            <Grid container spacing={1} sx={{ flexGrow: 1, alignItems: 'right' }} direction="column">
+              <Grid item xs={3} md={6}>
+                <MyInfoCard />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
       </Box>
     </div>
   )
