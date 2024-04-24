@@ -6,8 +6,6 @@ pipeline {
         CONTAINER_NAME = 'arcadia_homepage'
         giturl = 'https://github.com/kakaoProFit/Arcadia-FE'
         gitbranch = 'release'
-        build_number="$BUILD_NUMBER"
-        previous_build_number= $((build_number - 1))
     }
     agent any 	// 사용 가능한 에이전트에서 이 파이프라인 또는 해당 단계를 실행
     stages {
@@ -34,7 +32,7 @@ pipeline {
             steps { 
                 script {
                     sh 'docker push $repository:$BUILD_NUMBER' //docker push
-                    sh 'docker rmi $repository:$previous_build_number'
+                    // sh 'docker rmi $repository:$previous_build_number'
                 } 
             }
         } 
