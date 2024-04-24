@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react'
 import {
   Alert,
@@ -11,6 +13,8 @@ import {
   Grid,
   Typography,
 } from '@mui/material'
+import { useForm, useController } from 'react-hook-form'
+
 
 function ValidInput({ control, name, ruleName }) {
   const rules = {
