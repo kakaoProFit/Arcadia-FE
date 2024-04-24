@@ -3,7 +3,6 @@
 import styles from './page.module.css'
 import DiaryCard from '@/components/card/card'
 import { Grid, Box, Button, Typography } from '@mui/material'
-import Link from 'next/link'
 export default function Home() {
   const card1 = [
     {
@@ -89,8 +88,8 @@ export default function Home() {
           </Grid>
         ))}
         <Grid item xs={12} style={{ textAlign: 'center' }}>
-          <Button variant="contained" color="primary" size="large">
-            <Link href="/diary/community">더보기</Link>
+          <Button variant="contained" color="green" size="large">
+            더보기
           </Button>
         </Grid>
       </Grid>
