@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Box,Grid } from '@mui/material'
-import MusicPlayer from '@/components/musicPlayer/musicPlayer'
-import Memo from '@/components/memo/memo'
+import Player from '@/components/musicPlayer/Player'
+import Mem from '@/components/memo/Mem'
 import dynamic from 'next/dynamic'
 import AnalyzeResults from '@/components/readDiary/analyze-result'
 
@@ -85,13 +85,13 @@ function PsyAnlz() {
               md={13}
               style={{ marginLeft: '0%', marginTop: '4%' }}
             >
-              <Memo props={response_data} />
+              <Mem props={response_data} />
             </Grid>
             <AnalyzeResults />
           </Grid>
         </Grid>
       </Box>
-      <MusicPlayer props={response_data.musicUrl} />
+      <Player props={response_data.musicUrl} />
     </div>
   )
 }
