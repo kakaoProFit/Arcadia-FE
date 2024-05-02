@@ -1,3 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@font-face {
+  font-family: 'Tenada';
+  src: url('../constants/Tenada.ttf');
+}
+.footer-social-icon {
+  @apply rounded-full bg-transparent p-3 font-medium uppercase leading-normal transition duration-150 ease-in-out hover:bg-neutral-100 focus:outline-none focus:ring-0 dark:text-white dark:hover:bg-gray-900
+};
+
+.nav-link {
+  @apply font-tenada text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-bold rounded-lg text-xl px-4 lg:px-5 py-2 lg:py-2.5  focus:outline-none dark:hover:bg-gray-700 dark:focus:ring-gray-800
+};
+
+.card-button {
+  @apply font-tenada text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-bold rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5  focus:outline-none dark:hover:bg-gray-700 dark:focus:ring-gray-800
+};
+
+.card-main {
+  @apply mx-3 mt-6 flex flex-col self-start rounded-lg bg-white shadow-sm dark:text-white sm:shrink-0 sm:grow sm:basis-0
+}
+
+
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;

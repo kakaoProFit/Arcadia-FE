@@ -1,162 +1,98 @@
 'use client'
 
-import styles from './page.module.css'
-import DiaryCard from '@/components/card/card'
-import { Grid, Box, Button, Typography } from '@mui/material'
-export default function Home() {
-  const card1 = [
-    {
-      title: '보람찬 하루',
-      nickname: '원우형',
-      cardImage: '',
-      avatarImage: '',
-      isPublic: false,
-      updateDate: '2024-04-17',
-      hits: 76,
-      summary:
-        '오늘 하루 전체적으로 보람찼다. 이유는 오늘 벚꽃이 아름답기 때문이었다.',
-    },
-    {
-      title: '보람찬 하루',
-      nickname: '원우형',
-      cardImage: '',
-      avatarImage: '',
-      isPublic: false,
-      updateDate: '2024-04-17',
-      hits: 76,
-      summary: '오늘 하루 전체적으로 보람찼다. 이유는 ...',
-    },
-    {
-      title: '보람찬 하루',
-      nickname: '원우형',
-      cardImage: '',
-      avatarImage: '',
-      isPublic: false,
-      updateDate: '2024-04-17',
-      hits: 76,
-      summary: '오늘 하루 전체적으로 보람찼다. 이유는 ...',
-    },
-    {
-      title: '보람찬 하루',
-      nickname: '원우형',
-      cardImage: '',
-      avatarImage: '',
-      isPublic: false,
-      updateDate: '2024-04-17',
-      hits: 76,
-      summary: '오늘 하루 전체적으로 보람찼다. 이유는 ...',
-    },
-    {
-      title: '보람찬 하루',
-      nickname: '원우형',
-      cardImage: '',
-      avatarImage: '',
-      isPublic: false,
-      updateDate: '2024-04-17',
-      hits: 76,
-      summary: '오늘 하루 전체적으로 보람찼다. 이유는 ...',
-    },
-    {
-      title: '보람찬 하루',
-      nickname: '원우형',
-      cardImage: '',
-      avatarImage: '',
-      isPublic: false,
-      updateDate: '2024-04-17',
-      hits: 76,
-      summary: '오늘 하루 전체적으로 보람찼다. 이유는 ...',
-    },
-  ]
+import DeleteIcon from '@mui/icons-material/Delete';
+import CreateIcon from '@mui/icons-material/Create';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import '@/styles/globals.css'
 
-  const DisplayCard = ({ cardData }) => {
-    const dis = cardData.slice(0, 6)
+function getRandomItem(array) {
+  return array[Math.floor(Math.random() * array.length)]
+}
 
-    return (
-      <Grid container spacing={2}>
-        {dis.map((it, index) => (
-          <Grid key={index} item xs={4}>
-            <DiaryCard
-              title={it.title}
-              nickname={it.nickname}
-              cardImage={it.cardImage}
-              avatarImage={it.avatarImage}
-              isPublic={it.isPublic}
-              updateDate={it.updateDate}
-              hits={it.updateDate}
-              summary={it.summary}
-            />
-          </Grid>
-        ))}
-        <Grid item xs={12} style={{ textAlign: 'center' }}>
-          <Button variant="contained" color="green" size="large">
-            더보기
-          </Button>
-        </Grid>
-      </Grid>
-    )
+
+const images = [ '/images/user1.jpg', '/images/user2.jpg', '/images/user3.jpg', '/images/user4.jpg', '/images/user5.jpg', '/images/user6.jpg', '/images/user7.jpg', ]
+const categories = ["Category 1", "Category 2", "Category 3", "Category 4"];
+
+export function generateData() {
+  const data = []
+  for (let i = 0; i < 4; i++) {
+    const newObj = {
+      id: i + 1,
+      tap: getRandomItem(categories),
+      url: "#",
+      title: `Card title ${i + 1}`,
+      image: getRandomItem(images),
+      alt: `user${i + 1}`,
+      description: 'Test Description'
+    }
+    data.push(newObj)
   }
+  return data
+}
 
+const data = generateData();
+
+
+function getRandomCategory() {
+  const randomIndex = Math.floor(Math.random() * categories.length);
+  return categories[randomIndex];
+}
+
+const randomCategory = getRandomCategory();
+
+function displayCard(data) {
+  data = generateData();
   return (
-    <div className={styles.main}>
-      <h1>메인 페이지</h1>
-      <Grid
-        container
-        spacing={2}
-        sx={{ marginLeft: 'auto', marginRight: 'auto' }}
-      >
-        {/* 좌상단 */}
-        <Grid item="item" xs={6}>
-          <Box p={2}>
-            <Typography
-              variant="h6"
-              sx={{ fontWeight: 700, color: 'black' }}
-              href="/"
-            >
-              공유 일기
-            </Typography>
-            <DisplayCard cardData={card1} />
-          </Box>
-        </Grid>
-        {/* 우상단 */}
-        <Grid item="item" xs={6}>
-          <Box p={2}>
-            <Typography
-              variant="h6"
-              sx={{ fontWeight: 700, color: 'black' }}
-              href="/"
-            >
-              급상승 일기
-            </Typography>
-            <DisplayCard cardData={card1} />
-          </Box>
-        </Grid>
-        {/* 좌하단 */}
-        <Grid item="item" xs={6}>
-          <Box p={2}>
-            <Typography
-              variant="h6"
-              sx={{ fontWeight: 700, color: 'black' }}
-              href="/"
-            >
-              최신 일기
-            </Typography>
-            <DisplayCard cardData={card1} />
-          </Box>
-        </Grid>
-        {/* 우하단 */}
-        <Grid item="item" xs={6}>
-          <Box p={2}>
-            <Typography
-              variant="h6"
-              sx={{ fontWeight: 700, color: 'black' }}
-              href="/"
-            >
-              인기 일기
-            </Typography>
-            <DisplayCard cardData={card1} />
-          </Box>
-        </Grid>
-      </Grid>
+    <div class="justify-between">
+      <span class="mx-5 font-tenada self-center text-3xl my-10 font-semibold whitespace-nowrap dark:text-white">{getRandomCategory()}</span>
+    <div class="grid gird-rows-2 grid-cols-2">
+    {data.slice(0, 4).map((card) => (
+      <div key={card.id} class="card-main">
+        <a href={card.image}>
+          <img class="rounded-t-lg" src= {card.image} alt= {card.alt}/>
+        </a>
+        <div class="p-6">
+          <h5 class="font-tenada mb-2 text-xl font-medium leading-tight">{card.title}</h5>
+          <p class="font-tenada mb-4 text-base">
+            {card.description}
+          </p>
+          <p class="font-tenada mt-10 text-sm">
+            작성자: test
+          </p>
+        </div>
+        <div class="grid grid-cols-3">
+          <a class="mx-5 my-5 flex justify-center"
+            href="#">
+            <DeleteIcon />
+          </a>
+          <a class="mx-5 my-5 flex justify-center"
+            href="#">
+            <CreateIcon />
+          </a>
+          <a class="mx-5 my-5 flex justify-center"
+            href="#">
+            <FavoriteIcon />
+          </a>
+        </div>
+      </div>
+    ))}
+  </div>
+  </div>
+  )
+}
+
+export default function Home() {
+  return (
+    <div class="mx-20 my-10">
+      <div class="flex justify-center">
+        <span class="font-tenada self-center text-3xl my-10 font-semibold whitespace-nowrap dark:text-white">메인 페이지</span>
+      </div>
+        <div class="grid gap-20 grid-rows-2 grid-cols-2"> {/* 메인 2*2 */}
+            {displayCard(data)}
+            {displayCard(data)}
+            {displayCard(data)}
+            {displayCard(data)}
+        </div>
     </div>
   )
 }
