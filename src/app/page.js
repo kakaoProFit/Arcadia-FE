@@ -41,33 +41,33 @@ const randomCategory = getRandomCategory();
 function displayCard(data) {
   data = generateData();
   return (
-    <div class="justify-between">
-      <span class="mx-5 font-tenada self-center text-3xl my-10 font-semibold whitespace-nowrap dark:text-white">{getRandomCategory()}</span>
-    <div class="grid gird-rows-2 grid-cols-2">
+    <div className="justify-between">
+      <span className="mx-5 font-tenada self-center text-3xl my-10 font-semibold whitespace-nowrap dark:text-white">{getRandomCategory()}</span>
+    <div className="grid gird-rows-2 grid-cols-2">
     {data.slice(0, 4).map((card) => (
-      <div key={card.id} class="card-main">
+      <div key={card.id} className="card-main">
         <a href={card.image}>
-          <img class="rounded-t-lg" src= {card.image} alt= {card.alt}/>
+          <img className="rounded-t-lg" src= {card.image} alt= {card.alt}/>
         </a>
-        <div class="p-6">
-          <h5 class="font-tenada mb-2 text-xl font-medium leading-tight">{card.title}</h5>
-          <p class="font-tenada mb-4 text-base">
+        <div className="p-6">
+          <h5 className="font-tenada mb-2 text-xl font-medium leading-tight">{card.title}</h5>
+          <p className="font-tenada mb-4 text-base">
             {card.description}
           </p>
-          <p class="font-tenada mt-10 text-sm">
+          <p className="font-tenada mt-10 text-sm">
             작성자: test
           </p>
         </div>
-        <div class="grid grid-cols-3">
-          <a class="mx-5 my-5 flex justify-center"
+        <div className="grid grid-cols-3">
+          <a className="mx-5 my-5 flex justify-center"
             href="#">
             <DeleteIcon />
           </a>
-          <a class="mx-5 my-5 flex justify-center"
+          <a className="mx-5 my-5 flex justify-center"
             href="#">
             <CreateIcon />
           </a>
-          <a class="mx-5 my-5 flex justify-center"
+          <a className="mx-5 my-5 flex justify-center"
             href="#">
             <FavoriteIcon />
           </a>
@@ -81,11 +81,11 @@ function displayCard(data) {
 
 export default function Home() {
   return (
-    <div class="mx-20 my-10">
-      <div class="flex justify-center">
-        <span class="font-tenada self-center text-3xl my-10 font-semibold whitespace-nowrap dark:text-white">메인 페이지</span>
+    <div className="mx-20 my-10">
+      <div className="flex justify-center">
+        <span className="font-tenada self-center text-3xl my-10 font-semibold whitespace-nowrap dark:text-white">메인 페이지</span>
       </div>
-        <div class="grid gap-20 grid-rows-2 grid-cols-2"> {/* 메인 2*2 */}
+        <div className="grid gap-20 grid-rows-2 grid-cols-2"> {/* 메인 2*2 */}
             {displayCard(data)}
             {displayCard(data)}
             {displayCard(data)}
