@@ -1,101 +1,84 @@
+'use client';
+
 import React from 'react'
-import {
-  Ripple,
-  Input,
-  initTWE,
-} from "tw-elements";
 
-import { Grid } from '@mui/material'
-// import { useForm, useController } from 'react-hook-form'
-// import JoinRules from '@/constants/Rules/JoinRules'
+import { useForm, useController } from 'react-hook-form'
+import JoinRules from '@/constants/Rules/JoinRules'
 
-initTWE({ Ripple, Input });
+const rules = JoinRules
+function ValidInput({ control, name, ruleName }) {
+  const {
+    field,
+    fieldState: { invalid, isTouched, isDirty, error },
+    formState: { touchedFields, dirtyFields },
+  } = useController({
+    name,
+    control,
+    rules: rules[ruleName],
+  })
 
-
-// const rules = JoinRules
-// function ValidInput({ control, name, ruleName }) {
-//   const {
-//     field,
-//     fieldState: { invalid, isTouched, isDirty, error },
-//     formState: { touchedFields, dirtyFields },
-//   } = useController({
-//     name,
-//     control,
-//     rules: rules[ruleName],
-//   })
-
-//   return (
-//     <div>asas</div>
-//   )
-// }
+  return (
+    <div>
+      <input name={field.id} type={field.type} className="text-black bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder={field.placeholder} 
+        onChange={field.onChange}
+        onBlur={field.onBlur}
+        value={field.value}
+        inputRef={field.ref}
+        control={control}
+        margin="normal"
+        id={name}
+      />
+    </div>
+  )
+}
 
 const ValidForm = () => {
-  // const methods = useForm()
-  // const { register, handleSubmit, control } = methods
-  // const submitHandler = (data) => {
-  //   // 데이터 처리
-  // }
-  const testInputFields = [
-    { type: 'email', id: 'exampleInput1', placeholder: 'Email address', text: 'Email address'},
-    { type: 'password', id: 'exampleInput2', placeholder: 'Password', text: 'Password'},
-    { type: 'text', id: 'exampleInput3', placeholder: 'Nickname', text: 'Nickname'},
-    { type: 'tel', id: 'exampleInput4', placeholder: 'Phone number', text: 'Phone number'},
-    { type: 'date', id: 'exampleInput5', placeholder: 'Birth', text: 'Birth'},
+  const methods = useForm()
+  const { register, handleSubmit, control } = methods
+  const submitHandler = (data) => {
+    // 데이터 처리
+  }
+  const input = [
+    { type: 'email', id: 'email', placeholder: 'Email address', text: '이메일'},
+    { type: 'password', id: 'password', placeholder: 'Password', text: '비밀번호'},
+    { type: 'text', id: 'nickname', placeholder: 'Nickname', text: '닉네임'},
+    { type: 'tel', id: 'phone', placeholder: 'Phone number', text: '전화번호'},
+    { type: 'date', id: 'birth', placeholder: 'Birth', text: '생년월일'},
   ]
   return (
-      <div
-        class="mx-auto block max-w-md rounded-lg bg-white p-6 shadow-xl dark:bg-surface-dark">
-        <form>
-          <div class="grid grid-cols-2 gap-4">
-            <div class="rounded border relative mb-6" data-twe-input-wrapper-init>
-              <input
-                type="text"
-                class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
-                id="exampleInput123"
-                aria-describedby="emailHelp124"
-                placeholder="First name" />
-              <label
-                for="emailHelp123"
-                class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[0.9rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary"
-                >First name
-              </label>
-            </div>
-            <div class="rounded border relative mb-6" data-twe-input-wrapper-init>
-              <input
-                type="text"
-                class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
-                id="exampleInput123"
-                aria-describedby="emailHelp124"
-                placeholder="Last name" />
-              <label
-                for="emailHelp123"
-                class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[0.9rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary"
-                >Last name
-              </label>
-            </div>
-            </div>
-            {testInputFields.map((inputField, index) => (
-              <div key={index} class="rounded border relative mb-6" data-twe-input-wrapper-init>
-                <input
-                  type={inputField.type}
-                  class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
-                  id="exampleInput124"
-                  aria-describedby={inputField.id}
-                  placeholder={inputField.placeholder}/>
-                <label
-                  for={inputField.id}
-                  class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[0.9rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary"
-                  >{inputField.text}
-                </label>
-              </div>
-            ))}
-            <button
-              type="submit"
-              class="inline-block w-full rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-              data-twe-ripple-init
-              data-twe-ripple-color="light">
-              Sign up
+  <div class="flex items-center md:p-8 p-6 bg-[#ffffff] w-full h-full lg:w-11/12 lg:ml-auto">
+    <form class="font-tenada w-full" onSubmit={methods.handleSubmit(submitHandler)} >
+      <div class="space-y-3">
+        {input.map((field, index) => (
+          <div key={index}>
+            <label name={field.id} className="w-full text-black font-lg mb-1 block">{field.text}</label>
+            <ValidInput key={index} control={control} name={field.id} ruleName={field.id} />
+          </div>
+        ))}
+        <div class="flex items-center">
+          <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
+          <label for="remember-me" class="text-black ml-3 block text-sm">
+            I accept the <a href="javascript:void(0);" class="text-blue-600 font-semibold hover:underline ml-1">
+            Terms and Conditions</a>
+            </label>
+          </div>
+          </div>
+          <div class="!mt-10">
+            <button type="submit" class="w-full py-3 px-4 text-sm font-semibold rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none">
+              Create an account
             </button>
+          </div>
+          <div class="!mt-3">
+            <button type="submit" class="w-full py-3 px-4 text-sm font-semibold rounded text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none">
+              Kakao
+            </button>
+          </div>
+          <div class="!mt-3">
+            <button type="submit" class="w-full py-3 px-4 text-sm font-semibold rounded text-white bg-green-500 hover:bg-green-600 focus:outline-none">
+              Naver
+            </button>
+          </div>
+          <p class="text-black text-sm mt-6 text-center">Already have an account? <a href="javascript:void(0);" class="text-blue-600 font-semibold hover:underline ml-1">Login here</a></p>
         </form>
       </div>
   )
@@ -103,23 +86,13 @@ const ValidForm = () => {
 
 export default function SignUp() {
   return (
-    <div className="grid gap-20 grid-cols-2 shadow">
-      <div className="flex mx-10 my-10 flex-col justify-center items-center">
+    <div class="font-[sans-serif] bg-white text-white md:h-screen">
+      <div class="grid md:grid-cols-2 items-center h-full">
         <ValidForm />
+        <div class="max-md:order-1 p-4">
+          <img src="/images/user2.jpg" class="lg:max-w-[90%] w-full h-full object-contain block mx-auto" alt="login-image" />
+        </div>
       </div>
-      <Grid
-        item
-        xs={false}
-        sm={8}
-        md={5}
-        style={{
-          backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'fit',
-          backgroundPosition: 'center',
-        }}
-      >
-      </Grid>
-      </div>
+    </div>
   )
 }
