@@ -31,17 +31,17 @@ const icons = [
 function Footer() {
   return (
     <footer
-      class="flex flex-col items-center bg-zinc-50 text-center text-surface dark:bg-neutral-700 dark:text-white">
-      <div class="container pt-9">
-        <div class="mb-6 flex justify-center space-x-2">
+      className="flex flex-col items-center bg-zinc-50 text-center text-surface dark:bg-neutral-700 dark:text-white">
+      <div className="container pt-9">
+        <div className="mb-6 flex justify-center space-x-2">
           {icons.map((icon, index) => (
               <a
                 key={index}
                 href={icon.url}
                 type="button"
-                class="footer-social-icon"
+                className="footer-social-icon"
               >
-                <span class="mx-auto [&>svg]:h-5 [&>svg]:w-5">
+                <span className="mx-auto [&>svg]:h-5 [&>svg]:w-5">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="currentColor"
@@ -55,9 +55,9 @@ function Footer() {
         </div>
       </div>
       <TestChatBot />
-      <div class="font-tenada w-full bg-black/5 p-4 text-center">
+      <div className="font-tenada w-full bg-black/5 p-4 text-center">
         © 2023 Copyright:
-        <a class="font-tenada" href="https://tw-elements.com/">test</a>
+        <a className="font-tenada" href="https://tw-elements.com/">test</a>
       </div>
     </footer>
   )
