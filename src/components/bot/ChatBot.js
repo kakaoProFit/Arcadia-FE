@@ -19,7 +19,7 @@ export default function TestChatBot() {
   }
   return (
     <Box
-      sx={{ position: 'fixed', bottom: '20px', right: '20px', zIndex: 1000 }}
+      sx={{ position: 'fixed', bottom: '0px', right: '20px', zIndex: 1000 }}
     >
       {Bot && (
         <ChatBot
@@ -30,9 +30,9 @@ export default function TestChatBot() {
       )}
       <IconButton onClick={toggleChatBot}>
         <Image
-          src="/images/logo_transparent.png"
-          width={75}
-          height={75}
+          src="/images/chatbot.png"
+          width={50}
+          height={50}
           alt="Arcadia Logo"
         />
       </IconButton>

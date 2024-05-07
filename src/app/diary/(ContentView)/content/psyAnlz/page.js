@@ -85,13 +85,13 @@ function PsyAnlz() {
               md={13}
               style={{ marginLeft: '0%', marginTop: '4%' }}
             >
-              <Memo props={response_data} />
+              <Mem props={response_data} />
             </Grid>
             <AnalyzeResults />
           </Grid>
         </Grid>
       </Box>
-      <MusicPlayer props={response_data.musicUrl} />
+      <Player props={response_data.musicUrl} />
     </div>
   )
 }

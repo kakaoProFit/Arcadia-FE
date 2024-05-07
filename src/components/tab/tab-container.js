@@ -25,12 +25,12 @@ export default function TabContainer() {
 
   // 각 라우팅에 맞는 탭을 생성
   if (
-    pathname === '/diary/mydiary' ||
+    pathname === '/diary/my-diary' ||
     pathname === '/diary/weekly-report' ||
     pathname === '/diary/monthly-report'
   ) {
     tabProps = [
-      { label: '나의 일기', href: '/diary/mydiary', title: '일기' },
+      { label: '나의 일기', href: '/diary/my-diary', title: '일기' },
       {
         label: '주간 분석서',
         href: '/diary/weekly-report',
@@ -69,7 +69,7 @@ export default function TabContainer() {
   // 걀극 하드코딩으로 tab 움직임을 설정함.
   let tabNum = 0
   if (
-    pathname === '/diary/mydiary' ||
+    pathname === '/diary/my-diary' ||
     pathname === '/diary/community' ||
     pathname === '/mypage/my-diary'
   ) {
@@ -94,7 +94,7 @@ export default function TabContainer() {
         justifyContent="space-between"
         sx={{ ml: 11, mr: 17, mt: 6, mb: 3 }}
       >
-        <Typography variant="h3">{tabProps[tabNum].title}</Typography>
+        <Typography variant="h3">{tabProps[tabNum]?.title}</Typography>
         {pathCheck && (
           <Button
             variant="contained"

@@ -1,18 +1,7 @@
-'use client'
+'use client';
 
 import React from 'react'
-import {
-  Alert,
-  Button,
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  Link,
-  Paper,
-  Box,
-  Grid,
-  Typography,
-} from '@mui/material'
+
 import { useForm, useController } from 'react-hook-form'
 import JoinRules from '@/constants/Rules/JoinRules'
 
@@ -29,23 +18,17 @@ function ValidInput({ control, name, ruleName }) {
   })
 
   return (
-    <>
-      <TextField
+    <div>
+      <input name={field.id} type={field.type} className="text-black bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder={field.placeholder} 
         onChange={field.onChange}
         onBlur={field.onBlur}
         value={field.value}
         inputRef={field.ref}
         control={control}
         margin="normal"
-        size="large"
-        fullWidth
-        required
         id={name}
-        label={name.charAt(0).toUpperCase() + name.slice(1)} // 이름의 첫 글자를 대문자로 변경하여 라벨로 설정
-        name={name}
       />
-      {error && <Alert severity="error">{error.message}</Alert>}
-    </>
+    </div>
   )
 }
 
@@ -55,92 +38,61 @@ const ValidForm = () => {
   const submitHandler = (data) => {
     // 데이터 처리
   }
-  const inputFields = [
-    { name: 'email', ruleName: 'email' },
-    { name: 'password', ruleName: 'password' },
-    { name: 'nickname', ruleName: 'nickname' },
-    { name: 'phone', ruleName: 'phone' },
-    { name: 'birth', ruleName: 'birth' },
+  const input = [
+    { type: 'email', id: 'email', placeholder: 'Email address', text: '이메일'},
+    { type: 'password', id: 'password', placeholder: 'Password', text: '비밀번호'},
+    { type: 'text', id: 'nickname', placeholder: 'Nickname', text: '닉네임'},
+    { type: 'tel', id: 'phone', placeholder: 'Phone number', text: '전화번호'},
+    { type: 'date', id: 'birth', placeholder: 'Birth', text: '생년월일'},
   ]
   return (
-    <Box
-      component="form"
-      onSubmit={methods.handleSubmit(submitHandler)}
-      style={{ mt: 1 }}
-    >
-      {inputFields.map((field, index) => (
-        <ValidInput key={index} control={control} {...field} />
-      ))}
-      <Box mb={1}>
-        <Button
-          color="primary"
-          type="submit"
-          fullWidth
-          variant="contained"
-          style={{ padding: '12px 2px' }}
-        >
-          회원가입
-        </Button>
-      </Box>
-      <FormControlLabel
-        control={<Checkbox value="remember" color="primary" />}
-        label={
-          <Typography variant="body2">
-            <Link href="#" variant="body2">
-              이용약관
-            </Link>
-            과{' '}
-            <Link href="#" variant="body2">
-              개인정보처리방침
-            </Link>
-            에 동의하겠습니까?
-          </Typography>
-        }
-      />
-    </Box>
+  <div class="flex items-center md:p-8 p-6 bg-[#ffffff] w-full h-full lg:w-11/12 lg:ml-auto">
+    <form class="font-tenada w-full" onSubmit={methods.handleSubmit(submitHandler)} >
+      <div class="space-y-3">
+        {input.map((field, index) => (
+          <div key={index}>
+            <label name={field.id} className="w-full text-black font-lg mb-1 block">{field.text}</label>
+            <ValidInput key={index} control={control} name={field.id} ruleName={field.id} />
+          </div>
+        ))}
+        <div class="flex items-center">
+          <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
+          <label for="remember-me" class="text-black ml-3 block text-sm">
+            I accept the <a href="javascript:void(0);" class="text-blue-600 font-semibold hover:underline ml-1">
+            Terms and Conditions</a>
+            </label>
+          </div>
+          </div>
+          <div class="!mt-10">
+            <button type="submit" class="w-full py-3 px-4 text-sm font-semibold rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none">
+              Create an account
+            </button>
+          </div>
+          <div class="!mt-3">
+            <button type="submit" class="w-full py-3 px-4 text-sm font-semibold rounded text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none">
+              Kakao
+            </button>
+          </div>
+          <div class="!mt-3">
+            <button type="submit" class="w-full py-3 px-4 text-sm font-semibold rounded text-white bg-green-500 hover:bg-green-600 focus:outline-none">
+              Naver
+            </button>
+          </div>
+          <p class="text-black text-sm mt-6 text-center">Already have an account? <a href="javascript:void(0);" class="text-blue-600 font-semibold hover:underline ml-1">Login here</a></p>
+        </form>
+      </div>
   )
 }
 
 export default function SignUp() {
   return (
-    <Grid container component="main" style={{ height: '100vh' }}>
-      <Grid
-        item
-        xs={12}
-        sm={4}
-        md={7}
-        component={Paper}
-        elevation={0}
-        square
-        style={{ padding: '10vh', backgroundColor: 'transparent'}}
-      >
-        <Box
-          style={{
-            my: 8,
-            mx: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Typography component="h1" variant="h2">
-            회원가입
-          </Typography>
-          <ValidForm />
-        </Box>
-      </Grid>
-      <Grid
-        item
-        xs={false}
-        sm={8}
-        md={5}
-        style={{
-          backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'fit',
-          backgroundPosition: 'center',
-        }}
-      />
-    </Grid>
+    <div class="font-[sans-serif] bg-white text-white md:h-screen">
+      <div class="grid md:grid-cols-2 items-center h-full">
+        <ValidForm />
+        <div class="max-md:order-1 p-4">
+          <img src="/images/user2.jpg" class="lg:max-w-[90%] w-full h-full object-contain block mx-auto" alt="login-image" />
+        </div>
+      </div>
+    </div>
   )
 }

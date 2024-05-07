@@ -1,3 +1,5 @@
+'use client';
+
 import { Grid } from '@mui/material'
 import DiaryCard from '@/components/card/card'
 import DiaryPagination from '@/components/pagination/pagination'
