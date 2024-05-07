@@ -2,11 +2,13 @@ import { Grid } from '@mui/material'
 import DiaryCard from '@/components/card/card'
 import DiaryPagination from '@/components/pagination/pagination'
 import { CARD_DUMMY_DATA } from '@/constants/CardDummy'
+import { Suspense } from 'react'
+import Loading from './loading'
 
-export default function DiaryListPage({ searchParams }) {
+export default async function DiaryListPage({ searchParams }) {
   // 현재 url 매개 변수를 받아옴.
-  // const query = searchParams?.query || ''
-  // const currentPage = Number(searchParams?.page) || 1
+  const query = searchParams?.query || ''
+  const currentPage = Number(searchParams?.page) || 1
 
   //더미 데이터
   // API 호출로 데이터 받아서 뿌릴 예정
@@ -18,6 +20,7 @@ export default function DiaryListPage({ searchParams }) {
   // 이후 로그인 토큰 확인해서 로그인 여부, 사용자 이름 props로 전달해야 함.
   return (
     <>
+    <Suspense key={currentPage} fallback={<Loading />}>
       <Grid
         container
         rowSpacing={2}
@@ -28,8 +31,9 @@ export default function DiaryListPage({ searchParams }) {
           mb: 5,
         }}
       >
-        {CARD.map((it, index) => (
+        {CARD.map((it, index) => (          
           <Grid item xs={2} key={index}>
+            {/* <Suspense key={index} fallback={<Loading />}> */}
             <DiaryCard
               key={index}
               title={it.title}
@@ -41,10 +45,15 @@ export default function DiaryListPage({ searchParams }) {
               hits={it.updateDate}
               summary={it.summary}
             />
+            {/* </Suspense> */}
           </Grid>
+          
         ))}
       </Grid>
-      <DiaryPagination diaryCount={itemCount} />
+      </Suspense>
+      <Suspense fallback={<p>Loading...</p>}>
+        <DiaryPagination diaryCount={itemCount} />
+        </Suspense>
     </>
   )
 }
