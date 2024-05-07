@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Box,Grid } from '@mui/material'
-import MusicPlayer from '@/components/musicPlayer/Player'
-import Memo from '@/components/memo/Mem'
+import Player from '@/components/musicPlayer/Player'
+import Mem from '@/components/memo/Mem'
 import dynamic from 'next/dynamic'
 import AnalyzeResults from '@/components/readDiary/analyze-result'
 
