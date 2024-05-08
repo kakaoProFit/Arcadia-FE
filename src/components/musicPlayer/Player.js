@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
 
-const Player  = (props) => {
+const Player = (props) => {
   //props로 musicUrl을 받는다.
   return (
     <>

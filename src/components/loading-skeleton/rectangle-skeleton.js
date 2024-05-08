@@ -1,9 +1,9 @@
-import Skeleton from '@mui/material/Skeleton';
+import Skeleton from '@mui/material/Skeleton'
 
 export default function RectangleSkeleton() {
-    return (
-        <div>
-            <Skeleton variant='rectangle'  width={210} height={118}/>
-        </div>
-    )
+  return (
+    <div>
+      <Skeleton variant="rectangle" width={210} height={118} />
+    </div>
+  )
 }

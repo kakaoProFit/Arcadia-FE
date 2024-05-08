@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import { Grid } from '@mui/material'
 import DiaryCard from '@/components/card/card'
@@ -8,9 +8,7 @@ import { Suspense } from 'react'
 // import Loading from './loading'
 import RectangleSkeleton from '@/components/loading-skeleton/rectangle-skeleton'
 
-
 export default async function MyPageDiary({ searchParams }) {
-
   // 현재 url 매개 변수를 받아옴.
   const query = searchParams?.query || ''
   const currentPage = Number(searchParams?.page) || 1
@@ -23,9 +21,12 @@ export default async function MyPageDiary({ searchParams }) {
   let itemCount = 50
 
   // 이후 로그인 토큰 확인해서 로그인 여부, 사용자 이름 props로 전달해야 함.
+  // 이런 형식에서는 카드에다가 suspense 달아도 의미가 없는 것 같음.
+  // fetching에 대해서 suspense 처리를 해주고 싶으면 카드를 담는 녀석까지 싹 빼고 거기서 await으로 fetching을 하고 이 page.js에서 query랑 currentpage전달
+  // 이게 레퍼런스 방식임.
   return (
     <>
-    {/* <Suspense key={currentPage+query} fallback={<Loading />}> */}
+      {/* <Suspense key={currentPage+query} fallback={<Loading />}> */}
       <Grid
         container
         rowSpacing={2}
@@ -54,7 +55,7 @@ export default async function MyPageDiary({ searchParams }) {
       </Grid>
       {/* </Suspense> */}
       <Suspense fallback={<RectangleSkeleton />}>
-      <DiaryPagination diaryCount={itemCount} />
+        <DiaryPagination diaryCount={itemCount} />
       </Suspense>
     </>
   )

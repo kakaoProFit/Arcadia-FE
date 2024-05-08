@@ -1,25 +1,24 @@
-
 class LocalStorage {
-constructor() {}
+  constructor() {}
 
-static setItem(key, item) {
-    if (typeof window !== "undefined") {
-    localStorage.setItem(key, item);
+  static setItem(key, item) {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(key, item)
     }
-}
+  }
 
-static getItem(key) {
-    if (typeof window !== "undefined") {
-    return localStorage.getItem(key);
+  static getItem(key) {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem(key)
     }
-    return null;
-}
+    return null
+  }
 
-static removeItem(key) {
-    if (typeof window !== "undefined") {
-    localStorage.removeItem(key);
+  static removeItem(key) {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(key)
     }
-}
+  }
 }
 
-export default LocalStorage;
+export default LocalStorage
