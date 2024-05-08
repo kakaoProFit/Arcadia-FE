@@ -123,8 +123,11 @@ const TextEditor = (props) => {
 
     // 내용물에서 html 태그 제거
     const parser = new DOMParser()
-    const tempWritingContent = parser.parseFromString(writingContent, 'text/html')
-    console.log('html태그 제거 ',tempWritingContent.body.textContent)
+    const tempWritingContent = parser.parseFromString(
+      writingContent,
+      'text/html',
+    )
+    console.log('html태그 제거 ', tempWritingContent.body.textContent)
     const postDiary = tempWritingContent.body.textContent
     axios
       .post(
@@ -157,7 +160,7 @@ const TextEditor = (props) => {
         console.error('오류 발생', error)
       })
 
-      axios
+    axios
       .post(
         'http://61.109.216.248:8000/keyphrase',
         {
@@ -202,7 +205,7 @@ const TextEditor = (props) => {
     //   question2: formFields[1],
     //   question3: formFields[2],
     // }
-    const postData = formFields[0]+' '+formFields[1]+' '+formFields[2]
+    const postData = formFields[0] + ' ' + formFields[1] + ' ' + formFields[2]
     console.log('postData: ', postData)
 
     // POST 요청 보내기
@@ -233,7 +236,7 @@ const TextEditor = (props) => {
         console.log('실패')
         console.log(error)
       })
-      axios
+    axios
       .post(
         'http://61.109.216.248:8000/keyphrase',
         {

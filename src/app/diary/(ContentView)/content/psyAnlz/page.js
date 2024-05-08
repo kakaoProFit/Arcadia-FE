@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Box,Grid } from '@mui/material'
+import { Box, Grid } from '@mui/material'
 import Player from '@/components/musicPlayer/Player'
 import Mem from '@/components/memo/Mem'
 import dynamic from 'next/dynamic'
@@ -13,7 +13,6 @@ const ReadDirInquery = dynamic(
 )
 
 function PsyAnlz() {
-
   let response_data = {
     // 게시글 테스트 데이터
     diaryId: 1,

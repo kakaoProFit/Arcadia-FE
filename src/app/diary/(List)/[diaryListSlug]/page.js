@@ -20,40 +20,39 @@ export default async function DiaryListPage({ searchParams }) {
   // 이후 로그인 토큰 확인해서 로그인 여부, 사용자 이름 props로 전달해야 함.
   return (
     <>
-    <Suspense key={currentPage} fallback={<Loading />}>
-      <Grid
-        container
-        rowSpacing={2}
-        columnSpacing={2}
-        alignItems="center"
-        justifyContent="center"
-        sx={{
-          mb: 5,
-        }}
-      >
-        {CARD.map((it, index) => (          
-          <Grid item xs={2} key={index}>
-            {/* <Suspense key={index} fallback={<Loading />}> */}
-            <DiaryCard
-              key={index}
-              title={it.title}
-              nickname={it.nickname}
-              cardImage={it.cardImage}
-              avatarImage={it.avatarImage}
-              isPublic={it.isPublic}
-              updateDate={it.updateDate}
-              hits={it.updateDate}
-              summary={it.summary}
-            />
-            {/* </Suspense> */}
-          </Grid>
-          
-        ))}
-      </Grid>
+      <Suspense key={currentPage} fallback={<Loading />}>
+        <Grid
+          container
+          rowSpacing={2}
+          columnSpacing={2}
+          alignItems="center"
+          justifyContent="center"
+          sx={{
+            mb: 5,
+          }}
+        >
+          {CARD.map((it, index) => (
+            <Grid item xs={2} key={index}>
+              {/* <Suspense key={index} fallback={<Loading />}> */}
+              <DiaryCard
+                key={index}
+                title={it.title}
+                nickname={it.nickname}
+                cardImage={it.cardImage}
+                avatarImage={it.avatarImage}
+                isPublic={it.isPublic}
+                updateDate={it.updateDate}
+                hits={it.updateDate}
+                summary={it.summary}
+              />
+              {/* </Suspense> */}
+            </Grid>
+          ))}
+        </Grid>
       </Suspense>
       <Suspense fallback={<p>Loading...</p>}>
         <DiaryPagination diaryCount={itemCount} />
-        </Suspense>
+      </Suspense>
     </>
   )
 }

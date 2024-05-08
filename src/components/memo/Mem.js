@@ -6,7 +6,6 @@ import axios from 'axios'
 import { useState } from 'react'
 
 function Mem(props) {
-  
   const [memoText, setMemoText] = useState('')
 
   const handleClick = () => {
