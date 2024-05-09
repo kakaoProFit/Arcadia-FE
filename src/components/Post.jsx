@@ -1,7 +1,7 @@
-// 'use client';
+'use client';
 
-// import 'react-quill/dist/quill.bubble.css';
-// import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.bubble.css';
+import ReactQuill from 'react-quill';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const Post = ({props}) => {
@@ -31,21 +31,12 @@ const Post = ({props}) => {
             <span className="mr-2">추천수: {props.dirViews}</span>
                 </p>
             <p className="my-3">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec
-                purus ut sem malesuada tincidunt. Nullam nec purus ut sem malesuada
-                tincidunt. Nullam nec purus ut sem malesuada tincidunt. Nullam nec
-                purus ut sem malesuada tincidunt. Nullam nec purus ut sem malesuada
-                tincidunt. Nullam nec purus ut sem malesuada tincidunt. Nullam nec
-                purus ut sem malesuada tincidunt. Nullam nec purus ut sem malesuada
-                tincidunt. Nullam nec purus ut sem malesuada tincidunt. Nullam nec
-                purus ut sem malesuada tincidunt. Nullam nec purus ut sem malesuada
-                tincidunt. Nullam nec purus ut sem malesuada tincidunt. Nullam nec
-                {/* <ReactQuill
+                <ReactQuill
                 theme="bubble"
                 value={props.content}
                 readOnly={true}
                 style={{ height: '100%', minHeight: 400, fontSize: '30px'}}
-                /> */}
+                />
             </p>
         </section>
         </div>
