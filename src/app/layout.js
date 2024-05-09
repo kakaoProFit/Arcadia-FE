@@ -1,5 +1,4 @@
 import '../styles/globals.css'
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter'
 import { ThemeProvider } from '@mui/material/styles'
 import { CssBaseline } from '@mui/material'
 import theme from '@/styles/theme'
@@ -19,7 +18,7 @@ export default function RootLayout({ children }) {
     <html>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <body>
+        <body className="bg-white">
           <header>
             <Header />
           </header>
