@@ -88,7 +88,7 @@ const ReadDirInquery = (props) => {
     // 로컬 스토리지에서 현재 로그인된 사용자 정보를 가져옵니다.
     const loggedInUser = localStorage.getItem('userId')
     setCurrentUser('홍길동') // 추후에 홍길동 부분 loggedInUser로 바꾸기
-    setContents(JSON.parse(localStorage.getItem('content'))) 
+    setContents(JSON.parse(localStorage.getItem('content')))
     // console.log('test ', contents)
 
     // props.psyAnlz_boolean가 true라면, isPsyAnalz를 true로 바꾸면서, 이 컴포넌트가 '일기 분석 페이지'용도로 쓰일 수 있게 함.

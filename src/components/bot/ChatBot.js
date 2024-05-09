@@ -18,9 +18,7 @@ export default function TestChatBot() {
     setBot(!Bot)
   }
   return (
-    <Box
-      sx={{ position: 'fixed', bottom: '0px', right: '20px', zIndex: 1000 }}
-    >
+    <Box sx={{ position: 'fixed', bottom: '0px', right: '20px', zIndex: 1000 }}>
       {Bot && (
         <ChatBot
           config={config}
