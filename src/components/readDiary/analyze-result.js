@@ -1,19 +1,7 @@
-'use client'
-import React, {useState, useEffect} from "react"
-import LocalStorage from "@/services/localstorage"
+import React from "react"
 import {TextField, Grid} from '@mui/material'
 
-export default function AnalyzeResults() {
-    
-    const [keyword, setKeyword] = useState()
-    const [analyzeFeel, setAnalyzeFeel] = useState()
-
-    useEffect(()=> {
-        setKeyword(JSON.parse(LocalStorage.getItem('keyword')))
-        setAnalyzeFeel(LocalStorage.getItem('analyze'))
-    },[])
-
-    
+export default function AnalyzeResults(props) {
 
     return (
         <Grid xs={20} md={20} style={{ marginTop: '5%' }}>
@@ -24,9 +12,9 @@ export default function AnalyzeResults() {
                 variant="outlined"
                 value={
                     
-                    `일기 키워드\n${keyword} \n\n당신의 기분은?\n `
+                    `일기 키워드\n${props.props.key_phrase} \n\n당신의 기분은?\n `
                     +
-                    `${analyzeFeel}`
+                    `${JSON.stringify(props.props.emotion).substring(1, JSON.stringify(props.props.emotion).length - 1)}`
                     +
                     `\n\n\n오늘 하루도 수고했어요!`
                 }

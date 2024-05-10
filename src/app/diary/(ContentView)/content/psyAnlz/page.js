@@ -1,10 +1,8 @@
-import axios from 'axios'
 import { Box, Grid } from '@mui/material'
 import Player from '@/components/musicPlayer/Player'
 import Mem from '@/components/memo/Mem'
 import dynamic from 'next/dynamic'
 import AnalyzeResults from '@/components/readDiary/analyze-result'
-import { Suspense } from 'react'
 
 const ReadDirInquery = dynamic(
   () => import('@/components/readDiary/readDirInquery'),
@@ -12,8 +10,6 @@ const ReadDirInquery = dynamic(
     ssr: false,
   },
 )
-
-
 
 async function getDiaryAnlz() {
   const response = await fetch("https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/diary", {
@@ -89,7 +85,7 @@ async function PsyAnlz() {
             >
               <Mem props={diaryContent} />
             </Grid>
-            <AnalyzeResults />
+            <AnalyzeResults props={diaryContent}/>
           </Grid>
         </Grid>
       </Box>
