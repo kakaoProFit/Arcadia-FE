@@ -2,10 +2,12 @@ import { Grid } from '@mui/material'
 import DiaryCard from './card'
 import { fetchCardData } from '@/services/diary-data'
 
-export default function CardContainer(props) {
+export default async function CardContainer(props) {
   // 현재 페이지, 검색어
   const { currentPage, query } = props
-  const card_data = fetchCardData(currentPage, query)
+  const res = await fetchCardData(currentPage, query)
+  const card_data = res.cards
+  console.log(card_data)
 
   return (
     <div>
