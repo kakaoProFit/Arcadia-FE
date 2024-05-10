@@ -5,6 +5,8 @@ import { CARD_DUMMY_DATA } from '@/constants/CardDummy'
 import { Suspense } from 'react'
 import RectangleSkeleton from '@/components/loading-skeleton/rectangle-skeleton'
 import CardSkeleton from '@/components/loading-skeleton/card-skeleton'
+import dynamic from 'next/dynamic'
+// import TabContainer from '@/components/tab/tab-container'
 
 export default async function MyPageDiary({ searchParams }) {
   // 현재 url 매개 변수를 받아옴.
@@ -14,7 +16,9 @@ export default async function MyPageDiary({ searchParams }) {
   // API 호출로 데이터 받아서 뿌릴 예정
   const CARD = CARD_DUMMY_DATA
 
-  // 해당 사용자 또는 불러온 일기 개수
+  // const DiaryCard = dynamic(() => import('@/components/card/card'), {ssr:false})
+
+  // 해당 사용자 또는 불러온 일기 개수 -> api 호출로 확인하자. 사용자 이름에 대해서 count()들어간 부분을 만들어달라는 느낌으로 ㄱㄱ?
   let itemCount = 50
 
   // 이후 로그인 토큰 확인해서 로그인 여부, 사용자 이름 props로 전달해야 함.
@@ -23,6 +27,9 @@ export default async function MyPageDiary({ searchParams }) {
   // 이게 레퍼런스 방식임.
   return (
     <>
+      {/* <Suspense fallback={<RectangleSkeleton />}>
+        <TabContainer />
+      </Suspense> */}
       <Suspense key={currentPage + query} fallback={<CardSkeleton />}>
         <Grid
           container
@@ -44,7 +51,7 @@ export default async function MyPageDiary({ searchParams }) {
                 avatarImage={it.avatarImage}
                 isPublic={it.isPublic}
                 updateDate={it.updateDate}
-                hits={it.updateDate}
+                hits={it.hits}
                 summary={it.summary}
               />
             </Grid>
