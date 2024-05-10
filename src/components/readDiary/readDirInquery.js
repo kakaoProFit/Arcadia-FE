@@ -111,7 +111,7 @@ const ReadDirInquery = (props) => {
             <InfoText>작성자: {props.props.writer}</InfoText>
           </InfoItem>
           <InfoItem>
-            <InfoText>조회수: {props.props.dirViews}</InfoText>
+            <InfoText>조회수: {props.props.hits}</InfoText>
           </InfoItem>
           {/* 일기 작성자ID = 로그인된 사용자ID 일때만 아래 수정 버튼 활성화 */}
           {!isPsyAnlz && isCurrentUserAuthor && (
@@ -124,7 +124,7 @@ const ReadDirInquery = (props) => {
           formats={formats}
           theme="snow"
           readOnly={true} // 편집 불가능
-          value={contents} // 백엔드 측에서 조회된 내용 표시
+          value={props.props.diary} // 백엔드 측에서 조회된 내용 표시
         />
         <InfoWrapper>
           {/* 이거 우선 어떻게 diaryId가 넘어올지 모르는데, 여기로 diary id 넘겨줘야함. */}
