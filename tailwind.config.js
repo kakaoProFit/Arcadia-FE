@@ -2,18 +2,18 @@
 module.exports = {
   darkMode: 'class', // or 'media' or 'class'
   content: [
-    "./index.html",
-    "./src/**/*.{js,jsx,ts,tsx}",
-    "./node_modules/flowbite/**/*.{js,jsx,ts,tsx}"
+    './index.html',
+    './src/**/*.{js,jsx,ts,tsx}',
+    './node_modules/flowbite/**/*.{js,jsx,ts,tsx}',
+    '.node_modules/flowbite-react/lib/**/*.{js,jsx,ts,tsx}',
   ],
   theme: {
     extend: {
       fontFamily: {
-        'sans': ['Tenada'],
-        'tenada':['Tenada']
-      }
+        sans: ['Tenada'],
+        tenada: ['Tenada'],
+      },
     },
   },
-  plugins: [],
+  plugins: [require('flowbite/plugin')],
 }
-
