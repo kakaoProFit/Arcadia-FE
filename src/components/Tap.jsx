@@ -1,3 +1,5 @@
+import SerachBar from '@/components/SearchBar'
+
 export default function Tap() {
   const data = [
     {
