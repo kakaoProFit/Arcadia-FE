@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { Box, Grid } from '@mui/material'
 import Player from '@/components/musicPlayer/Player'
 import Mem from '@/components/memo/Mem'
@@ -12,38 +11,39 @@ const ReadDirInquery = dynamic(
   },
 )
 
-function PsyAnlz() {
-  let response_data = {
-    // 게시글 테스트 데이터
-    diaryId: 1,
-    writer: '홍길동',
-    title: '일기란 무엇인가',
-    // content: contents,
-    dirViews: '100', //조회수
-    imageUrl: '',
-    musicUrl: 'https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3',
-  }
+
+async function getDiaryAnlz() {
+  const response = await fetch("https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/diary", {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    cache: 'no-store'
+  });
+
+  const data = await response.json()
+
+  return data
+}
+
+async function getDiaryContent() {
+  const response = await fetch("https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/analyze", {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    cache: 'no-store'
+  });
+  
+  const data = await response.json()
+
+  return data
+}
+
+async function PsyAnlz() {
+
+  const analyze = await getDiaryAnlz() // 음악, 그림 등 분석 후 나오는 데이터들 불러옴.
+  const diaryContent = await getDiaryContent() // 일기 내용, 제목, 조회수 등 일기에 대한 데이터들 불러옴.
 
   const psyAnlz_boolean = true //분석 화면일때 넘기는 데이터.
-
-  const handleGetSpecification = async () => {
-    try {
-      const response = await axios.get('/일기 분석페이지 url', {
-        //여기에 json형식으로 분석내용, 이미지url, 음악url, 일기 아이디
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-
-      if (response.status === 200) {
-        response_data = response.data
-      } else {
-        console.error('실패')
-      }
-    } catch (error) {
-      console.error('오류 발생', error)
-    }
-  }
 
   return (
     <div style={{ marginTop: '2%' }}>
@@ -53,7 +53,7 @@ function PsyAnlz() {
             {' '}
             {/* 화면 크기에 따라 너비 조정 */}
             <ReadDirInquery
-              props={response_data}
+              props={diaryContent}
               psyAnlz_boolean={psyAnlz_boolean}
             />
           </Grid>
@@ -73,7 +73,7 @@ function PsyAnlz() {
             >
               <img
                 style={{ width: '250px', height: '250px' }}
-                src={`https://flexible.img.hani.co.kr/flexible/normal/960/960/imgdb/resize/2019/0121/00501111_20190121.JPG`}
+                src={analyze.image_s3_url}
                 loading="lazy"
               />
             </Grid>
@@ -84,13 +84,15 @@ function PsyAnlz() {
               md={13}
               style={{ marginLeft: '0%', marginTop: '4%' }}
             >
-              <Mem props={response_data} />
+              <Mem props={diaryContent} />
             </Grid>
-            <AnalyzeResults />
+            <AnalyzeResults props={diaryContent}/>
           </Grid>
         </Grid>
       </Box>
-      <Player props={response_data.musicUrl} />
+
+      <Player props={analyze.music_s3_url1} />
+
     </div>
   )
 }
