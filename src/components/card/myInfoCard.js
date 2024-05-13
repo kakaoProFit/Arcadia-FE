@@ -4,7 +4,6 @@ import * as React from 'react'
 import Box from '@mui/material/Box'
 import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
-import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Switch from '@mui/material/Switch'
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive'
@@ -75,9 +74,6 @@ function MyInfoCard() {
           />
         </CardActions>
       </Box>
-      <Button variant="outlined" color="error" sx={{ ml: 35 }}>
-        회원 탈퇴
-      </Button>
     </div>
   )
 }
