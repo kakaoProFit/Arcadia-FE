@@ -27,7 +27,6 @@ import { useRouter } from 'next/navigation'
 import { usePathname } from 'next/navigation'
 
 export default function DiaryCard(props) {
-
   // props 전달
   const {
     key,

@@ -24,9 +24,15 @@ const CustomTableCell = styled(TableCell)(() => ({
   textAlign: 'center',
 }))
 
-async function submitProfile(formData) {
+async function submitProfile(file) {
   // 이미지를 백엔드 서버로 전송
-  console.log('formData: ', formData)
+  console.log('formData: ', file)
+
+  // 이미지를 업로드할 FormData 객체 생성
+  const formData = new FormData()
+  formData.enctype = 'multipart/form-data'
+  formData.append('image', file)
+
   const response = await fetch(
     'https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/submitProfile',
     {
@@ -102,17 +108,14 @@ function MyInfoTable({ userInfo, image }) {
     console.log('file: ', file)
     if (file) {
       const reader = new FileReader() // FileReader 객체 생성
+
       reader.onload = () => {
         // 파일을 읽으면 호출되는 콜백 함수
         const imageUrl = reader.result // 파일의 URL
         setSelectedImage(imageUrl) // 이미지 URL을 상태에 업데이트
-
-        // 이미지를 업로드할 FormData 객체 생성
-        const formData = new FormData()
-        formData.append('image', file)
-
-        submitProfile(formData)
+        submitProfile(file)
       }
+
       reader.readAsDataURL(file) // 파일 읽기
     }
   }
