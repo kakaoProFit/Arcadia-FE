@@ -47,9 +47,6 @@ function MyInfo() {
 
   return (
     <div>
-      {/* <div style={{ marginLeft: '15%', marginTop: '2.5%', marginBottom: '2.5%' }}>
-        <h2>내 정보</h2>
-      </div> */}
       <Stack
         direction="column"
         alignItems="center"
@@ -57,7 +54,7 @@ function MyInfo() {
         style={{ marginTop: '20px' }}
       >
         {userInfo ? ( // userInfo가 존재하면 MyInfoTable을 렌더링
-          <MyInfoTable userInfo={userInfo} image="/images/testArgoImage.png" />
+          <MyInfoTable userInfo={userInfo} image="/images/user_default.png" />
         ) : (
           <p>Loading...</p> // userInfo가 없을 때는 로딩 표시
         )}
