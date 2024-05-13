@@ -1,26 +1,8 @@
 'use client'
-import Stack from '@mui/material/Stack'
 import * as React from 'react'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import { TableCell } from '@mui/material'
-import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
-import Paper from '@mui/material/Paper'
-import { styled } from '@mui/system'
-import Button from '@mui/material/Button'
 import { useState, useEffect } from 'react'
-import TextField from '@mui/material/TextField'
 import axios from 'axios'
-import Grid from '@mui/material/Grid'
-import { Box } from '@mui/material'
-import MyInfoCard from '../card/myInfoCard'
-
-const CustomTableCell = styled(TableCell)(() => ({
-  borderRight: '1px solid black', // borderRight 속성 추가
-  textAlign: 'center',
-}))
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
 
 function MyInfoTable({ userInfo, image }) {
   const [editedUserInfo, setEditedUserInfo] = useState({ ...userInfo }) // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태 변수
@@ -57,88 +39,77 @@ function MyInfoTable({ userInfo, image }) {
 
   const rows = [
     { label: '닉네임', key: 'userNickname' },
+    { label: '이름', key: 'userName' },
     { label: 'E-mail', key: 'userEmail' },
-    { label: '소개', key: 'introduction' },
     { label: '성별', key: 'userGender' },
     { label: '연락처', key: 'userPhone' },
   ]
 
   return (
-    <div>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={5} columnSpacing={2}>
-          <Grid item xs={6} md={6} sx={{ width: '565px', mb: 3 }}>
-            <Stack direction="column" alignItems="center" spacing={2}>
-              <TableContainer component={Paper}>
-                <Table
-                  sx={{ width: 490, border: 1 }}
-                  aria-label="spanning table"
-                >
-                  <TableHead>
-                    <TableRow>
-                      <TableCell
-                        align="center"
-                        colSpan={3}
-                        sx={{ borderBottom: '1px solid black' }}
-                      >
-                        <img
-                          src={image}
-                          alt="image"
-                          style={{ width: '35%', height: 'auto' }}
+    <div className="flex">
+      <div className="mx-20 font-tenada">
+        <div className="w-565 mb-3">
+          <table
+            className="w-490 border rounded-lg border-gray shadow-2 mb-10"
+            aria-label="spanning table"
+          >
+            <thead>
+              <tr>
+                <th className="text-center border-b border-none" colSpan={3}>
+                  <img
+                    src={image}
+                    alt="image"
+                    className="w-7/12 h-7/12 mx-auto"
+                  />
+                  {userInfo.userVerified && (
+                    <div>
+                      <VerifiedUserIcon className="w-10 h-10 text-blue-500" />
+                      <p className="m-4 text-xl">전문가임</p>
+                    </div>
+                  )}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row, index) => (
+                <tr key={index}>
+                  <td className="w-15 border-none text-center">{row.label}</td>
+                  <td className="w-70 border-none text-center p-3 text-lg">
+                    {editMode[index] ? (
+                      <div>
+                        <input
+                          type="text"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                          required
+                          onChange={(event) => {
+                            setEditedUserInfo({
+                              ...editedUserInfo,
+                              [row.key]: event.target.value,
+                            })
+                          }}
+                          value={editedUserInfo[row.key]}
                         />
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {rows.map((row, index) => (
-                      <TableRow key={index}>
-                        <CustomTableCell style={{ width: '15%' }}>
-                          {row.label}
-                        </CustomTableCell>
-                        <CustomTableCell style={{ width: '70%' }}>
-                          {editMode[index] ? ( // 수정 모드일 때만 입력 필드 표시
-                            <TextField
-                              value={editedUserInfo[row.key]}
-                              fullWidth
-                              sx={{ border: 'none' }}
-                              onChange={(event) => {
-                                setEditedUserInfo({
-                                  ...editedUserInfo,
-                                  [row.key]: event.target.value,
-                                })
-                              }}
-                            />
-                          ) : (
-                            editedUserInfo[row.key] // 수정 모드가 아닐 때는 텍스트만 표시
-                          )}
-                        </CustomTableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <Button
-                variant="contained"
-                onClick={isEditMode ? handleSave : handleEdit}
-              >
-                {isEditMode ? '저장' : '수정'}
-              </Button>
-            </Stack>
-          </Grid>
-          <Grid item xs={6} md={6}>
-            <Grid
-              container
-              spacing={1}
-              sx={{ flexGrow: 1, alignItems: 'right' }}
-              direction="column"
-            >
-              <Grid item xs={3} md={6}>
-                <MyInfoCard />
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Box>
+                      </div>
+                    ) : (
+                      editedUserInfo[row.key]
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <button
+            className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 justify-center rounded"
+            onClick={isEditMode ? handleSave : handleEdit}
+          >
+            {isEditMode ? '저장' : '수정'}
+          </button>
+          <button className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 justify-center rounded">
+            회원 탈퇴
+          </button>
+        </div>
+        <div></div>
+      </div>
     </div>
   )
 }

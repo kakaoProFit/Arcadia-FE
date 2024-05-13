@@ -31,7 +31,7 @@ function Header() {
             width="70"
             height="70"
           />
-          <span className="font-tenada self-center text-3xl font-semibold whitespace-nowrap dark:text-white">
+          <span className="font-tenada self-center text-3xl font-semibold whitespace-nowrap">
             Arcadia
           </span>
         </a>

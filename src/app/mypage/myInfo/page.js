@@ -13,10 +13,11 @@ const MyInfoTable = dynamic(
 
 const testData = {
   userNickname: '홍길동',
+  userName: '이름입니다',
   userEmail: 'honggildong@naver.com',
-  introduction: '아버지를 아버지라 부르지 못하고..', //이거 소개라는게 한줄소개 같은데, 용어사전에 없어서 걍 introduction으로 해놨음.
   userGender: 'Male',
   userPhone: '010-1111-1111',
+  userVerified: true,
 }
 
 function MyInfo() {
