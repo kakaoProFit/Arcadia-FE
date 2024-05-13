@@ -1,5 +1,4 @@
 import '../styles/globals.css'
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter'
 import { ThemeProvider } from '@mui/material/styles'
 import { CssBaseline } from '@mui/material'
 import theme from '@/styles/theme'
@@ -19,14 +18,25 @@ export default function RootLayout({ children }) {
     <html>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <body>
+        <head>
+          <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"
+            rel="stylesheet"
+          />
+        </head>
+        <body className="bg-white">
           <header>
             <Header />
           </header>
+          why not commited?
           {children}
           <footer>
             <Footer />
           </footer>
+          <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"
+            async
+          />
         </body>
       </ThemeProvider>
     </html>

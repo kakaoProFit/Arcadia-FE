@@ -25,12 +25,12 @@ export default function TabContainer() {
 
   // 각 라우팅에 맞는 탭을 생성
   if (
-    pathname === '/diary/my-diary' ||
+    pathname === '/diary/mydiary' ||
     pathname === '/diary/weekly-report' ||
     pathname === '/diary/monthly-report'
   ) {
     tabProps = [
-      { label: '나의 일기', href: '/diary/my-diary', title: '일기' },
+      { label: '나의 일기', href: '/diary/mydiary', title: '일기' },
       {
         label: '주간 분석서',
         href: '/diary/weekly-report',
@@ -51,12 +51,12 @@ export default function TabContainer() {
       { label: '친구 일기', href: '/diary/friends-diary', title: '게시판' },
     ]
   } else if (
-    pathname === '/mypage/my-diary' ||
+    pathname === '/mypage/mydiary' ||
     pathname === '/mypage/contact' ||
     pathname === '/mypage/myInfo'
   ) {
     tabProps = [
-      { label: '일기 조회', href: '/mypage/my-diary', title: '마이 페이지' },
+      { label: '일기 조회', href: '/mypage/mydiary', title: '마이 페이지' },
       {
         label: '상담 신청서 조회',
         href: '/mypage/contact',
@@ -69,7 +69,7 @@ export default function TabContainer() {
   // 걀극 하드코딩으로 tab 움직임을 설정함.
   let tabNum = 0
   if (
-    pathname === '/diary/my-diary' ||
+    pathname === '/diary/mydiary' ||
     pathname === '/diary/community' ||
     pathname === '/mypage/my-diary'
   ) {
@@ -95,7 +95,7 @@ export default function TabContainer() {
         sx={{ ml: 11, mr: 17, mt: 6, mb: 3 }}
       >
         <Typography variant="h3">{tabProps[tabNum]?.title}</Typography>
-        {pathCheck && (
+        {/* {pathCheck && (
           <Button
             variant="contained"
             color="inherit"
@@ -108,19 +108,19 @@ export default function TabContainer() {
               일상을 적고 내 마음을 확인하기!
             </Typography>
           </Button>
-        )}
+        )} */}
       </Stack>
       <Grid container spacing={2} sx={{ mx: 10 }}>
         <Grid item xs={8}>
           <DiaryListTab tabNum={tabNum} tabProps={tabProps} />
         </Grid>
-        {pathCheck && (
+        {/* {pathCheck && (
           <Grid item xs={4}>
             <SearchTextField />
           </Grid>
-        )}
+        )} */}
       </Grid>
-      {pathCheck && (
+      {/* {pathCheck && (
         <Stack
           direction="row"
           justifyContent="flex-end"
@@ -130,7 +130,7 @@ export default function TabContainer() {
           <DiaryCardArray />
           <DiaryDatePicker />
         </Stack>
-      )}
+      )} */}
     </>
   )
 }
