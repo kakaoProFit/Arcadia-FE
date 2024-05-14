@@ -8,6 +8,7 @@ function MyInfoTable({ userInfo, image }) {
   const [editedUserInfo, setEditedUserInfo] = useState({ ...userInfo }) // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태 변수
   const [editMode, setEditMode] = useState(Array(5).fill(false)) // 각 행의 수정 모드를 저장하는 배열
   const [isEditMode, setIsEditMode] = useState(false)
+  const [showSuccessModal, setShowSuccessModal] = useState(false) // 팝업을 보여줄지 여부를 관리하는 상태 추가
 
   const handleEdit = () => {
     setEditMode(Array(5).fill(true)) // 모든 요소를 true로 설정하여 수정 모드로 변경
@@ -35,6 +36,31 @@ function MyInfoTable({ userInfo, image }) {
       .catch((error) => {
         console.error('에러', error)
       })
+  }
+
+  const handleDeleteAccount = () => {
+    // 회원탈퇴
+    fetch(`/user/resign/${userId}`, {
+      // user ID 어떻게 다룰거지? -> 아직 미정
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log('회원 탈퇴 성공')
+          setShowSuccessModal(true) // 회원 탈퇴 성공 시 팝업 보여주기
+        }
+        throw new Error('회원 탈퇴 실패')
+      })
+      .catch((error) => {
+        console.error('에러', error)
+      })
+  }
+
+  const closeModal = () => {
+    setShowSuccessModal(false) // 팝업 닫기
   }
 
   const rows = [
@@ -104,10 +130,30 @@ function MyInfoTable({ userInfo, image }) {
           >
             {isEditMode ? '저장' : '수정'}
           </button>
-          <button className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 justify-center rounded">
+          <button
+            className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 justify-center rounded"
+            onClick={handleDeleteAccount}
+          >
             회원 탈퇴
           </button>
         </div>
+        {showSuccessModal && (
+          <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white p-8 rounded-lg">
+              <p>회원 탈퇴 성공</p>
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded"
+                onClick={() => {
+                  window.location.href = 'http://localhost:3000'
+                }}
+              >
+                {' '}
+                {/* 이부분 추후 메인페이지 url로 교체하기 */}
+                확인
+              </button>
+            </div>
+          </div>
+        )}
         <div></div>
       </div>
     </div>
