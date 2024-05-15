@@ -83,17 +83,23 @@ const TextEditor = (props) => {
   const [displayCounting, setDisplayCounting] = useState('0') // 글자 수를 화면에 보이기 위한 변수
   const [writingContent, setWritingContent] = useState('')
 
+  // 일기 제목을 저장할 state
+  const [title, setTitle] = useState('')
+
   // Form일 경우, TextField의 상태를 관리할 useState
   const [formFields, setFormFields] = useState(['', '', ''])
 
   const toggleAnonymous = () => {
-    console.log('익명 여부: ', !isAnonPost)
     setIsAnonPost(!isAnonPost) // 사용자가 익명 여부 선택함에 따른 state 저장
   }
 
   const toggleWriteForm = () => {
-    console.log('작성 폼 여부: ', !isWriteForm)
     setIsWriteForm(!isWriteForm) // 사용자가 익명 여부 선택함에 따른 state 저장
+  }
+
+  // 제목을 변경하는 함수
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value)
   }
 
   const handleChange = (content, delta, source, editor) => {
@@ -117,9 +123,6 @@ const TextEditor = (props) => {
   // 등록 버튼을 클릭했을 때 실행될 함수
   const handleSubmit = () => {
     console.log(writingContent) //작성된 내용물
-    // console.log('baseUrl: ', props.baseUrl) //각 페이지에서 이 컴포넌트를 쓸 때 url도 넘겨줘야함. 그럼 해당 url로 post요청 가능
-    // console.log(typeof props.baseUrl, typeof props.writingContent)
-    // console.log('submitUrl: ', props.submitUrl) // post 요청 후에 해당 글의 자세히 보기 페이지로 이동
 
     // 내용물에서 html 태그 제거
     const parser = new DOMParser()
@@ -129,62 +132,56 @@ const TextEditor = (props) => {
     )
     console.log('html태그 제거 ', tempWritingContent.body.textContent)
     const postDiary = tempWritingContent.body.textContent
-    axios
-      .post(
-        props.baseUrl,
-        {
-          // 등록 요청
-          member_id: 1,
-          diary: postDiary, // 작성 내용과 익명 여부 전달
-          // isAnonPost: isAnonPost,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      )
+
+    fetch(props.baseUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        member_id: 1,
+        title: title,
+        diary: postDiary,
+      }),
+    })
       .then((response) => {
-        if (response.status === 200) {
+        if (response.ok) {
           console.log('전송 성공!')
-          // console.dir(response.data)
-          console.log('감정 분석 결과 ', JSON.stringify(response.data))
-          localStorage.setItem('content', JSON.stringify(writingContent))
-          localStorage.setItem('analyze', JSON.stringify(response.data))
-          router.push(props.submitUrl)
-        } else {
-          console.error('전송 실패')
+          return response.json()
         }
+        throw new Error('전송 실패')
+      })
+      .then((data) => {
+        console.log('감정 분석 결과 ', JSON.stringify(data))
+        localStorage.setItem('content', JSON.stringify(writingContent))
+        localStorage.setItem('analyze', JSON.stringify(data))
+        router.push(props.submitUrl)
       })
       .catch((error) => {
         console.error('오류 발생', error)
       })
 
-    axios
-      .post(
-        'http://61.109.216.248:8000/keyphrase',
-        {
-          // 등록 요청
-          member_id: 1,
-          diary: postDiary, // 작성 내용과 익명 여부 전달
-          // isAnonPost: isAnonPost,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      )
+    fetch('http://61.109.216.248:8000/keyphrase', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        member_id: 1,
+        title: title,
+        diary: postDiary,
+      }),
+    })
       .then((response) => {
-        if (response.status === 200) {
+        if (response.ok) {
           console.log('전송 성공!')
-          console.dir(response.data)
-          console.log('키워드 데이터 ', JSON.stringify(response.data))
-          localStorage.setItem('keyword', JSON.stringify(response.data))
-          // router.push(props.submitUrl)
-        } else {
-          console.error('전송 실패')
+          return response.json()
         }
+        throw new Error('전송 실패')
+      })
+      .then((data) => {
+        console.log('키워드 데이터 ', JSON.stringify(data))
+        localStorage.setItem('keyword', JSON.stringify(data))
       })
       .catch((error) => {
         console.error('오류 발생', error)
@@ -200,66 +197,62 @@ const TextEditor = (props) => {
   const handleFormSubmit = () => {
     // Form 형태에서 등록 버튼을 눌렀을 때 실행되는 함수
     // 각 TextField의 값들을 가져와서 서버에 전송
-    // const postData = {
-    //   question1: formFields[0],
-    //   question2: formFields[1],
-    //   question3: formFields[2],
-    // }
-    const postData = formFields[0] + ' ' + formFields[1] + ' ' + formFields[2]
+    const postData = formFields[0] + ' ' + formFields[1] + ' ' + formFields[2] //question 1,2,3에 대한 값들
     console.log('postData: ', postData)
 
     // POST 요청 보내기
-    axios
-      .post(
-        props.baseUrl,
-        {
-          // 등록 요청
-          member_id: 1,
-          diary: postData, // 작성 내용과 익명 여부 전달
-          // isAnonPost: isAnonPost,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      )
+    fetch(props.baseUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        // 작성 내용과 익명 여부 전달. 이거는 form으로 작성한거라 title이 없음.
+        member_id: 1,
+        diary: postData,
+      }),
+    })
       .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        return response.json()
+      })
+      .then((data) => {
         console.log('전송 성공!')
-        // console.dir(response.data)
-        console.log('감정 분석 결과 ', JSON.stringify(response.data))
+        console.log('감정 분석 결과 ', JSON.stringify(data))
         localStorage.setItem('content', postData)
-        localStorage.setItem('analyze', JSON.stringify(response.data))
+        localStorage.setItem('analyze', JSON.stringify(data))
         router.push(props.submitUrl)
       })
       .catch((error) => {
         console.log('실패')
-        console.log(error)
+        console.error('There was a problem with the fetch operation:', error)
       })
-    axios
-      .post(
-        'http://61.109.216.248:8000/keyphrase',
-        {
-          // 등록 요청
-          member_id: 1,
-          diary: postData, // 작성 내용과 익명 여부 전달
-          // isAnonPost: isAnonPost,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      )
+
+    fetch('http://61.109.216.248:8000/keyphrase', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        // 작성 내용과 익명 여부 전달. 이거는 form으로 작성한거라 title이 없음.
+        member_id: 1,
+        diary: postData,
+        // isAnonPost: isAnonPost,
+      }),
+    })
       .then((response) => {
-        if (response.status === 200) {
-          console.log('키워드 분석 결과 ', JSON.stringify(response.data))
-          localStorage.setItem('keyword', JSON.stringify(response.data))
-          // router.push(props.submitUrl)
+        if (response.ok) {
+          return response.json()
         } else {
-          console.error('전송 실패')
-          console.error(error)
+          throw new Error('전송 실패')
         }
+      })
+      .then((data) => {
+        console.log('키워드 분석 결과 ', JSON.stringify(data))
+        localStorage.setItem('keyword', JSON.stringify(data))
+        // router.push(props.submitUrl);
       })
       .catch((error) => {
         console.error('오류 발생', error)
@@ -268,6 +261,20 @@ const TextEditor = (props) => {
 
   return (
     <>
+      {props.isDiaryMode == 'isDiaryMode' && ( // diary mode(일기)일 때 제목 적는 field 나옴.
+        <div
+          style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+        >
+          <label htmlFor="title">제목: &nbsp;</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            style={{ width: '50%' }}
+            onChange={handleTitleChange}
+          />
+        </div>
+      )}
       <StyledTextEditor>
         {props.anonPost !== undefined && ( // anonPost라는 props가 있을때만 익명 스위치 표시. (=일기)
           <FormControlLabel
