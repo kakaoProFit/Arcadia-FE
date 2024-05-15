@@ -28,7 +28,6 @@ export default function RootLayout({ children }) {
           <header>
             <Header />
           </header>
-          why not commited?
           {children}
           <footer>
             <Footer />

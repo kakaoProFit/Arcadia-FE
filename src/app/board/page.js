@@ -30,7 +30,7 @@ export default function BoardListPage() {
   return (
     <div className="bg-white">
       <p>{names}</p>
-      <Tap />
+      {/* <Tap /> */}
       <div className="mx-20 font-tenada">
         <span className="mx-5 self-center text-3xl my-10 font-semibold whitespace-nowrap">
           자유 게시판
