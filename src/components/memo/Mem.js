@@ -17,15 +17,15 @@ function Mem(props) {
       },
       body: JSON.stringify({ memo: memoText, _id: props.props._id }),
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      console.log('메모가 성공적으로 전송되었습니다.');
-    })
-    .catch(error => {
-      console.error('메모 전송 중 오류가 발생했습니다:', error);
-    });
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        console.log('메모가 성공적으로 전송되었습니다.')
+      })
+      .catch((error) => {
+        console.error('메모 전송 중 오류가 발생했습니다:', error)
+      })
   }
 
   const handleChange = (event) => {

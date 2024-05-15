@@ -2,12 +2,44 @@
 import * as React from 'react'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { useRef } from 'react'
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
+
+function submitProfile(file) {
+  // 이미지를 백엔드 서버로 전송
+
+  // 이미지를 업로드할 FormData 객체 생성
+  const formData = new FormData()
+  formData.append('text', 'hello')
+  formData.append('image', file)
+
+  fetch(
+    'https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/submitProfile',
+    {
+      method: 'POST',
+      body: formData,
+      cache: 'no-store',
+    },
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('이미지 업로드 실패')
+      }
+      console.log('이미지 업로드 성공')
+    })
+    .catch((error) => {
+      console.error('이미지 업로드 에러', error)
+    })
+}
+
+
+
 
 function MyInfoTable({ userInfo, image }) {
   const [editedUserInfo, setEditedUserInfo] = useState({ ...userInfo }) // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태 변수
   const [editMode, setEditMode] = useState(Array(5).fill(false)) // 각 행의 수정 모드를 저장하는 배열
   const [isEditMode, setIsEditMode] = useState(false)
+  const [selectedImage, setSelectedImage] = useState(image) // 선택된 이미지를 관리
 
   const handleEdit = () => {
     setEditMode(Array(5).fill(true)) // 모든 요소를 true로 설정하여 수정 모드로 변경
@@ -21,7 +53,6 @@ function MyInfoTable({ userInfo, image }) {
   }, [editMode, userInfo])
 
   const handleSave = () => {
-    console.log('editedUserInfo: ', editedUserInfo)
     setEditMode(Array(5).fill(false)) // 수정 모드 해제
     setIsEditMode(false) // 수정 모드 해제
 
@@ -45,6 +76,29 @@ function MyInfoTable({ userInfo, image }) {
     { label: '연락처', key: 'userPhone' },
   ]
 
+  const inputRef = useRef(null) // ref 생성
+
+  const handleImageClick = () => {
+    inputRef.current.click() // 파일 선택 창 열기
+  }
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0] // 선택한 파일
+
+    if (file) {
+      const reader = new FileReader() // FileReader 객체 생성
+
+      reader.onload = () => {
+        // 파일을 읽으면 호출되는 콜백 함수
+        const imageUrl = reader.result // 파일의 URL
+        setSelectedImage(imageUrl) // 이미지 URL을 상태에 업데이트
+        submitProfile(file)
+      }
+
+      reader.readAsDataURL(file) // 파일 읽기
+    }
+  }
+
   return (
     <div className="flex">
       <div className="mx-20 font-tenada">
@@ -56,10 +110,23 @@ function MyInfoTable({ userInfo, image }) {
             <thead>
               <tr>
                 <th className="text-center border-b border-none" colSpan={3}>
+                  {/* 프로필 사진 */}
                   <img
-                    src={image}
+                    src={selectedImage} // 선택된 이미지 표시
                     alt="image"
                     className="w-7/12 h-7/12 mx-auto"
+                    onClick={handleImageClick}
+                  />
+
+                  {/* 파일 선택 창 */}
+                  <input
+                    type="file"
+                    ref={inputRef}
+                    style={{ display: 'none' }}
+                    accept="image/png, image/jpeg" // PNG 및 JPG 파일만 허용
+                    onChange={(e) => {
+                      handleImageChange(e)
+                    }}
                   />
                   {userInfo.userVerified && (
                     <div>

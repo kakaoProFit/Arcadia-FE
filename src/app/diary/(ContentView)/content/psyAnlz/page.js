@@ -11,14 +11,16 @@ const ReadDirInquery = dynamic(
   },
 )
 
-
 async function getDiaryAnlz() {
-  const response = await fetch("https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/diary", {
-    headers: {
-      'Content-Type': 'application/json'
+  const response = await fetch(
+    'https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/diary',
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-store',
     },
-    cache: 'no-store'
-  });
+  )
 
   const data = await response.json()
 
@@ -26,20 +28,22 @@ async function getDiaryAnlz() {
 }
 
 async function getDiaryContent() {
-  const response = await fetch("https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/analyze", {
-    headers: {
-      'Content-Type': 'application/json'
+  const response = await fetch(
+    'https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/analyze',
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-store',
     },
-    cache: 'no-store'
-  });
-  
+  )
+
   const data = await response.json()
 
   return data
 }
 
 async function PsyAnlz() {
-
   const analyze = await getDiaryAnlz() // 음악, 그림 등 분석 후 나오는 데이터들 불러옴.
   const diaryContent = await getDiaryContent() // 일기 내용, 제목, 조회수 등 일기에 대한 데이터들 불러옴.
 
@@ -86,13 +90,12 @@ async function PsyAnlz() {
             >
               <Mem props={diaryContent} />
             </Grid>
-            <AnalyzeResults props={diaryContent}/>
+            <AnalyzeResults props={diaryContent} />
           </Grid>
         </Grid>
       </Box>
 
       <Player props={analyze.music_s3_url1} />
-
     </div>
   )
 }
