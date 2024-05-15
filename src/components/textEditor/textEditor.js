@@ -298,7 +298,7 @@ const TextEditor = (props) => {
               {/* quill은 기본적으로 1글자를 차지하고 있음. 그래서 -1 해서 카운트 함. */}
               {displayCounting.length - 1}/{maxCharacters}
             </p>
-            <Button variant="contained" color="success" onClick={handleSubmit}>
+            <Button variant="outlined" color="success" onClick={handleSubmit}>
               등록
             </Button>
           </>
@@ -322,7 +322,7 @@ const TextEditor = (props) => {
                 </Grid>
               ))}
               <Button
-                variant="contained"
+                variant="outlined"
                 color="success"
                 onClick={handleFormSubmit}
                 sx={{ marginTop: '20px', marginLeft: '15px' }}
