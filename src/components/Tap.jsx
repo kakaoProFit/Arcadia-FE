@@ -1,3 +1,5 @@
+// import SerachBar from '@/components/SearchBar'
+
 export default function Tap() {
   const data = [
     {
@@ -21,6 +23,7 @@ export default function Tap() {
       href: '#diary',
     },
   ]
+
   return (
     <div className="bg-white mb-10 lg:px-6 py-2.5">
       <div class="mx-auto font-tenada">
@@ -37,8 +40,7 @@ export default function Tap() {
                   class="text-lg inline-block text-gray-500 hover:text-gray-600 hover:border-gray-300 rounded-t-lg py-4 px-4 font-medium text-center border-transparent border-b-2 dark:text-gray-400 dark:hover:text-gray-300"
                   id={item.id}
                 >
-                  {item.name}
-                  <a href={item.href}></a>
+                  <a href={item.href}>{item.name}</a>
                 </button>
               </li>
             ))}
