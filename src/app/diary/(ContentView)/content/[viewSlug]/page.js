@@ -11,39 +11,28 @@ const ReadDirInquery = dynamic(
   },
 )
 
-function DirInquery(props) {
-  console.log('viewSlug: ', props.params.viewSlug) //viewSlug는 /diary/content/[viewSlug] 임. 따라서 일기 ID
-
-  let response_data = {
-    // 게시글 테스트 데이터
-    diaryId: 1,
-    writer: '홍길동',
-    title: '일기란 무엇인가',
-    content: '<h2>오늘의 일기</h2>\n<p>날이 좋았다.</p>',
-    dirViews: '100', //조회수
-  }
-
-  const handleGetSpecification = () => {
-    fetch('/diary/list/DirInquery', {
+async function getDiary() {
+  const response = await fetch(
+    'https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/diary/list/DirInquery',
+    {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json() // JSON 형태의 응답  -> 이거 추후에 백엔드에서 넘어오는거 보고 수정 필요할듯
-        } else {
-          console.error('실패')
-        }
-      })
-      .then((data) => {
-        response_data = data
-      })
-      .catch((error) => {
-        console.error('오류 발생', error)
-      })
-  }
+      cache: 'no-store',
+    },
+  )
+
+  const data = await response.json()
+
+  return data
+}
+
+async function DirInquery(props) {
+  console.log('viewSlug: ', props.params.viewSlug) //viewSlug는 /diary/content/[viewSlug] 임. 따라서 일기 ID
+
+  const response_data = await getDiary() // 일기 제목, 내용을 불러옴
+  console.log('diary: ', response_data)
 
   return (
     <div>
@@ -53,7 +42,7 @@ function DirInquery(props) {
       <Stack direction="column" alignItems="center" spacing={2}>
         <ReadDirInquery theme="snow" props={response_data} />
         {/* 일기의 ID를 넘겨, 해당 일기에 대한 comment 조회 */}
-        <Comment props={response_data.diaryId} />
+        <Comment props={response_data.diary_id} />
       </Stack>
     </div>
   )
