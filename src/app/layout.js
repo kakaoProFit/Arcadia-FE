@@ -18,14 +18,25 @@ export default function RootLayout({ children }) {
     <html>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <head>
+          <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"
+            rel="stylesheet"
+          />
+        </head>
         <body className="bg-white">
           <header>
             <Header />
           </header>
+          why not commited?
           {children}
           <footer>
             <Footer />
           </footer>
+          <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"
+            async
+          />
         </body>
       </ThemeProvider>
     </html>

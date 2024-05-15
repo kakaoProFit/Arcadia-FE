@@ -10,9 +10,17 @@ function Mem(props) {
 
   const handleClick = () => {
     // memoText 상태값을 서버로 보냄
-    axios
-      .post('/api/memo', { memo: memoText, diaryId: props.diaryId }) // 일기 ID를 통해 각 일기에 대한 메모 입력
+    fetch('https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/memo', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ memo: memoText, _id: props.props._id }),
+    })
       .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
         console.log('메모가 성공적으로 전송되었습니다.')
       })
       .catch((error) => {

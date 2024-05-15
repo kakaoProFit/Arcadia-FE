@@ -1,31 +1,42 @@
 'use client'
-import Stack from '@mui/material/Stack'
 import * as React from 'react'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import { TableCell } from '@mui/material'
-import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
-import Paper from '@mui/material/Paper'
-import { styled } from '@mui/system'
-import Button from '@mui/material/Button'
 import { useState, useEffect } from 'react'
-import TextField from '@mui/material/TextField'
 import axios from 'axios'
-import Grid from '@mui/material/Grid'
-import { Box } from '@mui/material'
-import MyInfoCard from '../card/myInfoCard'
+import { useRef } from 'react'
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
 
-const CustomTableCell = styled(TableCell)(() => ({
-  borderRight: '1px solid black', // borderRight 속성 추가
-  textAlign: 'center',
-}))
+function submitProfile(file) {
+  // 이미지를 백엔드 서버로 전송
+
+  // 이미지를 업로드할 FormData 객체 생성
+  const formData = new FormData()
+  formData.append('text', 'hello')
+  formData.append('image', file)
+
+  fetch(
+    'https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/submitProfile',
+    {
+      method: 'POST',
+      body: formData,
+      cache: 'no-store',
+    },
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('이미지 업로드 실패')
+      }
+      console.log('이미지 업로드 성공')
+    })
+    .catch((error) => {
+      console.error('이미지 업로드 에러', error)
+    })
+}
 
 function MyInfoTable({ userInfo, image }) {
   const [editedUserInfo, setEditedUserInfo] = useState({ ...userInfo }) // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태 변수
   const [editMode, setEditMode] = useState(Array(5).fill(false)) // 각 행의 수정 모드를 저장하는 배열
   const [isEditMode, setIsEditMode] = useState(false)
+  const [selectedImage, setSelectedImage] = useState(image) // 선택된 이미지를 관리
 
   const handleEdit = () => {
     setEditMode(Array(5).fill(true)) // 모든 요소를 true로 설정하여 수정 모드로 변경
@@ -39,7 +50,6 @@ function MyInfoTable({ userInfo, image }) {
   }, [editMode, userInfo])
 
   const handleSave = () => {
-    console.log('editedUserInfo: ', editedUserInfo)
     setEditMode(Array(5).fill(false)) // 수정 모드 해제
     setIsEditMode(false) // 수정 모드 해제
 
@@ -57,88 +67,113 @@ function MyInfoTable({ userInfo, image }) {
 
   const rows = [
     { label: '닉네임', key: 'userNickname' },
+    { label: '이름', key: 'userName' },
     { label: 'E-mail', key: 'userEmail' },
-    { label: '소개', key: 'introduction' },
     { label: '성별', key: 'userGender' },
     { label: '연락처', key: 'userPhone' },
   ]
 
+  const inputRef = useRef(null) // ref 생성
+
+  const handleImageClick = () => {
+    inputRef.current.click() // 파일 선택 창 열기
+  }
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0] // 선택한 파일
+
+    if (file) {
+      const reader = new FileReader() // FileReader 객체 생성
+
+      reader.onload = () => {
+        // 파일을 읽으면 호출되는 콜백 함수
+        const imageUrl = reader.result // 파일의 URL
+        setSelectedImage(imageUrl) // 이미지 URL을 상태에 업데이트
+        submitProfile(file)
+      }
+
+      reader.readAsDataURL(file) // 파일 읽기
+    }
+  }
+
   return (
-    <div>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={5} columnSpacing={2}>
-          <Grid item xs={6} md={6} sx={{ width: '565px', mb: 3 }}>
-            <Stack direction="column" alignItems="center" spacing={2}>
-              <TableContainer component={Paper}>
-                <Table
-                  sx={{ width: 490, border: 1 }}
-                  aria-label="spanning table"
-                >
-                  <TableHead>
-                    <TableRow>
-                      <TableCell
-                        align="center"
-                        colSpan={3}
-                        sx={{ borderBottom: '1px solid black' }}
-                      >
-                        <img
-                          src={image}
-                          alt="image"
-                          style={{ width: '35%', height: 'auto' }}
+    <div className="flex">
+      <div className="mx-20 font-tenada">
+        <div className="w-565 mb-3">
+          <table
+            className="w-490 border rounded-lg border-gray shadow-2 mb-10"
+            aria-label="spanning table"
+          >
+            <thead>
+              <tr>
+                <th className="text-center border-b border-none" colSpan={3}>
+                  {/* 프로필 사진 */}
+                  <img
+                    src={selectedImage} // 선택된 이미지 표시
+                    alt="image"
+                    className="w-7/12 h-7/12 mx-auto"
+                    onClick={handleImageClick}
+                  />
+
+                  {/* 파일 선택 창 */}
+                  <input
+                    type="file"
+                    ref={inputRef}
+                    style={{ display: 'none' }}
+                    accept="image/png, image/jpeg" // PNG 및 JPG 파일만 허용
+                    onChange={(e) => {
+                      handleImageChange(e)
+                    }}
+                  />
+                  {userInfo.userVerified && (
+                    <div>
+                      <VerifiedUserIcon className="w-10 h-10 text-blue-500" />
+                      <p className="m-4 text-xl">전문가임</p>
+                    </div>
+                  )}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row, index) => (
+                <tr key={index}>
+                  <td className="w-15 border-none text-center">{row.label}</td>
+                  <td className="w-70 border-none text-center p-3 text-lg">
+                    {editMode[index] ? (
+                      <div>
+                        <input
+                          type="text"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                          required
+                          onChange={(event) => {
+                            setEditedUserInfo({
+                              ...editedUserInfo,
+                              [row.key]: event.target.value,
+                            })
+                          }}
+                          value={editedUserInfo[row.key]}
                         />
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {rows.map((row, index) => (
-                      <TableRow key={index}>
-                        <CustomTableCell style={{ width: '15%' }}>
-                          {row.label}
-                        </CustomTableCell>
-                        <CustomTableCell style={{ width: '70%' }}>
-                          {editMode[index] ? ( // 수정 모드일 때만 입력 필드 표시
-                            <TextField
-                              value={editedUserInfo[row.key]}
-                              fullWidth
-                              sx={{ border: 'none' }}
-                              onChange={(event) => {
-                                setEditedUserInfo({
-                                  ...editedUserInfo,
-                                  [row.key]: event.target.value,
-                                })
-                              }}
-                            />
-                          ) : (
-                            editedUserInfo[row.key] // 수정 모드가 아닐 때는 텍스트만 표시
-                          )}
-                        </CustomTableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <Button
-                variant="contained"
-                onClick={isEditMode ? handleSave : handleEdit}
-              >
-                {isEditMode ? '저장' : '수정'}
-              </Button>
-            </Stack>
-          </Grid>
-          <Grid item xs={6} md={6}>
-            <Grid
-              container
-              spacing={1}
-              sx={{ flexGrow: 1, alignItems: 'right' }}
-              direction="column"
-            >
-              <Grid item xs={3} md={6}>
-                <MyInfoCard />
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Box>
+                      </div>
+                    ) : (
+                      editedUserInfo[row.key]
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <button
+            className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 justify-center rounded"
+            onClick={isEditMode ? handleSave : handleEdit}
+          >
+            {isEditMode ? '저장' : '수정'}
+          </button>
+          <button className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 justify-center rounded">
+            회원 탈퇴
+          </button>
+        </div>
+        <div></div>
+      </div>
     </div>
   )
 }
