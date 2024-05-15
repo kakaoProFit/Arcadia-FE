@@ -1,4 +1,4 @@
-import SerachBar from '@/components/SearchBar'
+// import SerachBar from '@/components/SearchBar'
 
 export default function Tap() {
   const data = [
@@ -23,6 +23,7 @@ export default function Tap() {
       href: '#diary',
     },
   ]
+
   return (
     <div className="bg-white mb-10 lg:px-6 py-2.5">
       <div className="mx-auto font-tenada">
@@ -34,10 +35,12 @@ export default function Tap() {
             role="tablist"
           >
             {data.map((item) => (
-              <li key={item.id} className="mr-2" role="presentation">
-                <button className="text-lg inline-block text-gray-500 hover:text-gray-600 hover:border-gray-300 rounded-t-lg py-4 px-4 font-medium text-center border-transparent border-b-2">
-                  {item.name}
-                  <a href={item.href}></a>
+              <li key={item.id} class="mr-2" role="presentation">
+                <button
+                  class="text-lg inline-block text-gray-500 hover:text-gray-600 hover:border-gray-300 rounded-t-lg py-4 px-4 font-medium text-center border-transparent border-b-2 dark:text-gray-400 dark:hover:text-gray-300"
+                  id={item.id}
+                >
+                  <a href={item.href}>{item.name}</a>
                 </button>
               </li>
             ))}

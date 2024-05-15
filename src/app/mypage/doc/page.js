@@ -5,7 +5,7 @@ import CardSkeleton from '@/components/loading-skeleton/card-skeleton'
 import CardContainer from '@/components/card/card-container'
 // import TabContainer from '@/components/tab/tab-container'
 
-export default async function DiaryListPage({ searchParams }) {
+export default async function MyPageDiary({ searchParams }) {
   // 현재 url 매개 변수를 받아옴.
   const query = searchParams?.query || '원우형'
   const currentPage = Number(searchParams?.page) || 1
@@ -15,7 +15,7 @@ export default async function DiaryListPage({ searchParams }) {
   return (
     <>
       <Suspense key={currentPage + query} fallback={<CardSkeleton />}>
-        <CardContainer currentPage={currentPage} query={query} />
+        {/* <CardContainer currentPage={currentPage} query={query} /> */}
       </Suspense>
       <Suspense fallback={<RectangleSkeleton />}>
         <DiaryPagination diaryCount={itemCount} />

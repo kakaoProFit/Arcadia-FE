@@ -1,3 +1,5 @@
+// depreciated
+
 'use client'
 import { Grid, Stack, Typography, Button } from '@mui/material'
 import DiaryListTab from './tab'
