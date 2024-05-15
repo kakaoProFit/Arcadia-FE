@@ -26,23 +26,26 @@ const CustomTableCell = styled(TableCell)(() => ({
 
 async function submitProfile(file) {
   // 이미지를 백엔드 서버로 전송
-  console.log('formData: ', file)
+  console.log('file: ', file)
 
   // 이미지를 업로드할 FormData 객체 생성
   const formData = new FormData()
-  formData.enctype = 'multipart/form-data'
+  formData.append('text', 'hello')
+  //formData.append("image", inputImage.value);
   formData.append('image', file)
 
-  const response = await fetch(
+  // formData.enctype = 'multipart/form-data'
+  console.log('form data: ', formData)
+
+  await fetch(
     'https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/submitProfile',
     {
-      //https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/submitProfile
       method: 'POST',
       body: formData,
       cache: 'no-store',
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+      // headers: {
+      //   'Content-Type': 'multipart/form-data',
+      // },
     },
   )
     .then((response) => {
@@ -105,7 +108,7 @@ function MyInfoTable({ userInfo, image }) {
 
   const handleImageChange = (event) => {
     const file = event.target.files[0] // 선택한 파일
-    console.log('file: ', file)
+
     if (file) {
       const reader = new FileReader() // FileReader 객체 생성
 
@@ -152,6 +155,7 @@ function MyInfoTable({ userInfo, image }) {
                         {/* 파일 선택 창 */}
                         <input
                           type="file"
+                          id="fileInput"
                           ref={inputRef}
                           style={{ display: 'none' }}
                           accept="image/png, image/jpeg" // PNG 및 JPG 파일만 허용
