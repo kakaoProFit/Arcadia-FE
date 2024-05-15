@@ -24,28 +24,20 @@ const CustomTableCell = styled(TableCell)(() => ({
   textAlign: 'center',
 }))
 
-async function submitProfile(file) {
+function submitProfile(file) {
   // 이미지를 백엔드 서버로 전송
-  console.log('file: ', file)
 
   // 이미지를 업로드할 FormData 객체 생성
   const formData = new FormData()
   formData.append('text', 'hello')
-  //formData.append("image", inputImage.value);
   formData.append('image', file)
 
-  // formData.enctype = 'multipart/form-data'
-  console.log('form data: ', formData)
-
-  await fetch(
+  fetch(
     'https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/submitProfile',
     {
       method: 'POST',
       body: formData,
       cache: 'no-store',
-      // headers: {
-      //   'Content-Type': 'multipart/form-data',
-      // },
     },
   )
     .then((response) => {
@@ -155,11 +147,12 @@ function MyInfoTable({ userInfo, image }) {
                         {/* 파일 선택 창 */}
                         <input
                           type="file"
-                          id="fileInput"
                           ref={inputRef}
                           style={{ display: 'none' }}
                           accept="image/png, image/jpeg" // PNG 및 JPG 파일만 허용
-                          onChange={handleImageChange}
+                          onChange={(e) => {
+                            handleImageChange(e)
+                          }}
                         />
                       </TableCell>
                     </TableRow>
