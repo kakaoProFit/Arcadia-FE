@@ -3,7 +3,6 @@ import * as React from 'react'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useRef } from 'react'
-
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
 
 function submitProfile(file) {
@@ -32,6 +31,9 @@ function submitProfile(file) {
       console.error('이미지 업로드 에러', error)
     })
 }
+
+
+
 
 function MyInfoTable({ userInfo, image }) {
   const [editedUserInfo, setEditedUserInfo] = useState({ ...userInfo }) // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태 변수
@@ -126,7 +128,6 @@ function MyInfoTable({ userInfo, image }) {
                       handleImageChange(e)
                     }}
                   />
-
                   {userInfo.userVerified && (
                     <div>
                       <VerifiedUserIcon className="w-10 h-10 text-blue-500" />
