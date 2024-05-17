@@ -1,7 +1,6 @@
 'use client'
 import * as React from 'react'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import { useRef } from 'react'
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
 
@@ -33,10 +32,12 @@ function submitProfile(file) {
 }
 
 function MyInfoTable({ userInfo, image }) {
-  const [editedUserInfo, setEditedUserInfo] = useState({ ...userInfo }) // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태 변수
+  const [editedUserInfo, setEditedUserInfo] = useState({ ...userInfo }) // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태
   const [editMode, setEditMode] = useState(Array(5).fill(false)) // 각 행의 수정 모드를 저장하는 배열
   const [isEditMode, setIsEditMode] = useState(false)
   const [selectedImage, setSelectedImage] = useState(image) // 선택된 이미지를 관리
+  const [showConfirmModal, setShowConfirmModal] = useState(false) // 회원 탈퇴 확인 팝업을 보여줄지 여부를 관리하는 상태
+  const [showSuccessModal, setShowSuccessModal] = useState(false) // 회원탈퇴 후 나오는 팝업을 보여줄지 여부를 관리하는 상태
 
   const handleEdit = () => {
     setEditMode(Array(5).fill(true)) // 모든 요소를 true로 설정하여 수정 모드로 변경
@@ -53,12 +54,48 @@ function MyInfoTable({ userInfo, image }) {
     setEditMode(Array(5).fill(false)) // 수정 모드 해제
     setIsEditMode(false) // 수정 모드 해제
 
-    axios
-      .put(endpoint, editedUserInfo) // 추후 endpoint url 추가.
+    fetch(
+      'https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/mypage/edit',
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editedUserInfo),
+        cache: 'no-store',
+      },
+    )
       .then((response) => {
-        console.log('저장 성공', response.data)
+        if (!response.ok) {
+          throw new Error('수정에 실패했습니다.')
+        }
+        return response.json()
+      })
+      .then((data) => {
+        console.log('수정 성공', data)
         setEditMode(Array(5).fill(false))
         setIsEditMode(false) // 수정 모드 해제
+      })
+      .catch((error) => {
+        console.error('에러', error)
+      })
+  }
+
+  const handleDeleteAccount = () => {
+    // 회원탈퇴
+    fetch(`https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/resign`, {
+      // 회의후 토큰 파트 추가해야 함.
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log('회원 탈퇴 성공')
+          setShowSuccessModal(true) // 회원 탈퇴 성공 시 팝업 보여주기
+        }
+        throw new Error('회원 탈퇴 실패')
       })
       .catch((error) => {
         console.error('에러', error)
@@ -168,10 +205,54 @@ function MyInfoTable({ userInfo, image }) {
           >
             {isEditMode ? '저장' : '수정'}
           </button>
-          <button className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 justify-center rounded">
+          <button
+            className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 justify-center rounded"
+            onClick={() => setShowConfirmModal(true)}
+          >
             회원 탈퇴
           </button>
         </div>
+        {showConfirmModal && (
+          <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white p-8 rounded-lg">
+              <p>정말로 회원 탈퇴를 진행하시겠습니까?</p>
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded"
+                onClick={() => {
+                  setShowConfirmModal(false)
+                  handleDeleteAccount()
+                }}
+              >
+                확인
+              </button>
+              <button
+                className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 mt-4 rounded"
+                onClick={() => setShowConfirmModal(false)}
+              >
+                취소
+              </button>
+            </div>
+          </div>
+        )}
+        {showSuccessModal && (
+          <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white p-8 rounded-lg">
+              <p>회원 탈퇴에 성공하였습니다.</p>
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded"
+                onClick={() => {
+                  {
+                    /* 이부분 추후 메인페이지 url로 교체하기,  */
+                  }
+                  window.location.href = 'http://localhost:3000'
+                }}
+              >
+                {' '}
+                확인
+              </button>
+            </div>
+          </div>
+        )}
         <div></div>
       </div>
     </div>
