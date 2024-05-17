@@ -38,12 +38,12 @@ function MyInfoTable({ userInfo, image }) {
     )
       .then((response) => {
         if (!response.ok) {
-          throw new Error('저장에 실패했습니다.')
+          throw new Error('수정에 실패했습니다.')
         }
         return response.json()
       })
       .then((data) => {
-        console.log('저장 성공', data)
+        console.log('수정 성공', data)
         setEditMode(Array(5).fill(false))
         setIsEditMode(false) // 수정 모드 해제
       })
