@@ -13,7 +13,6 @@ import Switch from '@mui/material/Switch'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import TextField from '@mui/material/TextField'
 import Grid from '@mui/material/Grid'
-import axios from 'axios'
 
 const modules = {
   // Quill의 동작과 기능을 사용자 정의. 화면에 tool이 보이게 함.
