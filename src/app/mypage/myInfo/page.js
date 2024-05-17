@@ -48,9 +48,6 @@ function MyInfo() {
 
   return (
     <div>
-      {/* <div style={{ marginLeft: '15%', marginTop: '2.5%', marginBottom: '2.5%' }}>
-        <h2>내 정보</h2>
-      </div> */}
       <Stack
         direction="column"
         alignItems="center"
