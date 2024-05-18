@@ -121,7 +121,7 @@ const TextEditor = (props) => {
     // console.log(typeof props.baseUrl, typeof props.writingContent)
     // console.log('submitUrl: ', props.submitUrl) // post 요청 후에 해당 글의 자세히 보기 페이지로 이동
 
-    // 내용물에서 html 태그 제거
+    // 내용물에서 html 태그 제거. 감정분석 때문에 파싱 한거임.
     const parser = new DOMParser()
     const tempWritingContent = parser.parseFromString(
       writingContent,
