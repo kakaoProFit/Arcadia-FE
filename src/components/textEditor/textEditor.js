@@ -27,6 +27,7 @@ const modules = {
       { indent: '+1' },
       { background: [] },
     ],
+    ['image'],
     ['clean'],
   ],
   clipboard: {
@@ -47,6 +48,7 @@ const formats = [
   'list',
   'bullet',
   'indent',
+  'image',
 ]
 
 const StyledTextEditor = styled.div`
