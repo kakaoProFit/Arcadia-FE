@@ -76,7 +76,7 @@ const TextEditor = (props) => {
   const maxCharacters = 500 //입력 최대 글자수
   const router = useRouter()
 
-  const [isAnonPost, setIsAnonPost] = useState(props.anonPost) // 사용자가 익명 여부 선택하는 것을 관리할 state
+  // const [isAnonPost, setIsAnonPost] = useState(props.anonPost) // 사용자가 익명 여부 선택하는 것을 관리할 state
   const [isWriteForm, setIsWriteForm] = useState(false) // 사용자가 일기 폼 여부 선택. 매칭 신청서일 때도 사용하기 때문에 props.writeForm은 사용 불가
 
   const [displayCounting, setDisplayCounting] = useState('0') // 글자 수를 화면에 보이기 위한 변수
@@ -88,9 +88,9 @@ const TextEditor = (props) => {
   // Form일 경우, TextField의 상태를 관리할 useState
   const [formFields, setFormFields] = useState(['', '', ''])
 
-  const toggleAnonymous = () => {
-    setIsAnonPost(!isAnonPost) // 사용자가 익명 여부 선택함에 따른 state 저장
-  }
+  // const toggleAnonymous = () => {
+  //   setIsAnonPost(!isAnonPost) // 사용자가 익명 여부 선택함에 따른 state 저장
+  // }
 
   const toggleWriteForm = () => {
     setIsWriteForm(!isWriteForm) // 사용자가 익명 여부 선택함에 따른 state 저장
@@ -275,12 +275,12 @@ const TextEditor = (props) => {
         </div>
       )}
       <StyledTextEditor>
-        {props.anonPost !== undefined && ( // anonPost라는 props가 있을때만 익명 스위치 표시. (=일기)
+        {/* {props.anonPost !== undefined && ( // anonPost라는 props가 있을때만 익명 스위치 표시. (=일기)
           <FormControlLabel
             control={<Switch checked={isAnonPost} onChange={toggleAnonymous} />}
             label="익명"
           />
-        )}
+        )} */}
         {props.writeForm !== undefined && ( // writeForm이라는 props가 있을때만 폼 스위치 표시. (=일기)
           <FormControlLabel
             control={
