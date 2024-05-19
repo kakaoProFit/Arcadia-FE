@@ -115,7 +115,7 @@ const ReadDirInquery = (props) => {
           </InfoItem>
           {/* 일기 작성자ID = 로그인된 사용자ID 일때만 아래 수정 버튼 활성화 */}
           {!isPsyAnlz && isCurrentUserAuthor && (
-            <ModifyButton diaryId={props.props.diaryId} />
+            <ModifyButton diaryId={props.props.diary_id} />
           )}
         </InfoWrapper>
         {/* 일기 본문 */}
@@ -130,8 +130,8 @@ const ReadDirInquery = (props) => {
           {/* 이거 우선 어떻게 diaryId가 넘어올지 모르는데, 여기로 diary id 넘겨줘야함. */}
           {!isPsyAnlz && (
             <>
-              <LikeButton diaryId={props.props.diaryId} />
-              <ShareButton diaryId={props.props.diaryId} />
+              <LikeButton diaryId={props.props.diary_id} />
+              <ShareButton diaryId={props.props.diary_id} />
             </>
           )}
         </InfoWrapper>

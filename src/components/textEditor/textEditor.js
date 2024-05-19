@@ -125,7 +125,7 @@ const TextEditor = (props) => {
   const handleSubmit = () => {
     console.log(writingContent) //작성된 내용물
 
-    // 내용물에서 html 태그 제거
+    // 내용물에서 html 태그 제거. 감정분석 때문에 파싱 한거임.
     const parser = new DOMParser()
     const tempWritingContent = parser.parseFromString(
       writingContent,
