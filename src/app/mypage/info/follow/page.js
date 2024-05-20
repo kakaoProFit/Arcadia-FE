@@ -43,7 +43,7 @@ export default function Follow() {
   return (
     <div>
       <p className="text-6xl flex justify-center font-semibold">팔로우</p>
-      <div className="bg-white flex text-center justify-center">
+      <div className="w-full bg-white flex text-center justify-center">
         <Following datas={data} />
       </div>
     </div>

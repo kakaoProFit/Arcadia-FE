@@ -3,8 +3,8 @@
 import Stack from '@mui/material/Stack'
 import * as React from 'react'
 import dynamic from 'next/dynamic'
-import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
 import Image from 'next/image'
+import InfoGrid from '@/components/myInfoTable/infoGrid'
 
 /*
       { <Stack
@@ -79,6 +79,17 @@ const testData = {
   userVerified: true,
 }
 
+const testUser = {
+  name: '홍길동',
+  email: 'honggildong@naver.com',
+  postCount: Math.floor(Math.random() * 1001),
+  followerCount: Math.floor(Math.random() * 1001),
+  followingCount: Math.floor(Math.random() * 1001),
+  description:
+    '안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요',
+  image: '/images/user_default.png',
+}
+
 async function getProfileImage() {
   const response = await fetch(
     'https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/diary', // 이거 추후 프로필사진 s3 url로 바꿔야함. 지금은 테스트용으로 일기 분석서 이미지 가져옴
@@ -123,49 +134,16 @@ async function MyInfo() {
   }
 
   return (
-    <div class="my-3">
-      <div class="bg-white h-auto px-48 flex">
-        <img src="/images/user1.jpg" class="w-1/4 h-1/4" />
-        <div class="flex md:flex-row-reverse flex-wrap">
-          <div class="w-full md:w-3/4 p-4 text-center">
-            <div class="text-left pl-4 pt-3">
-              <span class="text-4xl text-gray-700 text-2xl mr-2">
-                에스파
-                <VerifiedUserIcon className="w-10 h-10 mx-2.5 text-blue-500" />
-              </span>
-            </div>
-            <div class="text-left pl-4 pt-3">
-              <span class="text-2xl text-gray-700 text-2xl mr-2">
-                kinderjoy@gachon.ac.kr
-              </span>
-            </div>
-            <div class="text-left pl-4 pt-3">
-              <span class="text-2xl font-semibold text-gray-700 mr-2">
-                <b>220</b> 게시글
-              </span>
-              <span class="text-2xl font-semibold text-gray-700 mr-2">
-                <b>114</b> 팔로워
-              </span>
-              <span class="text-2xl font-semibold text-gray-700">
-                <b>200</b> 팔로잉
-              </span>
-            </div>
-            <div class="text-left pl-4 pt-3">
-              <p class="text-xl font-medium text-black mr-2">
-                #해시 #태그 #를 #넣을까 #말까 넣으면 내용은 어떻게 넣을까
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr class="border-gray-500 mt-6" />
-      <div class="grid grid-cols-3 mx-10">
+    <div className="my-3">
+      <InfoGrid data={testUser} />
+      {/* <hr className="border-gray-500 mt-6" />
+      <div className="grid grid-cols-3 gap-8 mx-10">
         {tmp.map((data, key) => (
-          <div key={key} class="flex-1 text-center px-4 py-2 m-2">
-            <Image className="w-full" src={data.src} width={5} height={300} />
+          <div key={key} className="flex-1 text-center px-4 py-2 mx-auto">
+            <Image className="w-full" src={data.src} width={400} height={300} alt="test" />
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   )
 }
