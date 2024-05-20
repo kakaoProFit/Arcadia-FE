@@ -60,9 +60,9 @@ const ValidForm = () => {
     { type: 'date', id: 'birth', placeholder: 'Birth', text: '생년월일' },
   ]
   return (
-    <div class="flex items-center md:p-8 p-6 bg-[#ffffff] w-full h-full lg:w-11/12 lg:ml-auto">
+    <div class="text-xl flex items-center md:p-8 p-6 bg-[#ffffff] w-6/12 h-full lg:w-11/12 lg:ml-auto">
       <form
-        class="font-tenada w-full"
+        class="font-tenada w-9/12 mx-auto"
         onSubmit={methods.handleSubmit(submitHandler)}
       >
         <div class="space-y-3">
@@ -90,12 +90,12 @@ const ValidForm = () => {
               class="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
             <label for="remember-me" class="text-black ml-3 block text-sm">
-              I accept the{' '}
+              개인 정보 처리 방침에{' '}
               <a
                 href="javascript:void(0);"
                 class="text-blue-600 font-semibold hover:underline ml-1"
               >
-                Terms and Conditions
+                동의합니다.
               </a>
             </label>
           </div>
@@ -103,34 +103,34 @@ const ValidForm = () => {
         <div class="!mt-10">
           <button
             type="submit"
-            class="w-full py-3 px-4 text-sm font-semibold rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
+            class="w-full py-3 px-4 text-base font-semibold rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
           >
-            Create an account
+            회원가입
           </button>
         </div>
         <div class="!mt-3">
           <button
             type="submit"
-            class="w-full py-3 px-4 text-sm font-semibold rounded text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none"
+            class="w-full py-3 px-4 text-base font-semibold rounded text-white bg-yellow-300 hover:bg-yellow-400 focus:outline-none"
           >
-            Kakao
+            카카오 회원가입
           </button>
         </div>
         <div class="!mt-3">
           <button
             type="submit"
-            class="w-full py-3 px-4 text-sm font-semibold rounded text-white bg-green-500 hover:bg-green-600 focus:outline-none"
+            class="w-full py-3 px-4 text-base font-semibold rounded text-white bg-green-500 hover:bg-green-600 focus:outline-none"
           >
-            Naver
+            네이버 회원가입
           </button>
         </div>
         <p class="text-black text-sm mt-6 text-center">
-          Already have an account?{' '}
+          이미 회원 가입을 했다면?{' '}
           <a
             href="javascript:void(0);"
             class="text-blue-600 font-semibold hover:underline ml-1"
           >
-            Login here
+            로그인
           </a>
         </p>
       </form>

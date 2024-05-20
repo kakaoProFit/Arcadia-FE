@@ -22,7 +22,7 @@ function ValidInput({ control, name, ruleName }) {
       <input
         name={field.id}
         type={field.type}
-        className="text-black bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
+        className="text-black bg-white border border-gray-300 w-full text-base px-4 py-3 rounded-md outline-blue-500"
         placeholder={field.placeholder}
         onChange={field.onChange}
         onBlur={field.onBlur}
@@ -57,9 +57,9 @@ const ValidForm = () => {
     },
   ]
   return (
-    <div class="flex items-center md:p-8 p-6 bg-[#ffffff] w-full h-full lg:w-11/12 lg:ml-auto">
+    <div class="flex items-center md:p-8 p-6 bg-[#ffffff] w-6/12 h-full lg:w-11/12 lg:ml-auto">
       <form
-        class="font-tenada w-full"
+        class="font-tenada w-9/12 mx-auto"
         onSubmit={methods.handleSubmit(submitHandler)}
       >
         <div class="space-y-3">
@@ -87,32 +87,32 @@ const ValidForm = () => {
               class="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
             <label for="remember-me" class="text-black ml-3 block text-sm">
-              auto
+              자동 로그인
             </label>
           </div>
         </div>
-        <div class="!mt-10">
+        <div class="!mt-10 text-center">
           <button
             type="submit"
-            class="w-full py-3 px-4 text-sm font-semibold rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
+            class="w-full py-3 px-4 text-base font-semibold rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
           >
-            Login
+            로그인
           </button>
         </div>
-        <div class="!mt-3">
+        <div class="!mt-3 text-center">
           <button
             type="submit"
-            class="w-full py-3 px-4 text-sm font-semibold rounded text-white bg-yellow-500 hover:bg-yellow-600 focus:outline-none"
+            class="w-full py-3 px-4 text-base font-semibold rounded text-white bg-yellow-300 hover:bg-yellow-400 focus:outline-none"
           >
-            Kakao
+            카카오 로그인
           </button>
         </div>
-        <div class="!mt-3">
+        <div class="!mt-3 text-center">
           <button
             type="submit"
-            class="w-full py-3 px-4 text-sm font-semibold rounded text-white bg-green-500 hover:bg-green-600 focus:outline-none"
+            class="w-full py-3 px-4 text-base font-semibold rounded text-white bg-green-500 hover:bg-green-600 focus:outline-none"
           >
-            Naver
+            네이버 로그인
           </button>
         </div>
       </form>
