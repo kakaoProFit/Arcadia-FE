@@ -1,4 +1,5 @@
 import Following from '@/components/Following'
+import Tap from '@/components/Tap'
 
 const data = [
   {
@@ -40,8 +41,11 @@ const data = [
 // 날 팔로우하는 사람들 목록을 보여주는 페이지
 export default function Follow() {
   return (
-    <div className="bg-white">
-      <Following datas={data} />
+    <div>
+      <p className="text-6xl flex justify-center font-semibold">팔로우</p>
+      <div className="w-full bg-white flex text-center justify-center">
+        <Following datas={data} />
+      </div>
     </div>
   )
 }

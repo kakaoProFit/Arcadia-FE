@@ -18,7 +18,7 @@ export default function Home() {
     <div className="bg-white ">
       <Tap />
       <div className="mx-20 font-tenada">
-        <span className="mx-5 self-center text-3xl my-10 font-semibold whitespace-nowrap dark:text-white">
+        <span className="mx-5 self-center text-3xl my-10 font-semibold whitespace-nowrap">
           게시판 이름
         </span>
         <button
