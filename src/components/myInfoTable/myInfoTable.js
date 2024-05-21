@@ -3,6 +3,7 @@ import * as React from 'react'
 import { useState, useEffect } from 'react'
 import { useRef } from 'react'
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
+import { getProfileImage, getProfileInfo } from '@/services/profile-data'
 
 function submitProfile(file) {
   // 이미지를 백엔드 서버로 전송
@@ -31,11 +32,22 @@ function submitProfile(file) {
     })
 }
 
-function MyInfoTable({ userInfo, image }) {
-  const [editedUserInfo, setEditedUserInfo] = useState({ ...userInfo }) // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태
+function MyInfoTable() {
+  let profileImage = ''
+  let profileInfo = {
+    userNickname: '',
+    userName: '',
+    userEmail: '',
+    userGender: '',
+    userPhone: '',
+    userVerified: true,
+  }
+  const [isLoading, setIsLoading] = useState(true)
+
+  const [editedUserInfo, setEditedUserInfo] = useState({ ...profileInfo }) // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태
   const [editMode, setEditMode] = useState(Array(5).fill(false)) // 각 행의 수정 모드를 저장하는 배열
   const [isEditMode, setIsEditMode] = useState(false)
-  const [selectedImage, setSelectedImage] = useState(image) // 선택된 이미지를 관리
+  const [selectedImage, setSelectedImage] = useState(profileImage) // 선택된 이미지를 관리
   const [showConfirmModal, setShowConfirmModal] = useState(false) // 회원 탈퇴 확인 팝업을 보여줄지 여부를 관리하는 상태
   const [showSuccessModal, setShowSuccessModal] = useState(false) // 회원탈퇴 후 나오는 팝업을 보여줄지 여부를 관리하는 상태
 
@@ -43,12 +55,28 @@ function MyInfoTable({ userInfo, image }) {
     setEditMode(Array(5).fill(true)) // 모든 요소를 true로 설정하여 수정 모드로 변경
     setIsEditMode(true) // 수정 모드에 들어온 것을 확인 -> 저장 버튼으로 변경
   }
+  useEffect(
+    () => {
+      const profileImageTemp = getProfileImage()
+      const profileInfoTemp = getProfileInfo()
+
+      console.log('profileImageTemp: ', profileImageTemp)
+      console.log('profileInfoTemp: ', profileInfoTemp)
+
+      setSelectedImage(profileImageTemp)
+      setEditedUserInfo(profileInfoTemp)
+
+      setIsLoading(false)
+    },
+    [profileImage],
+    [profileInfo],
+  )
 
   useEffect(() => {
     if (!editMode) {
-      setEditedUserInfo({ ...userInfo }) // 수정 모드 해제 시 원래 정보로 복구
+      setEditedUserInfo({ ...profileInfo }) // 수정 모드 해제 시 원래 정보로 복구
     }
-  }, [editMode, userInfo])
+  }, [editMode, profileInfo])
 
   const handleSave = () => {
     setEditMode(Array(5).fill(false)) // 수정 모드 해제
@@ -133,6 +161,10 @@ function MyInfoTable({ userInfo, image }) {
     }
   }
 
+  if (isLoading) {
+    return <p>LOADING....................</p>
+  }
+
   return (
     <div className="flex">
       <div className="mx-20 font-tenada">
@@ -162,7 +194,7 @@ function MyInfoTable({ userInfo, image }) {
                       handleImageChange(e)
                     }}
                   />
-                  {userInfo.userVerified && (
+                  {profileInfo.userVerified && (
                     <div>
                       <VerifiedUserIcon className="w-10 h-10 text-blue-500" />
                       <p className="m-4 text-xl">전문가임</p>
