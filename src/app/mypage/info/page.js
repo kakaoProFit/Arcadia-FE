@@ -4,6 +4,7 @@ import Stack from '@mui/material/Stack'
 import * as React from 'react'
 import dynamic from 'next/dynamic'
 import { Suspense } from 'react'
+import RectangleSkeleton from '@/components/loading-skeleton/rectangle-skeleton'
 
 const MyInfoTable = dynamic(
   () => import('@/components/myInfoTable/myInfoTable'),
@@ -21,7 +22,7 @@ function MyInfo() {
         spacing={2}
         style={{ marginTop: '20px' }}
       >
-        <Suspense fallback={<p>TEST LOADING</p>}>
+        <Suspense fallback={<RectangleSkeleton />}>
           <MyInfoTable />
         </Suspense>
       </Stack>

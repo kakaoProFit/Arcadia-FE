@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRef } from 'react'
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
 import { getProfileImage, getProfileInfo } from '@/services/profile-data'
+import RectangleSkeleton from '@/components/loading-skeleton/rectangle-skeleton'
 
 function submitProfile(file) {
   // 이미지를 백엔드 서버로 전송
@@ -59,9 +60,6 @@ function MyInfoTable() {
     () => {
       const profileImageTemp = getProfileImage()
       const profileInfoTemp = getProfileInfo()
-
-      console.log('profileImageTemp: ', profileImageTemp)
-      console.log('profileInfoTemp: ', profileInfoTemp)
 
       setSelectedImage(profileImageTemp)
       setEditedUserInfo(profileInfoTemp)
@@ -162,7 +160,11 @@ function MyInfoTable() {
   }
 
   if (isLoading) {
-    return <p>LOADING....................</p>
+    return (
+      <div>
+        <RectangleSkeleton />
+      </div>
+    )
   }
 
   return (
