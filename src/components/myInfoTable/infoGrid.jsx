@@ -9,7 +9,9 @@ export default function InfoGrid({ data }) {
           <div className="text-left pl-4 pt-3">
             <span className="text-4xl text-gray-700 text-2xl mr-2 justify-center">
               {data.name}
-              <VerifiedUserIcon className="w-10 h-10 mx-2.5 text-blue-500" />
+              {data.userVerified ? (
+                <VerifiedUserIcon className="w-10 h-10 mx-2.5 text-blue-500" />
+              ) : null}
             </span>
           </div>
           <div className="text-left pl-4 pt-3">
@@ -35,7 +37,7 @@ export default function InfoGrid({ data }) {
           </div>
         </div>
         <button
-          className="text-base w-1/12 bg-blue-500 hover:bg-blue-700 text-white font-medium rounded"
+          className="text-base w-1/12 h-1/4 bg-blue-500 hover:bg-blue-700 text-white font-medium rounded"
           type="button"
         >
           Follow

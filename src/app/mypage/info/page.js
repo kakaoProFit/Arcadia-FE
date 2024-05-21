@@ -88,6 +88,7 @@ const testUser = {
   description:
     '안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요',
   image: '/images/user_default.png',
+  userVerified: false,
 }
 
 async function getProfileImage() {
@@ -136,14 +137,6 @@ async function MyInfo() {
   return (
     <div className="my-3">
       <InfoGrid data={testUser} />
-      {/* <hr className="border-gray-500 mt-6" />
-      <div className="grid grid-cols-3 gap-8 mx-10">
-        {tmp.map((data, key) => (
-          <div key={key} className="flex-1 text-center px-4 py-2 mx-auto">
-            <Image className="w-full" src={data.src} width={400} height={300} alt="test" />
-          </div>
-        ))}
-      </div> */}
     </div>
   )
 }
