@@ -1,8 +1,6 @@
 'use client'
 
 import Modal from '@/components/Modal'
-
-import { Suspense } from 'react'
 import RectangleSkeleton from '@/components/loading-skeleton/rectangle-skeleton'
 import { getProfileImage, getProfileInfo } from '@/services/profile-data'
 import { useState, useEffect } from 'react'
