@@ -1,6 +1,68 @@
+'use client'
+
 import Modal from '@/components/Modal'
 
+import { Suspense } from 'react'
+import RectangleSkeleton from '@/components/loading-skeleton/rectangle-skeleton'
+import { getProfileImage, getProfileInfo } from '@/services/profile-data'
+import { useState, useEffect } from 'react'
+
+// function MyInfo() {
+//   return (
+//     <div>
+//       <Stack
+//         direction="column"
+//         alignItems="center"
+//         spacing={2}
+//         style={{ marginTop: '20px' }}
+//       >
+//         <Suspense fallback={<RectangleSkeleton />}>
+//           <MyInfoTable />
+//         </Suspense>
+//       </Stack>
+//     </div>
+//   )
+// }
+
 export default function SettingPage() {
+  let profileImage = ''
+  let profileInfo = {
+    userNickname: '',
+    userName: '',
+    userEmail: '',
+    userGender: '',
+    userPhone: '',
+    userVerified: true,
+  }
+  const [isLoading, setIsLoading] = useState(true)
+  const [editedUserInfo, setEditedUserInfo] = useState({ ...profileInfo }) // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태
+  const [selectedImage, setSelectedImage] = useState(profileImage) // 선택된 이미지를 관리
+
+  useEffect(
+    () => {
+      const profileImageTemp = getProfileImage()
+      const profileInfoTemp = getProfileInfo()
+
+      setSelectedImage(profileImageTemp)
+      setEditedUserInfo(profileInfoTemp)
+
+      setIsLoading(false)
+
+      console.log('profileImage1111: ', profileImageTemp)
+      console.log('profileInfo1111: ', profileInfoTemp)
+    },
+    [profileImage],
+    [profileInfo],
+  )
+
+  if (isLoading) {
+    return (
+      <div>
+        <RectangleSkeleton />
+      </div>
+    )
+  }
+
   return (
     <div className="bg-white">
       <span className="mx-5 self-center text-6xl my-10 font-semibold">

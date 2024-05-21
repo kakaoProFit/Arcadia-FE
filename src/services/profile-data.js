@@ -27,12 +27,15 @@ export function getProfileInfo() {
 
   // const data = response.json()
   const data = {
-    userNickname: '홍홍',
-    userName: '홍길동',
-    userEmail: 'honggildong@naver.com',
-    userGender: 'Male',
-    userPhone: '010-1234-1234',
-    userVerified: true,
+    name: '홍길동',
+    email: 'honggildong@naver.com',
+    postCount: Math.floor(Math.random() * 1001),
+    followerCount: Math.floor(Math.random() * 1001),
+    followingCount: Math.floor(Math.random() * 1001),
+    description:
+      '안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요',
+    image: '/images/user_default.png',
+    userVerified: false,
   }
 
   return data
