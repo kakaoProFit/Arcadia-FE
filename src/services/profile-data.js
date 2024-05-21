@@ -28,13 +28,13 @@ export function getProfileInfo() {
   // const data = response.json()
   const data = {
     name: '홍길동',
+    nickName: '홍박사',
     email: 'honggildong@naver.com',
     postCount: Math.floor(Math.random() * 1001),
     followerCount: Math.floor(Math.random() * 1001),
     followingCount: Math.floor(Math.random() * 1001),
     description:
       '안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요',
-    image: '/images/user_default.png',
     userVerified: false,
   }
 

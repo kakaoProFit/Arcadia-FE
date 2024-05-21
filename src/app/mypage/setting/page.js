@@ -7,32 +7,17 @@ import RectangleSkeleton from '@/components/loading-skeleton/rectangle-skeleton'
 import { getProfileImage, getProfileInfo } from '@/services/profile-data'
 import { useState, useEffect } from 'react'
 
-// function MyInfo() {
-//   return (
-//     <div>
-//       <Stack
-//         direction="column"
-//         alignItems="center"
-//         spacing={2}
-//         style={{ marginTop: '20px' }}
-//       >
-//         <Suspense fallback={<RectangleSkeleton />}>
-//           <MyInfoTable />
-//         </Suspense>
-//       </Stack>
-//     </div>
-//   )
-// }
-
 export default function SettingPage() {
   let profileImage = ''
   let profileInfo = {
-    userNickname: '',
-    userName: '',
-    userEmail: '',
-    userGender: '',
-    userPhone: '',
-    userVerified: true,
+    name: '',
+    nickName: '',
+    email: '',
+    postCount: Math.floor(Math.random() * 1001),
+    followerCount: Math.floor(Math.random() * 1001),
+    followingCount: Math.floor(Math.random() * 1001),
+    description: '',
+    userVerified: false,
   }
   const [isLoading, setIsLoading] = useState(true)
   const [editedUserInfo, setEditedUserInfo] = useState({ ...profileInfo }) // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태
@@ -73,7 +58,7 @@ export default function SettingPage() {
           <div className="inputs w-full max-w-2xl p-6 mx-auto">
             <form className="mt-6 pt-4">
               <img
-                src="/images/user2.jpg"
+                src={selectedImage}
                 className="lg:max-w-[90%] w-full h-full object-contain block mb-10 mx-auto"
                 alt="login-image"
               />
@@ -92,7 +77,8 @@ export default function SettingPage() {
                     className="text-black bg-white border border-gray-300 w-full text-base px-4 py-3 rounded-md outline-blue-500"
                     id="grid-text-1"
                     type="text"
-                    placeholder="사용자 이메일 받아오기"
+                    // placeholder="사용자 이메일 받아오기"
+                    value={editedUserInfo.email}
                     disabled
                   />
                 </div>
@@ -108,7 +94,8 @@ export default function SettingPage() {
                       className="text-black bg-white border border-gray-300 w-full text-base px-4 py-3 rounded-md outline-blue-500"
                       id="grid-text-1"
                       type="text"
-                      placeholder="사용자 닉네임"
+                      // placeholder="사용자 닉네임"
+                      value={editedUserInfo.nickName}
                       disabled
                     />
                   </div>
@@ -187,6 +174,7 @@ export default function SettingPage() {
                     </label>
                     <textarea
                       className="text-black bg-white border border-gray-300 w-full text-base px-4 py-3 rounded-md outline-blue-500"
+                      value={editedUserInfo.description}
                       required
                     ></textarea>
                   </div>
