@@ -11,19 +11,29 @@ const ReadDirInquery = dynamic(
   },
 )
 
-async function getDiary() {
-  const response = await fetch(
-    'https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/diary/list/DirInquery',
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      cache: 'no-store',
-    },
-  )
+async function getDiary(props) {
+  // 일기 ID를 이용하여 일기 내용 및 일기 정보들 가져오기
+  // const response = await fetch(
+  //   '/diaryInquery',
+  //   {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     cache: 'no-store',
+  //     body: props
+  //   },
+  // )
 
-  const data = await response.json()
+  // const data = await response.json()
+  const data = {
+    member_id: 1,
+    diary_id: 10,
+    title: '테스트1',
+    diary: '테스트2테스트3',
+    writer: '홍길동',
+    hits: 100,
+  }
 
   return data
 }
@@ -31,7 +41,7 @@ async function getDiary() {
 async function DirInquery(props) {
   console.log('viewSlug: ', props.params.viewSlug) //viewSlug는 /diary/content/[viewSlug] 임. 따라서 일기 ID
 
-  const response_data = await getDiary() // 일기 제목, 내용을 불러옴
+  const response_data = await getDiary(props.params.viewSlug) // 일기 제목, 내용을 불러옴
   console.log('diary: ', response_data)
 
   return (
