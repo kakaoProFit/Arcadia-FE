@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Container, Pagination } from '@mui/material'
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 
@@ -20,6 +20,7 @@ export default function DiaryPagination(props) {
     // 추후에 클라이언트 사이드로 랜더링할 수 있도록 하고 page가 바뀌면 데이터를 갈아끼우는 부분이 page.js에 필요함
     router.replace(`${pathname}?page=${params.get('page')}`)
   }
+
   // page.js에서 받은 게시물 개수 props
   const { diaryCount } = props
   // 나중에 화면 사이즈마다 받아오는 개수가 바뀌면 여기도 state변수로 활용 예정

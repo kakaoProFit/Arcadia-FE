@@ -21,7 +21,7 @@ export async function fetchCardData(currentPage, query) {
   if (!res.ok) {
     throw new Error('Failed to card fetch data')
   }
-  const output_data = res.json()
+  const output_data = await res.json()
   // console.log(output_data)
   return output_data
 }

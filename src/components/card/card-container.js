@@ -5,8 +5,9 @@ import { fetchCardData } from '@/services/diary-data'
 export default async function CardContainer(props) {
   // 현재 페이지, 검색어
   const { currentPage, query } = props
-  const res = await fetchCardData(currentPage, query)
-  const card_data = res.cards
+  // const res = await fetchCardData(currentPage, query)
+  // const card_data = res.cards
+  const card_data = new Array(5)
   console.log(card_data)
 
   return (
