@@ -12,15 +12,13 @@ const ReadDirInquery = dynamic(
 )
 
 async function getDiaryAnlz() {
-  const response = await fetch(
-    'https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/diary',
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      cache: 'no-store',
+  // 이미지 url, 음악 url 등 정보 가져오기
+  const response = await fetch('/diary', {
+    headers: {
+      'Content-Type': 'application/json',
     },
-  )
+    cache: 'no-store',
+  })
 
   const data = await response.json()
 
@@ -28,15 +26,13 @@ async function getDiaryAnlz() {
 }
 
 async function getDiaryContent() {
-  const response = await fetch(
-    'https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/analyze',
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      cache: 'no-store',
+  // 키워드 분석, 감정분석 가져오기
+  const response = await fetch('/analyze', {
+    headers: {
+      'Content-Type': 'application/json',
     },
-  )
+    cache: 'no-store',
+  })
 
   const data = await response.json()
 

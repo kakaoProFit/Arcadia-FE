@@ -7,7 +7,7 @@ function ModifyButton({ diaryId }) {
   const router = useRouter()
 
   const handleClick = () => {
-    router.push('../../diary/write')
+    router.push('../../board/diary/write')
   }
 
   return (
