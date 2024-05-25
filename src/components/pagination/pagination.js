@@ -13,12 +13,14 @@ export default function DiaryPagination(props) {
   )
   // 현재 페이지 번호를 쿼리로 설정하는 함수
   const createPageURL = (event, pageNumber) => {
+    const search = searchParams.get('query')
     const params = new URLSearchParams(searchParams)
     params.set('page', pageNumber)
+    if (search !== null) params.set('query', search)
     setCurrentPage(Number(params.get('page')))
     // 일단은 하드코딩으로 새로고침이 됨.
     // 추후에 클라이언트 사이드로 랜더링할 수 있도록 하고 page가 바뀌면 데이터를 갈아끼우는 부분이 page.js에 필요함
-    router.replace(`${pathname}?page=${params.get('page')}`)
+    router.replace(`${pathname}?${params.toString()}`)
   }
 
   // page.js에서 받은 게시물 개수 props

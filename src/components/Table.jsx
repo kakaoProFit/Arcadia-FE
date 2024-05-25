@@ -1,10 +1,33 @@
 'use client'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
-import React, { useState } from 'react'
+import React, { useEffect, useState, use } from 'react'
 
-export default function Table({ data, count, login }) {
+export default function Table(props) {
+  const { data, count, login, query, page } = props
   const [datas, setDatas] = useState(data.slice(0, count))
+
+  // 여기 코드는 나중에 다른 파일로 뺄 예정
+  const getSearchAndPaginationResult = async () => {
+    const url = `10.10.10.10/api?query=${query}&page=${page}`
+    const requestOptions = {
+      method: 'GET',
+      cache: 'no-store',
+    }
+    const temp = await fetch(url, requestOptions).then((res) =>
+      res.ok ? res.json() : { state: false },
+    )
+    console.log(temp.state)
+    // 여기서 넣어줄건데 더미데이터 던질거니까 그거 만들고 넣자.
+    // setDatas()
+  }
+
+  useEffect(() => {
+    // 일단 의도한대로 페이지네이션이랑 쿼리 바뀔때 돌긴 돌음.
+    console.log('check')
+    // getSearchAndPaginationResult()
+  }, [query, page])
+
   const origin = data
   function sortLikes() {
     setDatas(origin.sort((a, b) => a.likes - b.likes))

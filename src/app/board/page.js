@@ -3,18 +3,21 @@ import React, { Suspense, useState } from 'react'
 import '@/styles/globals.css'
 import Table from '@/components/Table.jsx'
 import TableData from '@/components/TableData.jsx'
-import SearchBar from '@/components/SearchBar'
 import Button from '@/components/Button'
 import DiaryPagination from '@/components/pagination/pagination'
 import RectangleSkeleton from '@/components/loading-skeleton/rectangle-skeleton'
+import SearchWrapper from '@/components/search/migration-search'
 
-export default function BoardListPage() {
+export default function BoardListPage({ searchParams }) {
   // useState 훅을 사용하여 login 상태와 상태를 변경하는 함수를 선언합니다.
   // state 변수를 return에서 사용하는데 uesEffect를 사용하지 않아서 아래 오류가 발생하는 걸로 예측됨.
   // Error: Text content does not match server-rendered HTML.
   const [login, setLogin] = useState(true)
   const [datas, setDatas] = useState(TableData())
   const [names, setNames] = useState('test')
+
+  const query = searchParams?.query || ''
+  const currentPage = Number(searchParams?.page) || 1
 
   // 로그인 상태를 변경하는 함수입니다.
   function toggleLogin() {
@@ -43,10 +46,20 @@ export default function BoardListPage() {
           {login ? '테스트 :: 로그인 설정' : '테스트 :: 로그인 해제'}
         </button>
         <div className="flex flex-end justify-end">
-          <SearchBar />
+          <Suspense fallback={<RectangleSkeleton />}>
+            <SearchWrapper />
+          </Suspense>
         </div>
         <div className="my-10 relative overflow-x-auto">
-          <Table data={datas} count={12} login={login} />
+          {/* <Suspense fallback={<RectangleSkeleton />}> */}
+          <Table
+            data={datas}
+            count={12}
+            login={login}
+            query={query}
+            page={currentPage}
+          />
+          {/* </Suspense> */}
         </div>
         <Suspense fallback={<RectangleSkeleton />}>
           {/* 원래는 props를 전달해주어야 숫자도 같이 나옴 */}
