@@ -1,6 +1,8 @@
 import { Grid } from '@mui/material'
 import DiaryCard from './card'
 import { fetchCardData } from '@/services/diary-data'
+import Card from '@/components/Card'
+import CardData from '@/components/CardData'
 
 export default async function CardContainer(props) {
   // 현재 페이지, 검색어
