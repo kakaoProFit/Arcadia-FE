@@ -2,6 +2,7 @@
 import dynamic from 'next/dynamic'
 import Stack from '@mui/material/Stack'
 import Comment from '@/components/comment/comment'
+import Post from '@/components/Post'
 
 // react-quill을 동적으로 임포트
 const ReadDirInquery = dynamic(
@@ -24,7 +25,6 @@ async function getDiary(props) {
   //     body: props
   //   },
   // )
-
   // const data = await response.json()
   const data = {
     member_id: 1,
@@ -44,16 +44,25 @@ async function DirInquery(props) {
   const response_data = await getDiary(props.params.viewSlug) // 일기 제목, 내용을 불러옴
   console.log('diary: ', response_data)
 
+  const comment = [
+    {
+      id: 1,
+      name: '우울증유저',
+      comment: '잘 보고 갑니다.',
+    },
+    {
+      id: 2,
+      name: '헤헤',
+      comment: '좋은 글이네요.',
+    },
+  ]
+
   return (
     <div>
-      <div style={{ marginLeft: '15%' }}>
-        <h2>일기 조회</h2>
-      </div>
-      <Stack direction="column" alignItems="center" spacing={2}>
-        <ReadDirInquery theme="snow" props={response_data} />
-        {/* 일기의 ID를 넘겨, 해당 일기에 대한 comment 조회 */}
-        <Comment props={response_data.diary_id} />
-      </Stack>
+      <Post props={response_data} />
+      {/* 일기의 ID를 넘겨, 해당 일기에 대한 comment 조회 */}
+      {/* <Comment props={response_data.diary_id} /> */}
+      <Comment props={comment} />
     </div>
   )
 }

@@ -36,6 +36,10 @@ export default function RootLayout({ children }) {
             src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"
             async
           />
+          <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"
+            async
+          />
         </body>
       </ThemeProvider>
     </html>

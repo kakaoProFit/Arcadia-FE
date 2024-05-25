@@ -1,6 +1,5 @@
 import { Box, Grid } from '@mui/material'
 import Player from '@/components/musicPlayer/Player'
-import Mem from '@/components/memo/Mem'
 import dynamic from 'next/dynamic'
 import AnalyzeResults from '@/components/readDiary/analyze-result'
 
@@ -83,9 +82,7 @@ async function PsyAnlz() {
               xs={13}
               md={13}
               style={{ marginLeft: '0%', marginTop: '4%' }}
-            >
-              <Mem props={diaryContent} />
-            </Grid>
+            ></Grid>
             <AnalyzeResults props={diaryContent} />
           </Grid>
         </Grid>
