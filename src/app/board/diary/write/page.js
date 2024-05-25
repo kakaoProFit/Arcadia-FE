@@ -1,5 +1,4 @@
 // 일기 작성 페이지
-import Stack from '@mui/material/Stack'
 import dynamic from 'next/dynamic'
 
 const TextEditor = dynamic(
@@ -21,18 +20,16 @@ const isDiaryMode = 'isDiaryMode' // text editor가 여러군데서 쓰이기 �
 
 export default function DiaryWritePage() {
   return (
-    <>
-      <Stack direction="column" alignItems="center" spacing={2}>
-        <h1>일기 작성</h1>
-        <TextEditor
-          baseUrl={baseUrl}
-          submitUrl={submitUrl}
-          // anonPost={anonPost}
-          writeForm={writeForm}
-          formUrl={formUrl}
-          isDiaryMode={isDiaryMode}
-        />
-      </Stack>
-    </>
+    <div>
+      <p className="flex justify-center text-4xl">일기 작성</p>
+      <TextEditor
+        baseUrl={baseUrl}
+        submitUrl={submitUrl}
+        // anonPost={anonPost}
+        writeForm={writeForm}
+        formUrl={formUrl}
+        isDiaryMode={isDiaryMode}
+      />
+    </div>
   )
 }
