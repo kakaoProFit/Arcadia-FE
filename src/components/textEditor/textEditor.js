@@ -9,8 +9,6 @@ import { useRef, useState } from 'react'
 import ReactQuill from 'react-quill'
 import Button from '@mui/material/Button'
 import { useRouter } from 'next/navigation'
-import Switch from '@mui/material/Switch'
-import FormControlLabel from '@mui/material/FormControlLabel'
 import TextField from '@mui/material/TextField'
 import Grid from '@mui/material/Grid'
 
@@ -263,33 +261,33 @@ const TextEditor = (props) => {
   return (
     <>
       {props.isDiaryMode == 'isDiaryMode' && ( // diary mode(일기)일 때 제목 적는 field 나옴.
-        <div
-          style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
-        >
-          <label htmlFor="title">제목: &nbsp;</label>
+        <div className="flex justify-center w-full">
           <input
+            className="my-3 text-black bg-white border border-gray-300 w-full text-lg px-4 py-3 rounded-md outline-blue-500"
             type="text"
             id="title"
             name="title"
             style={{ width: '50%' }}
+            placeholder="제목을 입력하세요"
             onChange={handleTitleChange}
           />
         </div>
       )}
       <StyledTextEditor>
-        {/* {props.anonPost !== undefined && ( // anonPost라는 props가 있을때만 익명 스위치 표시. (=일기)
-          <FormControlLabel
-            control={<Switch checked={isAnonPost} onChange={toggleAnonymous} />}
-            label="익명"
-          />
-        )} */}
         {props.writeForm !== undefined && ( // writeForm이라는 props가 있을때만 폼 스위치 표시. (=일기)
-          <FormControlLabel
-            control={
-              <Switch checked={isWriteForm} onChange={toggleWriteForm} />
-            }
-            label="작성 폼"
-          />
+          <div>
+            <label class="inline-flex items-center mb-5 cursor-pointer">
+              <input
+                type="checkbox"
+                value=""
+                class="sr-only peer"
+                checked={isWriteForm}
+                onChange={toggleWriteForm}
+              />
+              <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              <span class="ms-3 text-sm font-medium text-gray-900">Toggle</span>
+            </label>
+          </div>
         )}
 
         {/* 작성 폼이 아닌 경우, 텍스트 편집기 보여주기 */}
@@ -302,42 +300,45 @@ const TextEditor = (props) => {
               theme="snow"
               onChange={handleChange}
             />
-            <p>
+            <p className="mt-2">
               {/* quill은 기본적으로 1글자를 차지하고 있음. 그래서 -1 해서 카운트 함. */}
               {displayCounting.length - 1}/{maxCharacters}
             </p>
-            <Button variant="outlined" color="success" onClick={handleSubmit}>
+            <button
+              className="font-tenada text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
+              onClick={handleSubmit}
+            >
               등록
-            </Button>
+            </button>
           </>
         ) : (
           <>
             {/* 반응형을 위해 Grid사용 */}
-            <Grid
-              container
-              spacing={2}
-              sx={{ marginTop: '30px', marginBottom: '40px' }}
-            >
+            <div>
               {formFields.map((field, index) => (
-                <Grid item xs={12} key={index}>
-                  <h3>{questions[index]}</h3>
-                  <TextField
-                    multiline
-                    rows={2}
-                    fullWidth
+                <div key="index" className="flex flex-col">
+                  <label
+                    for="message"
+                    class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+                  >
+                    {questions[index]}
+                  </label>
+                  <textarea
+                    id="message"
+                    rows="4"
                     onChange={(e) => handleFormChange(index, e.target.value)}
+                    className="my-3 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700"
+                    placeholder="..."
                   />
-                </Grid>
+                </div>
               ))}
-              <Button
-                variant="outlined"
-                color="success"
+              <button
+                className="font-tenada text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
                 onClick={handleFormSubmit}
-                sx={{ marginTop: '20px', marginLeft: '15px' }}
               >
                 등록
-              </Button>
-            </Grid>
+              </button>
+            </div>
           </>
         )}
       </StyledTextEditor>
