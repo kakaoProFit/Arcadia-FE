@@ -6,6 +6,7 @@ import { useRef, useState, useEffect } from 'react'
 import Button from '@mui/material/Button'
 import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
+import { useSearchParams } from 'next/navigation' // 이 기능때문에 use client해야함
 
 const ReactQuill = dynamic(
   async () => {
@@ -20,6 +21,34 @@ const ReactQuill = dynamic(
   },
 )
 ReactQuill.displayName = 'ReactQuill'
+
+function getDiary(props) {
+  // 일기 ID를 이용하여 일기 내용 및 일기 정보들 가져오기
+
+  // const response = fetch(
+  //   '/diaryInquery',
+  //   {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     cache: 'no-store',
+  //     body: props
+  //   },
+  // )
+
+  // const data = await response.json()
+  const data = {
+    member_id: 1,
+    diary_id: 10,
+    title: '테스트1',
+    diary: '테스트2테스트3',
+    writer: '홍길동',
+    hits: 100,
+  }
+
+  return data
+}
 
 const modules = {
   // Quill의 동작과 기능을 사용자 정의. 화면에 tool이 보이게 함.
@@ -80,6 +109,13 @@ const questions = [
 ]
 
 function ModifyEditor(props) {
+  const searchParams = useSearchParams()
+  const diaryId = searchParams.get('diaryId')
+  console.log('diary ID: ', diaryId)
+
+  const diary_data = getDiary(diaryId)
+  console.log('diary data: ', diary_data)
+
   const quillRef = useRef(null)
   const maxCharacters = 500 //입력 최대 글자수
   const router = useRouter()
@@ -87,17 +123,16 @@ function ModifyEditor(props) {
   const [displayCounting, setDisplayCounting] = useState(() => {
     const parser = new DOMParser()
     const tempWritingContent = parser.parseFromString(
-      props.diary_data.diary,
+      diary_data.diary,
       'text/html',
     )
-    console.log('제발 좀: ', tempWritingContent.body.textContent.length)
     return tempWritingContent.body.textContent.length
   }) // 글자 수를 화면에 보이기 위한 변수
 
-  const [writingContent, setWritingContent] = useState(props.diary_data.diary)
+  const [writingContent, setWritingContent] = useState(diary_data.diary)
 
   // 일기 제목을 저장할 state
-  const [title, setTitle] = useState(props.diary_data.title)
+  const [title, setTitle] = useState(diary_data.title)
 
   // 제목을 변경하는 함수
   const handleTitleChange = (event) => {
