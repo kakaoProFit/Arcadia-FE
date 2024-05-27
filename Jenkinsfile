@@ -1,6 +1,6 @@
 pipeline {
     environment {
-        repository = 'gcu-profit-dev.kr-central-2.kcr.dev/arcadia-nextjs/fastapi'
+        repository = 'gcu-profit-dev.kr-central-2.kcr.dev/arcadia-nextjs/arcadia-fe'
         DOCKERHUB_CREDENTIALS = credentials('kicToken')
         dockerImage = ''
         CONTAINER_NAME = 'arcadia_homepage'
