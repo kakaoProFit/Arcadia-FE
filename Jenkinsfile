@@ -58,14 +58,13 @@ pipeline {
             steps {
                 script {
                     def rolloutFilePath = "${WORKSPACE}/arcadia-fe/rollout.yaml"
-                    def imageLinePrefix = '- image: gcu-profit-dev.kr-central-2.kcr.dev/arcadia-nextjs/arcadia-fe:'
-                    def newImageTag = "$BUILD_NUMBER"
+                    def newImageTag = "tag:$BUILD_NUMBER"
 
                     // Read the file
                     def fileContent = readFile(rolloutFilePath)
 
                     // Modify the line with the new image tag
-                    def modifiedContent = fileContent.replaceAll(/(?m)^(\s*${imageLinePrefix}).*$/, "\$1${newImageTag}")
+                    def modifiedContent = fileContent.replaceAll("tag:.*", "\$1${newImageTag}")
 
                     // Write the modified content back to the file
                     writeFile file: rolloutFilePath, text: modifiedContent
