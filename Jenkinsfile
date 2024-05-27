@@ -60,7 +60,7 @@ pipeline {
             steps {
                 script {
                     def rolloutFilePath = "${WORKSPACE}/arcadia-fe/rollout.yaml"
-                    def newImageTag = "image:" + "$ImageRepository" + ":$BUILD_NUMBER"
+                    def newImageTag = "image: " + "$ImageRepository" + ":$BUILD_NUMBER"
 
                     // Read the file
                     def fileContent = readFile(rolloutFilePath)
