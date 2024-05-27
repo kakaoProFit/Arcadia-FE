@@ -8,8 +8,6 @@ pipeline {
         gitlabbranch = 'develop'
         githuburl = 'https://github.com/kakaoProFit/arcadia-manifest'
         githubbranch = 'main'
-        GITHUB_CREDENTIALS_ID = 'githubToken'
-        GITHUB_CREDENTIALS = credentials('githubToken')
     }
     agent any
     stages {
@@ -39,20 +37,9 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
-            steps {
-                sh 'docker rm -f $CONTAINER_NAME'
-                sh 'docker run -d -p 3000:3000 --name $CONTAINER_NAME $repository:$BUILD_NUMBER'
-            }
-        }
         stage('Clone from GitHub') {
             steps {
-                script {
-                    checkout([$class: 'GitSCM', branches: [[name: "$githubbranch"]],
-                            doGenerateSubmoduleConfigurations: false,
-                            extensions: [],
-                            userRemoteConfigs: [[credentialsId: "$GITHUB_CREDENTIALS_ID", url: "$githuburl"]]])
-                }
+                git branch: "${githubbranch}", credentialsId: 'githubToken', url: "${githuburl}"
             }
         }
         stage('Update rollout.yaml') {
@@ -60,26 +47,19 @@ pipeline {
                 script {
                     def rolloutFilePath = "${WORKSPACE}/arcadia-fe/rollout.yaml"
                     def newImageTag = "image: " + "$repository" + ":$BUILD_NUMBER"
+                    def fileContent = readFile(rolloutFilePath) // Read the file
+                    def modifiedContent = fileContent.replaceAll("image:.*", "${newImageTag}") // Modify the line with the new image tag
+                    writeFile file: rolloutFilePath, text: modifiedContent // Write the modified content back to the file
 
-                    // Read the file
-                    def fileContent = readFile(rolloutFilePath)
-
-                    // Modify the line with the new image tag
-                    def modifiedContent = fileContent.replaceAll("image:.*", "${newImageTag}")
-
-                    // Write the modified content back to the file
-                    writeFile file: rolloutFilePath, text: modifiedContent
-
-                    // GitHub 저장소에 변경사항 커밋 및 푸시
-                    withCredentials([usernamePassword(credentialsId: 'githubToken', passwordVariable: 'GITHUB_PSW', usernameVariable: 'GITHUB_USR')]){
-                    sh """
-                        git pull
-                        git config user.name 'mango0422'
-                        git config user.email 'tom990422@gmail.com'
-                        git add ${rolloutFilePath}
-                        git commit -m 'Update image version in rollout.yaml'
-                        git push https://${GITHUB_USR}:${GITHUB_PSW}@github.com/kakaoProFit/arcadia-manifest.git ${githubbranch}
-                    """
+                    withCredentials([usernamePassword(credentialsId: 'githubToken', passwordVariable: 'GITHUB_PSW', usernameVariable: 'GITHUB_USR')]){ // GitHub 저장소에 변경사항 커밋 및 푸시
+                        sh """
+                            git pull
+                            git config user.name 'mango0422'
+                            git config user.email 'tom990422@gmail.com'
+                            git add ${rolloutFilePath}
+                            git commit -m 'Update image version in rollout.yaml'
+                            git push https://${GITHUB_USR}:${GITHUB_PSW}@github.com/kakaoProFit/arcadia-manifest.git ${githubbranch}
+                        """
                     }
                 }
             }
