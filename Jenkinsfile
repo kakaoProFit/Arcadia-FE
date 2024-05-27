@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('Prepare') {
             steps {
-                git branch: "$gitlabbranch", credentialsId: 'githubToken', url: "$gitlaburl"
+                git branch: "$gitlabbranch", credentialsId: 'gitlabToken', url: "$gitlaburl"
             }
         }
         stage('Docker build') {
