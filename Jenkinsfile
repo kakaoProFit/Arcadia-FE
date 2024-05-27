@@ -9,6 +9,7 @@ pipeline {
         githuburl = 'https://github.com/kakaoProFit/arcadia-manifest'
         githubbranch = 'main'
         GITHUB_CREDENTIALS_ID = 'githubToken'
+        GITHUB_CREDENTIALS = credentials('githubToken')
     }
     agent any
     stages {
