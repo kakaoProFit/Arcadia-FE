@@ -10,7 +10,6 @@ pipeline {
         githubbranch = 'main'
         GITHUB_CREDENTIALS_ID = 'githubToken'
         GITHUB_CREDENTIALS = credentials('githubToken')
-        ImageRepository = 'gcu-profit-dev.kr-central-2.kcr.dev/arcadia-nextjs/arcadia-fe'
     }
     agent any
     stages {
@@ -60,7 +59,7 @@ pipeline {
             steps {
                 script {
                     def rolloutFilePath = "${WORKSPACE}/arcadia-fe/rollout.yaml"
-                    def newImageTag = "image: " + "$ImageRepository" + ":$BUILD_NUMBER"
+                    def newImageTag = "image: " + "$repository" + ":$BUILD_NUMBER"
 
                     // Read the file
                     def fileContent = readFile(rolloutFilePath)
@@ -72,13 +71,15 @@ pipeline {
                     writeFile file: rolloutFilePath, text: modifiedContent
 
                     // GitHub 저장소에 변경사항 커밋 및 푸시
+                    withCredentials([usernamePassword(credentialsId: 'githubToken', passwordVariable: 'GITHUB_PSW', usernameVariable: 'GITHUB_USR')]){
                     sh """
                         git config user.name 'mango0422'
                         git config user.email 'tom990422@gmail.com'
                         git add ${rolloutFilePath}
                         git commit -m 'Update image version in rollout.yaml'
-                        git push https://$GITHUB_CREDENTIALS_USR:$GITHUB_CREDENTIALS_PSW@github.com/kakaoProFit/arcadia-manifest.git HEAD:${githubbranch}
+                        git push https://${GITHUB_USR}:${GITHUB_PSW}@github.com/kakaoProFit/arcadia-manifest.git ${githubbranch}
                     """
+                    }
                 }
             }
         }
