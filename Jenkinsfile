@@ -1,7 +1,7 @@
 pipeline {
     environment {
-        repository = 'mango0422/arcadia-page'
-        DOCKERHUB_CREDENTIALS = credentials('dockerToken')
+        repository = 'gcu-profit-dev.kr-central-2.kcr.dev/arcadia-nextjs/fastapi'
+        DOCKERHUB_CREDENTIALS = credentials('kicToken')
         dockerImage = ''
         CONTAINER_NAME = 'arcadia_homepage'
         gitlaburl = 'http://172.16.212.109/kakaoProFit/Arcadia-FE'
@@ -29,7 +29,7 @@ pipeline {
         }
         stage('Login') {
             steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login gcu-profit-dev.kr-central-2.kcr.dev -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
             }
         }
         stage('Deploy our image') {
