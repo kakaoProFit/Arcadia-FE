@@ -13,10 +13,11 @@ export default function SearchWrapper() {
     setTerm(e.target.value)
   }
 
+  // 이거 뭘로 검색하는지도 알아야 하는데? 어케 받는거지?
   const submitSearchContent = (e) => {
     e.preventDefault()
     const params = new URLSearchParams(searchParams)
-    params.set('page', '1')
+    params.set('page', 1)
     if (term) {
       params.set('query', term)
     } else {

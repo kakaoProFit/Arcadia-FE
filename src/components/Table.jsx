@@ -2,19 +2,20 @@
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import React, { useEffect, useState } from 'react'
+import TableHeader from './TableHeader'
 
 export default function Table(props) {
-  const { data, count, login, query, page } = props
+  const { data, count, query, page } = props
   const [datas, setDatas] = useState(data.slice(0, count))
+  const login = true
 
   // 여기 코드는 나중에 다른 파일로 뺄 예정
   const getSearchAndPaginationResult = async () => {
-    const url = `10.10.10.10/api?query=${query}&page=${page}`
+    const url = `10.10.10.10/board/free?query=${query}&page=${page}`
     const requestOptions = {
       method: 'GET',
       cache: 'no-store',
     }
-
     // 나중에 return 형식으로 바꿔야 함. 그렇게 전달 된 녀석을 받아서 사용하면 될 듯
     const temp = await fetch(url, requestOptions)
       .then((res) => (res.ok ? res.json() : data.slice(0, count)))
@@ -35,39 +36,9 @@ export default function Table(props) {
     console.log('check datas ', datas)
   }, [query, page])
 
-  const origin = data
-  function sortLikes() {
-    setDatas(origin.sort((a, b) => a.likes - b.likes))
-  }
-  function sortDates() {
-    setDatas(origin.sort((a, b) => a.date - b.date))
-  }
-  function sortViews() {
-    setDatas(origin.sort((a, b) => a.views - b.views))
-  }
   return (
     <table className="w-full text-sm text-left text-gray-500">
-      <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-        <tr>
-          <th scope="col" className="px-6 py-3">
-            제목
-          </th>
-          <th scope="col" className="px-6 py-3">
-            작성자
-          </th>
-          <th scope="col" className="px-6 py-3">
-            <button onClick={sortDates}>작성일자</button>
-          </th>
-          <th scope="col" className="px-6 py-3">
-            <button onClick={sortViews}>조회수</button>
-          </th>
-          <th scope="col" className="px-6 py-3">
-            <button onClick={sortLikes}>추천수</button>
-          </th>
-          {login && <th scope="col" className="py-3"></th>}
-          {login && <th scope="col" className="py-3"></th>}
-        </tr>
-      </thead>
+      <TableHeader />
       <tbody>
         {datas.map((data) => (
           <tr key={data.id} className="bg-white border-b">
