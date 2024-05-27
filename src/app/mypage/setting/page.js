@@ -67,7 +67,7 @@ export default function SettingPage() {
                 <div className="w-full md:w-full px-3 mb-6">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                    for="grid-text-1"
+                    forhtml="grid-text-1"
                   >
                     이메일 주소
                   </label>
@@ -84,7 +84,7 @@ export default function SettingPage() {
                   <div className="w-full mr-5">
                     <label
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                      for="grid-text-1"
+                      forhtml="grid-text-1"
                     >
                       닉네임
                     </label>
@@ -100,7 +100,7 @@ export default function SettingPage() {
                   <div className="w-3/12">
                     <label
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                      for="grid-text-1"
+                      forhtml="grid-text-1"
                     >
                       닉네임 변경
                     </label>
@@ -116,7 +116,7 @@ export default function SettingPage() {
                   <div className="w-full mr-5">
                     <label
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                      for="grid-text-1"
+                      forhtml="grid-text-1"
                     >
                       휴대폰 번호
                     </label>
@@ -131,7 +131,7 @@ export default function SettingPage() {
                   <div className="w-3/12">
                     <label
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                      for="grid-text-1"
+                      forhtml="grid-text-1"
                     >
                       휴대폰 인증
                     </label>
@@ -174,6 +174,12 @@ export default function SettingPage() {
                       className="text-black bg-white border border-gray-300 w-full text-base px-4 py-3 rounded-md outline-blue-500"
                       value={editedUserInfo.description}
                       required
+                      onChange={(e) => {
+                        setEditedUserInfo({
+                          ...editedUserInfo,
+                          description: e.target.value,
+                        })
+                      }}
                     ></textarea>
                   </div>
                   <div className="flex justify-end">
