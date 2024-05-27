@@ -60,12 +60,12 @@ const ValidForm = () => {
     { type: 'date', id: 'birth', placeholder: 'Birth', text: '생년월일' },
   ]
   return (
-    <div class="text-xl flex items-center md:p-8 p-6 bg-[#ffffff] w-6/12 h-full lg:w-11/12 lg:ml-auto">
+    <div className="text-xl flex items-center md:p-8 p-6 bg-[#ffffff] w-6/12 h-full lg:w-11/12 lg:ml-auto">
       <form
-        class="font-tenada w-9/12 mx-auto"
+        className="font-tenada w-9/12 mx-auto"
         onSubmit={methods.handleSubmit(submitHandler)}
       >
-        <div class="space-y-3">
+        <div className="space-y-3">
           {input.map((field, index) => (
             <div key={index}>
               <label
@@ -82,53 +82,53 @@ const ValidForm = () => {
               />
             </div>
           ))}
-          <div class="flex items-center">
+          <div className="flex items-center">
             <input
               id="remember-me"
               name="remember-me"
               type="checkbox"
-              class="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              className="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
-            <label for="remember-me" class="text-black ml-3 block text-sm">
+            <label for="remember-me" className="text-black ml-3 block text-sm">
               개인 정보 처리 방침에{' '}
               <a
                 href="javascript:void(0);"
-                class="text-blue-600 font-semibold hover:underline ml-1"
+                className="text-blue-600 font-semibold hover:underline ml-1"
               >
                 동의합니다.
               </a>
             </label>
           </div>
         </div>
-        <div class="!mt-10">
+        <div className="!mt-10">
           <button
             type="submit"
-            class="w-full py-3 px-4 text-base font-semibold rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
+            className="w-full py-3 px-4 text-base font-semibold rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
           >
             회원가입
           </button>
         </div>
-        <div class="!mt-3">
+        <div className="!mt-3">
           <button
             type="submit"
-            class="w-full py-3 px-4 text-base font-semibold rounded text-white bg-yellow-300 hover:bg-yellow-400 focus:outline-none"
+            className="w-full py-3 px-4 text-base font-semibold rounded text-white bg-yellow-300 hover:bg-yellow-400 focus:outline-none"
           >
             카카오 회원가입
           </button>
         </div>
-        <div class="!mt-3">
+        <div className="!mt-3">
           <button
             type="submit"
-            class="w-full py-3 px-4 text-base font-semibold rounded text-white bg-green-500 hover:bg-green-600 focus:outline-none"
+            className="w-full py-3 px-4 text-base font-semibold rounded text-white bg-green-500 hover:bg-green-600 focus:outline-none"
           >
             네이버 회원가입
           </button>
         </div>
-        <p class="text-black text-sm mt-6 text-center">
+        <p className="text-black text-sm mt-6 text-center">
           이미 회원 가입을 했다면?{' '}
           <a
             href="javascript:void(0);"
-            class="text-blue-600 font-semibold hover:underline ml-1"
+            className="text-blue-600 font-semibold hover:underline ml-1"
           >
             로그인
           </a>
@@ -140,13 +140,13 @@ const ValidForm = () => {
 
 export default function SignUp() {
   return (
-    <div class="font-[sans-serif] bg-white text-white md:h-screen">
-      <div class="grid md:grid-cols-2 items-center h-full">
+    <div className="font-[sans-serif] bg-white text-white md:h-screen">
+      <div className="grid md:grid-cols-2 items-center h-full">
         <ValidForm />
-        <div class="max-md:order-1 p-4">
+        <div className="max-md:order-1 p-4">
           <img
             src="/images/user2.jpg"
-            class="lg:max-w-[90%] w-full h-full object-contain block mx-auto"
+            className="lg:max-w-[90%] w-full h-full object-contain block mx-auto"
             alt="login-image"
           />
         </div>

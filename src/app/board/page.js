@@ -22,7 +22,7 @@ export default function BoardListPage() {
           <SearchBar />
         </div>
         <div className="my-10 relative overflow-x-auto">
-          <Table data={datas} count={12} />
+          <Table data={datas} />
         </div>
         <Suspense fallback={<RectangleSkeleton />}>
           {/* 원래는 props를 전달해주어야 숫자도 같이 나옴 */}

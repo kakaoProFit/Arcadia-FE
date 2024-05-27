@@ -1,3 +1,5 @@
+import Modal from '@/components/modal'
+
 export default function test() {
   return (
     <section className="bg-white font-tenada">
