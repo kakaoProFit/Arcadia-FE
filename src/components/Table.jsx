@@ -1,7 +1,7 @@
 'use client'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
-import React, { useEffect, useState, use } from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function Table(props) {
   const { data, count, login, query, page } = props
@@ -14,18 +14,25 @@ export default function Table(props) {
       method: 'GET',
       cache: 'no-store',
     }
-    const temp = await fetch(url, requestOptions).then((res) =>
-      res.ok ? res.json() : { state: false },
-    )
-    console.log(temp.state)
-    // 여기서 넣어줄건데 더미데이터 던질거니까 그거 만들고 넣자.
-    // setDatas()
+
+    // 나중에 return 형식으로 바꿔야 함. 그렇게 전달 된 녀석을 받아서 사용하면 될 듯
+    const temp = await fetch(url, requestOptions)
+      .then((res) => (res.ok ? res.json() : data.slice(0, count)))
+      .then((data) => {
+        console.log('check set ', data)
+        setDatas(data)
+      })
+    // console.log("check temp ", temp)
+    // return
   }
 
   useEffect(() => {
     // 일단 의도한대로 페이지네이션이랑 쿼리 바뀔때 돌긴 돌음.
-    console.log('check')
-    // getSearchAndPaginationResult()
+    // 문제는 그냥 새로고침을 갈겨도 돈다는것임. 그래서 일단은 쿼리값이 없거나 page값이 1이면 안돌게 했음.
+    if (query !== '' || page !== 1) {
+      getSearchAndPaginationResult()
+    }
+    console.log('check datas ', datas)
   }, [query, page])
 
   const origin = data
