@@ -8,6 +8,9 @@ pipeline {
         gitlabbranch = 'develop'
         githuburl = 'https://github.com/kakaoProFit/arcadia-manifest'
         githubbranch = 'main'
+        GITHUB_CREDENTIALS_ID = 'githubToken'
+        GITHUB_USER_NAME = 'mango0422'
+        GITHUB_USER_EMAIL = 'tom990422@gmail.com'
     }
     agent any
     stages {
@@ -37,9 +40,22 @@ pipeline {
                 }
             }
         }
-        stage('Clone from GitHub') {
+        stage('Checkout') {
             steps {
-                git branch: "${githubbranch}", credentialsId: 'githubToken', url: "${githuburl}"
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: "*/${githubbranch}"]],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [
+                        [$class: 'UserIdentity', name: "${GITHUB_USER_NAME}", email: "${GITHUB_USER_EMAIL}"],
+                        [$class: 'CleanBeforeCheckout']
+                    ],
+                    submoduleCfg: [],
+                    userRemoteConfigs: [[
+                        credentialsId: "${GITHUB_CREDENTIALS_ID}",
+                        url: ${githuburl}
+                    ]]
+                ])
             }
         }
         stage('Update rollout.yaml') {
@@ -53,11 +69,9 @@ pipeline {
 
                     withCredentials([usernamePassword(credentialsId: 'githubToken', passwordVariable: 'GITHUB_PSW', usernameVariable: 'GITHUB_USR')]){ // GitHub 저장소에 변경사항 커밋 및 푸시
                         sh """
-                            git config user.name 'mango0422'
-                            git config user.email 'tom990422@gmail.com'
                             git add ${rolloutFilePath}
                             git commit -m 'Update image version in rollout.yaml'
-                            git push https://${GITHUB_USR}:${GITHUB_PSW}@github.com/kakaoProFit/arcadia-manifest.git ${githubbranch}
+                            git push origin ${githubbranch}
                         """
                     }
                 }
