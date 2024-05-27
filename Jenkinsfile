@@ -53,7 +53,6 @@ pipeline {
 
                     withCredentials([usernamePassword(credentialsId: 'githubToken', passwordVariable: 'GITHUB_PSW', usernameVariable: 'GITHUB_USR')]){ // GitHub 저장소에 변경사항 커밋 및 푸시
                         sh """
-                            git pull
                             git config user.name 'mango0422'
                             git config user.email 'tom990422@gmail.com'
                             git add ${rolloutFilePath}
