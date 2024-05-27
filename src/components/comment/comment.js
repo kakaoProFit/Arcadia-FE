@@ -59,7 +59,7 @@ function postComment(props) {
     })
 }
 
-function Comment(props) {
+function Comment({ props }) {
   console.log('diary ID: ', props.props) //일기의 ID 확인
 
   const commentRef = useRef(null)
@@ -113,72 +113,93 @@ function Comment(props) {
     setComments(commentList)
   }, [])
 
+  const sjn = [
+    {
+      id: 1,
+      name: '우울증유저',
+      comment: '잘 보고 갑니다.',
+    },
+    {
+      id: 2,
+      name: '헤헤',
+      comment: '좋은 글이네요.',
+    },
+  ]
+
   return (
-    <>
-      {/* 댓글 목록 */}
-      <Box
-        mt={0}
-        sx={{
-          '& .MuiTextField-root': { m: 1, width: '100ch' },
-        }}
-      >
-        <List>
-          {comments.map((comment, index) => (
-            <ListItem key={index} alignItems="center">
-              {/* 댓글 단 유저의 닉네임이 표시되는 것은 일정 크기를 정해놨음. 이거 안하면 닉네임의 길이에 따라 위치가 달라짐 */}
-              <p
-                style={{
-                  minWidth: '15ch',
-                  maxWidth: '15ch',
-                  marginRight: '1ch',
-                }}
-              >
-                <strong>{comment.userNickname}</strong>
-              </p>
-              <TextField
-                multiline
-                fullWidth
-                variant="outlined"
-                value={comment.comment}
-                InputProps={{
-                  readOnly: true,
-                }}
-                sx={{
-                  '& .MuiInputBase-root': {
-                    // 내용의 글자 크기를 조절
-                    fontSize: '0.9rem',
-                  },
-                }}
-              />
-            </ListItem>
-          ))}
-        </List>
-      </Box>
-      <Box
-        component="form"
-        sx={{
-          '& .MuiTextField-root': { m: 1, width: '100ch' },
-        }}
-        noValidate
-        autoComplete="off"
-      >
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <TextField
-            id="outlined-multiline-static"
-            label="댓글"
-            multiline
-            rows={2}
-            defaultValue="댓글을 입력하세요..."
-            inputRef={commentRef}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-          />
-          <Button variant="contained" onClick={handleCommentSubmit}>
-            저장
-          </Button>
+    <section className="bg-white">
+      <div className="mx-auto w-10/12 px-4">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-lg lg:text-2xl font-bold text-gray-900">
+            댓글 ({props.length})
+          </h2>
         </div>
-      </Box>
-    </>
+        <form className="mb-6">
+          {' '}
+          {/* 댓글 입력창 */}
+          <div className="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200">
+            <label for="comment" className="sr-only">
+              Your comment
+            </label>
+            <textarea
+              id="comment"
+              rows="6"
+              className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none"
+              placeholder="Write a comment..."
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="font-tenada text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
+          >
+            댓글 작성
+          </button>
+        </form>
+        {props.map((comment, key) => (
+          <article key={key} className="p-6 text-base bg-white rounded-lg">
+            {' '}
+            {/* 댓글 목록 */}
+            <footer className="flex justify-between items-center mb-2">
+              <div className="flex items-center">
+                <p className="inline-flex items-center mr-3 text-sm text-gray-900 font-semibold">
+                  <img
+                    className="mr-2 w-6 h-6 rounded-full"
+                    src="/images/user1.jpg"
+                    alt="user"
+                  />
+                  {comment.name}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <time
+                    pubdate
+                    datetime="2022-02-08"
+                    title="February 8th, 2022"
+                  >
+                    Feb. 8, 2022
+                  </time>
+                </p>
+              </div>
+            </footer>
+            <p className="text-gray-500">{comment.comment}</p>
+            <div className="flex items-center mt-4 space-x-4">
+              <button
+                type="button"
+                className="flex items-center text-sm text-black-500 hover:underline font-medium"
+              >
+                삭제
+              </button>
+              <button
+                type="button"
+                className="flex items-center text-sm text-black-500 hover:underline font-medium"
+              >
+                수정
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
   )
 }
 
