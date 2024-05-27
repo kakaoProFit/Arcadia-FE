@@ -1,21 +1,23 @@
 pipeline {
-    environment{
+    environment {
         repository = 'mango0422/arcadia-page'
         DOCKERHUB_CREDENTIALS = credentials('dockerToken')
         dockerImage = ''
         CONTAINER_NAME = 'arcadia_homepage'
-        giturl = 'https://github.com/kakaoProFit/Arcadia-FE'
-        gitbranch = 'develop'
+        gitlaburl = 'http://172.16.212.109/kakaoProFit/Arcadia-FE'
+        gitlabbranch = 'develop'
+        githuburl = 'https://github.com/kakaoProFit/arcadia-manifest'
+        githubbranch = 'main'
+        GITHUB_CREDENTIALS_ID = 'githubToken'
     }
-    agent any 	// 사용 가능한 에이전트에서 이 파이프라인 또는 해당 단계를 실행
+    agent any
     stages {
-        stage('Prepare'){
-            steps{
-                git branch: "$gitbranch", credentialsId: 'githubToken', url: "$giturl"
+        stage('Prepare') {
+            steps {
+                git branch: "$gitlabbranch", credentialsId: 'githubToken', url: "$gitlaburl"
             }
-
         }
-        stage('Docker build'){
+        stage('Docker build') {
             steps {
                 script {
                     dockerImage = docker.build repository + ":$BUILD_NUMBER"
@@ -23,24 +25,60 @@ pipeline {
                 sh 'docker image tag $repository:$BUILD_NUMBER $repository:latest'
             }
         }
-        stage('Login'){
+        stage('Login') {
             steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
-        stage('Deploy our image') { 
-            steps { 
+        stage('Deploy our image') {
+            steps {
                 script {
-                    sh 'docker push $repository:$BUILD_NUMBER' //docker push
+                    sh 'docker push $repository:$BUILD_NUMBER'
                     sh 'docker push $repository:latest'
-                    // sh 'docker rmi $repository:$previous_build_number'
-                } 
+                }
             }
-        } 
+        }
         stage('Deploy') {
             steps {
                 sh 'docker rm -f $CONTAINER_NAME'
-                sh 'docker run -d -p 3000:3000 --name $CONTAINER_NAME $repository'
+                sh 'docker run -d -p 3000:3000 --name $CONTAINER_NAME $repository:$BUILD_NUMBER'
+            }
+        }
+        stage('Clone from GitHub') {
+            steps {
+                script {
+                    checkout([$class: 'GitSCM', branches: [[name: "$githubbranch"]],
+                            doGenerateSubmoduleConfigurations: false,
+                            extensions: [],
+                            userRemoteConfigs: [[credentialsId: "$GITHUB_CREDENTIALS_ID", url: "$githuburl"]]])
+                }
+            }
+        }
+        stage('Update rollout.yaml') {
+            steps {
+                script {
+                    def rolloutFilePath = "${WORKSPACE}/arcadia-fe/rollout.yaml"
+                    def imageLinePrefix = '- image: gcu-profit-dev.kr-central-2.kcr.dev/arcadia-nextjs/arcadia-fe:'
+                    def newImageTag = "$BUILD_NUMBER"
+
+                    // Read the file
+                    def fileContent = readFile(rolloutFilePath)
+
+                    // Modify the line with the new image tag
+                    def modifiedContent = fileContent.replaceAll(/(?m)^(\s*${imageLinePrefix}).*$/, "\$1${newImageTag}")
+
+                    // Write the modified content back to the file
+                    writeFile file: rolloutFilePath, text: modifiedContent
+
+                    // GitHub 저장소에 변경사항 커밋 및 푸시
+                    sh """
+                        git config user.name 'mango0422'
+                        git config user.email 'tom990422@gmail.com'
+                        git add ${rolloutFilePath}
+                        git commit -m 'Update image version in rollout.yaml'
+                        git push https://$GITHUB_CREDENTIALS_USR:$GITHUB_CREDENTIALS_PSW@github.com/kakaoProFit/arcadia-manifest.git HEAD:${githubbranch}
+                    """
+                }
             }
         }
     }
