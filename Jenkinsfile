@@ -47,7 +47,7 @@ pipeline {
                     branches: [[name: "*/${githubbranch}"]],
                     doGenerateSubmoduleConfigurations: false,
                     extensions: [
-                        [$class: 'UserIdentity', name: "${GITHUB_USER_NAME}", email: "${GITHUB_USER_EMAIL}"],
+                        [$class: 'UserIdentity', username: "${GITHUB_USER_NAME}", email: "${GITHUB_USER_EMAIL}"],
                         [$class: 'CleanBeforeCheckout']
                     ],
                     submoduleCfg: [],
