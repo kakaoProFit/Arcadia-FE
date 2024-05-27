@@ -10,6 +10,7 @@ pipeline {
         githubbranch = 'main'
         GITHUB_CREDENTIALS_ID = 'githubToken'
         GITHUB_CREDENTIALS = credentials('githubToken')
+        ImageRepository = 'gcu-profit-dev.kr-central-2.kcr.dev/arcadia-nextjs/arcadia-fe'
     }
     agent any
     stages {
@@ -59,13 +60,13 @@ pipeline {
             steps {
                 script {
                     def rolloutFilePath = "${WORKSPACE}/arcadia-fe/rollout.yaml"
-                    def newImageTag = "tag:" + "$BUILD_NUMBER"
+                    def newImageTag = "image:" + "$ImageRepository" + ":$BUILD_NUMBER"
 
                     // Read the file
                     def fileContent = readFile(rolloutFilePath)
 
                     // Modify the line with the new image tag
-                    def modifiedContent = fileContent.replaceAll("tag:.*", "${newImageTag}")
+                    def modifiedContent = fileContent.replaceAll("image:.*", "${newImageTag}")
 
                     // Write the modified content back to the file
                     writeFile file: rolloutFilePath, text: modifiedContent
