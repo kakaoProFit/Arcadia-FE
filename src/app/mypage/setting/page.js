@@ -21,22 +21,19 @@ export default function SettingPage() {
   const [editedUserInfo, setEditedUserInfo] = useState({ ...profileInfo }) // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태
   const [selectedImage, setSelectedImage] = useState(profileImage) // 선택된 이미지를 관리
 
-  useEffect(
-    () => {
-      const profileImageTemp = getProfileImage()
-      const profileInfoTemp = getProfileInfo()
+  useEffect(() => {
+    // const profileImageTemp = getProfileImage()
+    // const profileInfoTemp = getProfileInfo()
 
-      setSelectedImage(profileImageTemp)
-      setEditedUserInfo(profileInfoTemp)
+    // setSelectedImage(profileImageTemp)
+    // setEditedUserInfo(profileInfoTemp)
 
-      setIsLoading(false)
+    setIsLoading(false)
 
-      console.log('profileImage1111: ', profileImageTemp)
-      console.log('profileInfo1111: ', profileInfoTemp)
-    },
-    [profileImage],
-    [profileInfo],
-  )
+    // console.log('profileImage1111: ', profileImageTemp)
+    // console.log('profileInfo1111: ', profileInfoTemp)
+    console.log('check')
+  }, [])
 
   if (isLoading) {
     return (
