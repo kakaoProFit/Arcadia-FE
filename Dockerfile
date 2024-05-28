@@ -1,10 +1,9 @@
 FROM node:20.11.1-alpine
 
-COPY package.json ./
+COPY . /app
+WORKDIR /app
 
 RUN npm install
-
-COPY . .
 
 RUN npm run build
 
