@@ -55,8 +55,6 @@ export default function TableHeader() {
         <th scope="col" className="px-6 py-3">
           <button onClick={sortLikes}>좋아요</button>
         </th>
-        <th scope="col" className="py-3"></th>
-        <th scope="col" className="py-3"></th>
       </tr>
     </thead>
   )

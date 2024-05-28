@@ -1,6 +1,4 @@
 'use client'
-import DeleteIcon from '@mui/icons-material/Delete'
-import EditIcon from '@mui/icons-material/Edit'
 import React, { useEffect, useState } from 'react'
 import TableHeader from './TableHeader'
 
@@ -52,16 +50,6 @@ export default function Table(props) {
             <td className="px-6 py-4">{data.date}</td>
             <td className="px-6 py-4">{data.views}</td>
             <td className="px-6 py-4">{data.likes}</td>
-            {login && (
-              <td className="py-4">
-                <DeleteIcon color="secondary" sx={{ fontSize: 16 }} />
-              </td>
-            )}
-            {login && (
-              <td className="py-4">
-                <EditIcon color="secondary" sx={{ fontSize: 16 }} />
-              </td>
-            )}
           </tr>
         ))}
       </tbody>
