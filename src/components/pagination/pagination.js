@@ -18,7 +18,7 @@ export default function DiaryPagination(props) {
     const params = new URLSearchParams(searchParams)
     params.set('page', pageNumber)
     if (search !== null) params.set('query', search)
-    if (search !== null) params.set('sortType', sortType)
+    if (sortType !== null) params.set('sortType', sortType)
     setCurrentPage(Number(params.get('page')))
     // 일단은 하드코딩으로 새로고침이 됨.
     // 추후에 클라이언트 사이드로 랜더링할 수 있도록 하고 page가 바뀌면 데이터를 갈아끼우는 부분이 page.js에 필요함

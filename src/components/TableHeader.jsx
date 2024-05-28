@@ -24,9 +24,13 @@ export default function TableHeader() {
   function updateSortType() {
     const params = new URLSearchParams(searchParams)
     params.set('page', 1)
+    // 이 부분은 논의가 필요함.
+    // 검색한 곳에서도 정렬이 가능한가?
     const search = searchParams.get('query')
-    if (search !== null) params.delete('query')
-
+    if (search !== null) {
+      params.delete('query')
+      params.delete('queryType')
+    }
     if (sortType === 0) params.set('sortType', '작성일자순')
     else if (sortType === 1) params.set('sortType', '조회순')
     else if (sortType === 2) params.set('sortType', '좋아요순')
@@ -34,6 +38,7 @@ export default function TableHeader() {
   }
 
   useEffect(() => {
+    console.log('check sortType')
     updateSortType()
   }, [sortType])
 

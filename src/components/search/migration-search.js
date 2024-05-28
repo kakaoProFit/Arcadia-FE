@@ -8,20 +8,27 @@ export default function SearchWrapper() {
   const searchParams = useSearchParams()
 
   const [term, setTerm] = useState('')
+  const [typeOfQuery, setTypeOfQuery] = useState(0)
 
   const handleSearchValue = (e) => {
     setTerm(e.target.value)
   }
+  const titleType = () => setTypeOfQuery(0)
+  const titleAndContentType = () => setTypeOfQuery(1)
+  const authorType = () => setTypeOfQuery(2)
 
   // 이거 뭘로 검색하는지도 알아야 하는데? 어케 받는거지?
   const submitSearchContent = (e) => {
     e.preventDefault()
     const params = new URLSearchParams(searchParams)
     params.set('page', 1)
+    if (searchParams.get('sortType') !== null) params.delete('sortType')
     if (term) {
       params.set('query', term)
+      params.set('queryType', typeOfQuery)
     } else {
       params.delete('query')
+      params.delete('queryType')
     }
     router.replace(`${pathname}?${params.toString()}`)
     //검색창 비우기
@@ -59,6 +66,7 @@ export default function SearchWrapper() {
               <button
                 type="button"
                 class="inline-flex w-full px-4 py-2 hover:bg-gray-100"
+                onClick={titleType}
               >
                 제목
               </button>
@@ -67,6 +75,7 @@ export default function SearchWrapper() {
               <button
                 type="button"
                 class="inline-flex w-full px-4 py-2 hover:bg-gray-100"
+                onClick={titleAndContentType}
               >
                 제목+내용
               </button>
@@ -75,6 +84,7 @@ export default function SearchWrapper() {
               <button
                 type="button"
                 class="inline-flex w-full px-4 py-2 hover:bg-gray-100"
+                onClick={authorType}
               >
                 작성자
               </button>
