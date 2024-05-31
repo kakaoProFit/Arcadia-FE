@@ -6,6 +6,8 @@ import Button from '@/components/Button'
 import DiaryPagination from '@/components/pagination/pagination'
 import RectangleSkeleton from '@/components/loading-skeleton/rectangle-skeleton'
 import SearchWrapper from '@/components/search/migration-search'
+import BoardDatePicker from '@/components/date-picker/date-picker'
+import { headers } from 'next/headers'
 
 export default function BoardListPage({ searchParams }) {
   // useState 훅을 사용하여 login 상태와 상태를 변경하는 함수를 선언합니다.
@@ -23,16 +25,22 @@ export default function BoardListPage({ searchParams }) {
           자유 게시판
         </span>
         <div className="flex flex-end justify-end">
-          <Suspense fallback={<RectangleSkeleton />}>
+          <Suspense fallback={<RectangleSkeleton width={500} height={40} />}>
             <SearchWrapper />
           </Suspense>
         </div>
-        <div className="my-10 relative overflow-x-auto">
-          {/* <Suspense fallback={<RectangleSkeleton />}> */}
-          <Table data={datas} count={12} query={query} page={currentPage} />
-          {/* </Suspense> */}
+        <div className="flex flex-end justify-end mt-3">
+          <Suspense fallback={<RectangleSkeleton width={500} height={40} />}>
+            {/* 이 녀석 다시 배치되어야함. */}
+            <BoardDatePicker />
+          </Suspense>
         </div>
-        <Suspense fallback={<RectangleSkeleton />}>
+        <div className="my-10 relative overflow-x-auto">
+          <Suspense fallback={<RectangleSkeleton width={1440} height={1100} />}>
+            <Table data={datas} count={12} query={query} page={currentPage} />
+          </Suspense>
+        </div>
+        <Suspense fallback={<RectangleSkeleton width={300} height={50} />}>
           {/* 원래는 props를 전달해주어야 숫자도 같이 나옴 */}
           <DiaryPagination />
         </Suspense>
