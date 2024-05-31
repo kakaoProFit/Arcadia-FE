@@ -10,16 +10,38 @@ export default function Join() {
     fullName: 'Imbut',
   }
 
+  async function test() {
+    try {
+      const response = await fetch(
+        'https://arcadia-spring.p-e.kr/test?input=1234',
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      )
+      console.log({ response })
+      setRes(response)
+    } catch (error) {
+      console.error('Error during fetch:', error)
+      setRes({ error: 'Fetch error' })
+    }
+  }
+
   async function trySignup(data) {
     console.log('fetching')
     try {
-      const response = await fetch('http://arcadia-spring.p-e.kr/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        'https://arcadia-spring.p-e.kr/auth/signup',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
         },
-        body: JSON.stringify(data),
-      })
+      )
       console.log('done')
       const resData = await response.json()
       setRes(resData)
@@ -37,6 +59,7 @@ export default function Join() {
   return (
     <div>
       <button onClick={() => trySignup(data)}>회원가입</button>
+      <button onClick={() => test()}>회원가입</button>
       <button onClick={consoleLog}>콘솔</button>
       {res && <div>{JSON.stringify(res)}</div>}
     </div>

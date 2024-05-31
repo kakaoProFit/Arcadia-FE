@@ -1,8 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // experimental: {
-    //     missingSuspenseWithCSRBailout: false,
-    //   },
+    reactStrictMode: true,
+    swcMinify: true,
+    async rewrites() {
+        return [
+            {
+                source: "/:path*",
+                destination: "https://arcadia-spring.p-e.kr/:path*"
+            }
+        ];
+    }
 };
 
 export default nextConfig;
