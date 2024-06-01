@@ -2,7 +2,7 @@
 
 import 'react-quill/dist/quill.snow.css'
 import styled from 'styled-components'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import Button from '@mui/material/Button'
 import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'

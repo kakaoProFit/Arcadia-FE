@@ -3,8 +3,7 @@
 
 import Stack from '@mui/material/Stack'
 import dynamic from 'next/dynamic'
-import { useSearchParams } from 'next/navigation' // 이 기능때문에 use client해야함
-import { Suspense, useEffect } from 'react'
+import { Suspense } from 'react'
 
 const ModifyEditor = dynamic(
   () => import('@/components/readDiary/modifyEditor.js'),
