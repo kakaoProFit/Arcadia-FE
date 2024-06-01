@@ -37,6 +37,20 @@ export default function BoardDatePicker() {
       //이거 활성화되면 검색창 못쓰게 막는 것도 해야할거같은데..? 이거 api 어떻게 가려나
       // query에 넣어서 보낼거면 검색창 못쓰는게 맞고 새로 변수를 만들어서 보내면 검색창 써도 상관 없긴 해
       console.log('date change')
+      // const search = searchParams.get('query')
+      // const sortType = searchParams.get('sortType')
+      const params = new URLSearchParams(searchParams)
+      const sortType = searchParams.get('sortType')
+      // 또는 sortType !== '작성일자순' 으로 해도 될듯
+      if (sortType !== null) params.delete('sortType')
+      params.set('page', 1)
+      params.set('startDate', startDate)
+      params.set('endDate', endDate)
+
+      // 있던거에 뒤집어 씌워서 하는 역할이라 추가로 늘어자는 않는구나! set을 추가로 해도 말이지.
+      // 일단은 하드코딩으로 새로고침이 됨.
+      // 추후에 클라이언트 사이드로 랜더링할 수 있도록 하고 page가 바뀌면 데이터를 갈아끼우는 부분이 page.js에 필요함
+      router.replace(`${pathname}?${params.toString()}`)
     }
   }, [startDate, endDate])
   return (

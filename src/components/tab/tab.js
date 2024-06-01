@@ -2,11 +2,14 @@
 import Link from 'next/link'
 import { board_tab_config, mypage_tab_config } from '@/constants/tab-config'
 import { usePathname } from 'next/navigation'
+import React, { useState } from 'react'
 
 export default function SubTab() {
   // let tab_config_data=mypage_tab_config;
   let tab_config_data = []
   const pathname = usePathname()
+  // const [isBoard, setIsBoard] = useState(true)
+  let isBoard = true
   // 마이페이지와 일반 게시판에 대한 탭을 다르게 띄워주기 위한 분기처리
 
   // 이런 방식으로 안하면 matcher라는 미들웨어를 도입하면 가능하긴 함.
@@ -20,6 +23,7 @@ export default function SubTab() {
     pathname === '/board/inform'
   ) {
     tab_config_data = board_tab_config
+    isBoard = true
   } else if (
     pathname === '/mypage' ||
     pathname === '/mypage/doc' ||
@@ -29,12 +33,15 @@ export default function SubTab() {
     pathname === '/mypage/setting'
   ) {
     tab_config_data = mypage_tab_config
+    isBoard = false
   }
+
+  const title = tab_config_data.find((data) => data.href === pathname)
 
   return (
     <div className="bg-white mb-10 lg:px-6 py-2.5">
       <div class="mx-auto font-tenada">
-        <div class="mx-10 border-b border-gray-200 dark:border-gray-700 mb-4">
+        <div class="mx-10 border-b border-gray-200 dark:border-gray-700 mb-10">
           <ul
             class="flex flex-wrap -mb-px"
             id="myTab"
@@ -53,6 +60,11 @@ export default function SubTab() {
             ))}
           </ul>
         </div>
+        {isBoard && (
+          <span className="mx-20 self-center text-4xl my-10 font-semibold whitespace-nowrap">
+            {title.title}
+          </span>
+        )}
       </div>
     </div>
   )

@@ -7,7 +7,6 @@ import DiaryPagination from '@/components/pagination/pagination'
 import RectangleSkeleton from '@/components/loading-skeleton/rectangle-skeleton'
 import SearchWrapper from '@/components/search/migration-search'
 import BoardDatePicker from '@/components/date-picker/date-picker'
-import { headers } from 'next/headers'
 
 export default function BoardListPage({ searchParams }) {
   // useState 훅을 사용하여 login 상태와 상태를 변경하는 함수를 선언합니다.
@@ -16,14 +15,16 @@ export default function BoardListPage({ searchParams }) {
   const datas = TableData()
 
   const query = searchParams?.query || ''
+  const queryType = Number(searchParams?.queryType) || 0 // default queryType : 제목
   const currentPage = Number(searchParams?.page) || 1
+  const sortType = searchParams?.sortType || '작성일자순'
 
   return (
     <div className="bg-white">
       <div className="mx-20 font-tenada">
-        <span className="mx-5 self-center text-3xl my-10 font-semibold whitespace-nowrap">
+        {/* <span className="mx-5 self-center text-3xl my-10 font-semibold whitespace-nowrap">
           자유 게시판
-        </span>
+        </span> */}
         <div className="flex flex-end justify-end">
           <Suspense fallback={<RectangleSkeleton width={500} height={40} />}>
             <SearchWrapper />
@@ -37,14 +38,22 @@ export default function BoardListPage({ searchParams }) {
         </div>
         <div className="my-10 relative overflow-x-auto">
           <Suspense fallback={<RectangleSkeleton width={1440} height={1100} />}>
-            <Table data={datas} count={12} query={query} page={currentPage} />
+            <Table
+              data={datas}
+              count={12}
+              query={query}
+              queryType={queryType}
+              page={currentPage}
+              sortType={sortType}
+            />
           </Suspense>
         </div>
         <Suspense fallback={<RectangleSkeleton width={300} height={50} />}>
           {/* 원래는 props를 전달해주어야 숫자도 같이 나옴 */}
-          <DiaryPagination />
+          <DiaryPagination test={currentPage} />
         </Suspense>
         <div className="flex flex-end justify-end">
+          {/* 여기도 수정 필요함. write 페이지를 바깥에 빼고 통합 페이지로 할거면 */}
           <Button name="작성" href="/board/diary/write" />
         </div>
       </div>
