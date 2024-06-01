@@ -1,11 +1,13 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 
 import { useForm, useController } from 'react-hook-form'
 import JoinRules from '@/constants/Rules/JoinRules'
 
 const rules = JoinRules
+const baseUrl = 'https://arcadia-spring.p-e.kr'
+
 function ValidInput({ control, name, ruleName }) {
   const {
     field,
@@ -27,7 +29,6 @@ function ValidInput({ control, name, ruleName }) {
         onChange={field.onChange}
         onBlur={field.onBlur}
         value={field.value}
-        inputRef={field.ref}
         control={control}
         margin="normal"
         id={name}
@@ -39,9 +40,7 @@ function ValidInput({ control, name, ruleName }) {
 const ValidForm = () => {
   const methods = useForm()
   const { register, handleSubmit, control } = methods
-  const submitHandler = (data) => {
-    // 데이터 처리
-  }
+  const submitHandler = async (data) => {}
   const input = [
     {
       type: 'email',
@@ -55,16 +54,18 @@ const ValidForm = () => {
       placeholder: 'Password',
       text: '비밀번호',
     },
-    { type: 'text', id: 'nickname', placeholder: 'Nickname', text: '닉네임' },
-    { type: 'tel', id: 'phone', placeholder: 'Phone number', text: '전화번호' },
-    { type: 'date', id: 'birth', placeholder: 'Birth', text: '생년월일' },
+    { type: 'text', id: 'fullName', placeholder: 'Nickname', text: '닉네임' },
   ]
+  const [data, setData] = useState(null)
+  const [error, setError] = useState(null)
+  function test() {
+    console.log(data)
+    console.log(error)
+  }
   return (
     <div className="text-xl flex items-center md:p-8 p-6 bg-[#ffffff] w-6/12 h-full lg:w-11/12 lg:ml-auto">
-      <form
-        className="font-tenada w-9/12 mx-auto"
-        onSubmit={methods.handleSubmit(submitHandler)}
-      >
+      <button onClick={test}>test</button>
+      <form className="font-tenada w-9/12 mx-auto" onSubmit={submitHandler}>
         <div className="space-y-3">
           {input.map((field, index) => (
             <div key={index}>
@@ -89,10 +90,13 @@ const ValidForm = () => {
               type="checkbox"
               className="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
-            <label for="remember-me" className="text-black ml-3 block text-sm">
+            <label
+              htmlFor="remember-me"
+              className="text-black ml-3 block text-sm"
+            >
               개인 정보 처리 방침에{' '}
               <a
-                href="javascript:void(0);"
+                href="#"
                 className="text-blue-600 font-semibold hover:underline ml-1"
               >
                 동의합니다.
@@ -127,7 +131,7 @@ const ValidForm = () => {
         <p className="text-black text-sm mt-6 text-center">
           이미 회원 가입을 했다면?{' '}
           <a
-            href="javascript:void(0);"
+            href="#"
             className="text-blue-600 font-semibold hover:underline ml-1"
           >
             로그인

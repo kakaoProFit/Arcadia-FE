@@ -5,7 +5,6 @@ import theme from '@/styles/theme'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { ThemeModeScript } from 'flowbite-react'
-
 import Head from 'next/head'
 import Script from 'next/script'
 import Link from 'next/link'
