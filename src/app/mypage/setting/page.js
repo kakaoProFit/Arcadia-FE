@@ -4,6 +4,7 @@ import Modal from '@/components/Modal'
 import RectangleSkeleton from '@/components/loading-skeleton/rectangle-skeleton'
 import { getProfileImage, getProfileInfo } from '@/services/profile-data'
 import { useState, useEffect } from 'react'
+import { CheckLogin } from '@/services/CookieManage'
 
 export default function SettingPage() {
   let profileImage = ''
@@ -42,6 +43,7 @@ export default function SettingPage() {
       </div>
     )
   }
+  CheckLogin()
 
   return (
     <div className="bg-white">
