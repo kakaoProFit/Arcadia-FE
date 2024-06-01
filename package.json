@@ -30,7 +30,6 @@
     "react": "^18",
     "react-audio-player-component": "^1.2.4",
     "react-chatbot-kit": "^2.2.2",
-    "react-cookie": "^7.1.4",
     "react-dom": "^18",
     "react-h5-audio-player": "^3.9.1",
     "react-hook-form": "^7.51.3",
