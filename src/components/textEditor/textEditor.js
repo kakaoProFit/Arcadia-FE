@@ -12,6 +12,8 @@ import { useRouter } from 'next/navigation'
 import TextField from '@mui/material/TextField'
 import Grid from '@mui/material/Grid'
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import AWS from 'aws-sdk'
+import CreateUrl from '@/services/preSigned'
 
 const toolBars = {
   // Quill의 동작과 기능을 사용자 정의. 화면에 tool이 보이게 함.
@@ -111,50 +113,62 @@ const TextEditor = (props) => {
     // input이 클릭되면 파일 선택창이 나타난다.
 
     // input에 변화가 생긴다면 = 이미지를 선택
-    input.addEventListener('change', async () => {
+    input.addEventListener('change', () => {
       console.log('온체인지')
       const file = input.files[0]
 
       console.log('file.name: ', file.name)
 
-      const encodedName = Buffer.from(file.name).toString('base64')
-      const ext = file.type.split('/')[1]
-      const key = `arcadia-profit-1/${encodedName}.${ext}` // 경로(path)는 버킷이름!
-      const bucketParams = {
+      // const url = CreateUrl(file.name)
+      const s3 = new AWS.S3()
+      const url = s3.getSignedUrl('putObject', {
         Bucket: 'arcadia-profit-1',
-        Key: key,
-        Body: file,
-        ContentType: file.type, // 지정하지 않으면 브라우저창에서 열지않고 다운로드 받는다!
-        ACL: 'public-read',
-      }
+        Key: file.name,
+        // Expires: signedUrlExpireSeconds,
+        ContentType: 'image/*',
+      })
+      console.log('url: ', url)
 
-      try {
-        const response = await s3Client.send(new PutObjectCommand(bucketParams))
-        console.log('과연?: ', response.json)
-      } catch (err) {
-        console.log('Error', err)
-      }
+      // const encodedName = Buffer.from(file.name).toString('base64')
+      // const ext = file.type.split('/')[1]
+      // const key = `arcadia-profit-1/${encodedName}.${ext}` // 경로(path)는 버킷이름!
+      // const bucketParams = {
+      //   Bucket: 'arcadia-profit-1',
+      //   Key: key,
+      //   Body: file,
+      //   ContentType: file.type, // 지정하지 않으면 브라우저창에서 열지않고 다운로드 받는다!
+      // }
 
-      const formData = new FormData()
-      formData.append('img', file) // formData는 키-밸류 구조
-      console.log('formData: ', formData)
-      for (let key of formData.keys()) {
-        console.log(key, ':', formData.get(key))
-      }
-      // 백엔드에 이미지를 보낸다.
+      // try {
+      // const response = s3Client.send(new PutObjectCommand(bucketParams))
+      // } catch (err) {
+      //   console.log('Error', err)
+      // }
+
+      // const formData = new FormData()
+      // formData.append('img', file) // formData는 키-밸류 구조
+      // console.log('formData: ', formData)
+      // for (let key of formData.keys()) {
+      //   console.log(key, ':', formData.get(key))
+      // }
+
+      // s3에 이미지를 보낸다.
       try {
-        const response = await fetch('http://localhost:4050/img', {
-          method: 'POST',
-          body: formData,
+        const response = fetch(url, {
+          method: 'PUT',
+          body: file,
+          headers: { 'Content-Type': file.type, 'x-amz-acl': 'public-read' },
         })
 
         if (!response.ok) {
           throw new Error('Network response was not ok')
         }
 
-        const result = await response.json()
-        console.log('성공 시, 백엔드가 보내주는 데이터', result.url)
-        const IMG_URL = result.url
+        // const result = response.json()
+        // console.log('성공 시, 백엔드가 보내주는 데이터', result.url)
+        // const IMG_URL = result.url
+        // const IMG_URL = `https://arcadia-profit-1.s3.ap-northeast-2.amazonaws.com/arcadia-profit-1/${encodedName}.${ext}` //이건 최후의 수법..
+        const IMG_URL = url
         // 이 URL을 img 태그의 src에 넣은 요소를 현재 에디터의 커서에 넣어주면 에디터 내에서 이미지가 나타난다
         // src가 base64가 아닌 짧은 URL이기 때문에 데이터베이스에 에디터의 전체 글 내용을 저장할 수있게된다
         // 이미지는 꼭 로컬 백엔드 uploads 폴더가 아닌 다른 곳에 저장해 URL로 사용하면된다.
@@ -164,8 +178,8 @@ const TextEditor = (props) => {
         // 1. 에디터 root의 innerHTML을 수정해주기
         // editor의 root는 에디터 컨텐츠들이 담겨있다. 거기에 img태그를 추가해준다.
         // 이미지를 업로드하면 -> 멀터에서 이미지 경로 URL을 받아와 -> 이미지 요소로 만들어 에디터 안에 넣어준다.
-        editor.root.innerHTML =
-          editor.root.innerHTML + `<img src=${IMG_URL} /><br/>` // 현재 있는 내용들 뒤에 써줘야한다.
+        // editor.root.innerHTML =
+        //   editor.root.innerHTML + `<img src=${IMG_URL} /><br/>` // 현재 있는 내용들 뒤에 써줘야한다.
 
         // 2. 현재 에디터 커서 위치값을 가져온다
         const range = editor.getSelection()
