@@ -32,19 +32,17 @@ export default function Join() {
   async function trySignup(data) {
     console.log('fetching')
     try {
-      const response = await fetch(
-        'https://arcadia-spring.p-e.kr/auth/signup',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
+      const response = await fetch('https://arcadia-spring.p-e.kr/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      )
+        body: JSON.stringify(data),
+      })
       console.log('done')
       const resData = await response.json()
       setRes(resData)
+      console.log({ resData })
     } catch (error) {
       console.error('Error during fetch:', error)
       setRes({ error: 'Fetch error' })
