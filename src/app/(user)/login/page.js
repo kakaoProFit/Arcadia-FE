@@ -3,7 +3,7 @@
 import { useForm } from 'react-hook-form'
 import Alert from '@mui/material/Alert'
 import React, { useState } from 'react'
-import { getCookie, setCookie } from 'cookies-next'
+import { setCookie } from 'cookies-next'
 
 function InputField({ label, type, name, register }) {
   return (

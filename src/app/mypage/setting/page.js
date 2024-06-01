@@ -4,9 +4,16 @@ import Modal from '@/components/Modal'
 import RectangleSkeleton from '@/components/loading-skeleton/rectangle-skeleton'
 import { getProfileImage, getProfileInfo } from '@/services/profile-data'
 import { useState, useEffect } from 'react'
-import { CheckLogin } from '@/services/CookieManage'
+import { RenewalToken, checkRenewalToken } from '@/services/CookieManage'
+import { getCookie } from 'cookies-next'
 
 export default function SettingPage() {
+  if (
+    getCookie('accessToken') === undefined &&
+    getCookie('refreshToken') !== undefined
+  ) {
+    RenewalToken()
+  }
   let profileImage = ''
   let profileInfo = {
     name: '',
@@ -43,8 +50,6 @@ export default function SettingPage() {
       </div>
     )
   }
-  CheckLogin()
-
   return (
     <div className="bg-white">
       <span className="mx-5 self-center text-6xl my-10 font-semibold">
