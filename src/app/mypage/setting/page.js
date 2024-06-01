@@ -8,11 +8,10 @@ import { RenewalToken, checkRenewalToken } from '@/services/CookieManage'
 import { getCookie } from 'cookies-next'
 
 export default function SettingPage() {
-  if (
-    getCookie('accessToken') === undefined &&
-    getCookie('refreshToken') !== undefined
-  ) {
-    RenewalToken()
+  if (!getCookie('accessToken')) {
+    getCookie('refreshToken')
+      ? RenewalToken()
+      : (window.location.href = '/login')
   }
   let profileImage = ''
   let profileInfo = {
