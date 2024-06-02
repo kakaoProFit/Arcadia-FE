@@ -4,12 +4,17 @@ import Modal from '@/components/Modal'
 import RectangleSkeleton from '@/components/loading-skeleton/rectangle-skeleton'
 import { getProfileImage, getProfileInfo } from '@/services/profile-data'
 import { useState, useEffect } from 'react'
-import { RenewalToken } from '@/services/CookieManage'
+import { RenewalToken, checkRenewalToken } from '@/services/CookieManage'
 import { getCookie } from 'cookies-next'
 
 export default function SettingPage() {
-  const [isLoading, setIsLoading] = useState(true)
-  const [editedUserInfo, setEditedUserInfo] = useState({
+  if (!getCookie('accessToken')) {
+    getCookie('refreshToken')
+      ? RenewalToken()
+      : (window.location.href = '/login')
+  }
+  let profileImage = ''
+  let profileInfo = {
     name: '',
     nickName: '',
     email: '',
@@ -18,34 +23,23 @@ export default function SettingPage() {
     followingCount: Math.floor(Math.random() * 1001),
     description: '',
     userVerified: false,
-  })
-  const [selectedImage, setSelectedImage] = useState('')
+  }
+  const [isLoading, setIsLoading] = useState(true)
+  const [editedUserInfo, setEditedUserInfo] = useState({ ...profileInfo }) // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태
+  const [selectedImage, setSelectedImage] = useState(profileImage) // 선택된 이미지를 관리
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const accessToken = getCookie('accessToken')
-      const refreshToken = getCookie('refreshToken')
+    // const profileImageTemp = getProfileImage()
+    // const profileInfoTemp = getProfileInfo()
 
-      if (!accessToken) {
-        if (refreshToken) {
-          await RenewalToken()
-        } else if (typeof window !== 'undefined') {
-          window.location.href = '/login'
-        }
-      }
-    }
+    // setSelectedImage(profileImageTemp)
+    // setEditedUserInfo(profileInfoTemp)
 
-    const fetchData = async () => {
-      const profileImageTemp = await getProfileImage()
-      const profileInfoTemp = await getProfileInfo()
+    setIsLoading(false)
 
-      setSelectedImage(profileImageTemp)
-      setEditedUserInfo(profileInfoTemp)
-      setIsLoading(false)
-    }
-
-    checkAuth()
-    fetchData()
+    // console.log('profileImage1111: ', profileImageTemp)
+    // console.log('profileInfo1111: ', profileInfoTemp)
+    console.log('check')
   }, [])
 
   if (isLoading) {
@@ -55,7 +49,6 @@ export default function SettingPage() {
       </div>
     )
   }
-
   return (
     <div className="bg-white">
       <span className="mx-5 self-center text-6xl my-10 font-semibold">
@@ -77,7 +70,7 @@ export default function SettingPage() {
                 <div className="w-full md:w-full px-3 mb-6">
                   <label
                     className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                    htmlFor="grid-text-1"
+                    forhtml="grid-text-1"
                   >
                     이메일 주소
                   </label>
@@ -85,6 +78,7 @@ export default function SettingPage() {
                     className="text-black bg-white border border-gray-300 w-full text-base px-4 py-3 rounded-md outline-blue-500"
                     id="grid-text-1"
                     type="text"
+                    // placeholder="사용자 이메일 받아오기"
                     value={editedUserInfo.email}
                     disabled
                   />
@@ -93,14 +87,15 @@ export default function SettingPage() {
                   <div className="w-full mr-5">
                     <label
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                      htmlFor="grid-text-2"
+                      forhtml="grid-text-1"
                     >
                       닉네임
                     </label>
                     <input
                       className="text-black bg-white border border-gray-300 w-full text-base px-4 py-3 rounded-md outline-blue-500"
-                      id="grid-text-2"
+                      id="grid-text-1"
                       type="text"
+                      // placeholder="사용자 닉네임"
                       value={editedUserInfo.nickName}
                       disabled
                     />
@@ -108,7 +103,7 @@ export default function SettingPage() {
                   <div className="w-3/12">
                     <label
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                      htmlFor="grid-text-3"
+                      forhtml="grid-text-1"
                     >
                       닉네임 변경
                     </label>
@@ -124,13 +119,13 @@ export default function SettingPage() {
                   <div className="w-full mr-5">
                     <label
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                      htmlFor="grid-text-4"
+                      forhtml="grid-text-1"
                     >
                       휴대폰 번호
                     </label>
                     <input
                       className="text-black bg-white border border-gray-300 w-full text-base px-4 py-3 rounded-md outline-blue-500"
-                      id="grid-text-4"
+                      id="grid-text-1"
                       type="text"
                       placeholder="사용자 번호 받아오기"
                       disabled
@@ -139,7 +134,7 @@ export default function SettingPage() {
                   <div className="w-3/12">
                     <label
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                      htmlFor="grid-text-5"
+                      forhtml="grid-text-1"
                     >
                       휴대폰 인증
                     </label>
