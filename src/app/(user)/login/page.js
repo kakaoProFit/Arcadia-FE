@@ -1,5 +1,6 @@
 'use client'
 
+import { Button, Modal } from 'flowbite-react'
 import { useForm } from 'react-hook-form'
 import Alert from '@mui/material/Alert'
 import React, { useState } from 'react'
@@ -23,6 +24,8 @@ function InputField({ label, type, name, register }) {
 }
 export default function Login() {
   const [res, setRes] = useState(null)
+  const [show, setShow] = useState(false)
+
   const inputFields = [
     { label: 'Email', type: 'text', name: 'email' },
     { label: 'Password', type: 'password', name: 'password' },
@@ -31,7 +34,6 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm()
   async function onSubmit(data) {
     console.log('fetching')
@@ -44,6 +46,12 @@ export default function Login() {
         body: JSON.stringify(data),
       })
       const resData = await response.json()
+      if (response.status === 401) {
+        setRes({ error: resData.message })
+        console.log('로그인 실패')
+        setShow(true)
+        return
+      }
       await setRes(resData)
       await setCookie('accessToken', resData.accestoken, {
         maxAge: resData.expiresIn,
@@ -51,7 +59,6 @@ export default function Login() {
       await setCookie('refreshToken', resData.refreshtoken, {
         maxAge: resData.expiresIn,
       })
-      window.location.href = '/'
     } catch (error) {
       console.error('Error during fetch:', error)
       setRes({ error: 'Fetch error' })
@@ -127,6 +134,27 @@ export default function Login() {
           />
         </div>
       </div>
+
+      <Modal
+        className="font-tenada"
+        show={show}
+        handleClose={() => setShow(false)}
+      >
+        <Modal.Header>로그인 실패</Modal.Header>
+        <Modal.Body>
+          <div className="space-y-6">
+            <p className="text-base leading-relaxed text-gray-500">
+              로그인에 실패했습니다.
+            </p>
+            <p className="text-base leading-relaxed text-gray-500">
+              이메일이나 비밀번호를 확인해주세요.
+            </p>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => setShow(false)}>다시 로그인하기</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   )
 }
