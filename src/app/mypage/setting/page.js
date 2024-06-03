@@ -35,6 +35,33 @@ function submitProfile(file) {
     })
 }
 
+function updateNickname(nickName) {
+  console.log('업데이트 될 닉네임 확인: ', nickName)
+  fetch(
+    'https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/mypage/edit',
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: nickName,
+      cache: 'no-store',
+    },
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('수정에 실패했습니다.')
+      }
+      return response.json()
+    })
+    .then((data) => {
+      console.log('수정 성공', data)
+    })
+    .catch((error) => {
+      console.error('에러', error)
+    })
+}
+
 export default function SettingPage() {
   if (
     getCookie('accessToken') === undefined &&
@@ -58,7 +85,9 @@ export default function SettingPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [editedUserInfo, setEditedUserInfo] = useState({ ...getProfileInfo() }) // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태
   const [selectedImage, setSelectedImage] = useState(getProfileImage()) // 선택된 이미지를 관리
+  const [isEditingNickName, setIsEditingNickName] = useState(false)
   const inputRef = useRef(null) // ref 생성
+  const nicknameInputRef = useRef(null)
 
   useEffect(() => {
     // const profileImageTemp = getProfileImage()
@@ -74,6 +103,12 @@ export default function SettingPage() {
     console.log('check')
   }, [])
 
+  useEffect(() => {
+    if (isEditingNickName) {
+      nicknameInputRef.current.focus()
+    }
+  }, [isEditingNickName])
+
   const handleImageChange = (e) => {
     const file = e.target.files[0]
     if (file) {
@@ -84,6 +119,18 @@ export default function SettingPage() {
       reader.readAsDataURL(file)
       submitProfile(file)
     }
+  }
+
+  const handleNicknameKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      updateNickname(editedUserInfo.nickName)
+      setIsEditingNickName(false)
+    }
+  }
+
+  const handleNicknameChange = (e) => {
+    setEditedUserInfo({ ...editedUserInfo, nickName: e.target.value })
   }
 
   const handleImageClick = () => {
@@ -154,14 +201,25 @@ export default function SettingPage() {
                     >
                       닉네임
                     </label>
-                    <input
-                      className="text-black bg-white border border-gray-300 w-full text-base px-4 py-3 rounded-md outline-blue-500"
-                      id="grid-text-1"
-                      type="text"
-                      // placeholder="사용자 닉네임"
-                      value={editedUserInfo.nickName}
-                      disabled
-                    />
+                    {isEditingNickName ? (
+                      <input
+                        ref={nicknameInputRef}
+                        className="text-black bg-white border border-gray-300 w-full text-base px-4 py-3 rounded-md outline-blue-500"
+                        id="grid-text-1"
+                        type="text"
+                        value={editedUserInfo.nickName}
+                        onChange={handleNicknameChange}
+                        onKeyDown={handleNicknameKeyDown}
+                      />
+                    ) : (
+                      <input
+                        className="text-black bg-white border border-gray-300 w-full text-base px-4 py-3 rounded-md outline-blue-500"
+                        id="grid-text-1"
+                        type="text"
+                        value={editedUserInfo.nickName}
+                        disabled
+                      />
+                    )}
                   </div>
                   <div className="w-3/12">
                     <label
@@ -173,6 +231,7 @@ export default function SettingPage() {
                     <button
                       type="button"
                       className="text-black bg-white border border-gray-300 w-full text-base px-4 py-3 rounded-md outline-blue-500"
+                      onClick={() => setIsEditingNickName(!isEditingNickName)}
                     >
                       닉네임 변경
                     </button>
