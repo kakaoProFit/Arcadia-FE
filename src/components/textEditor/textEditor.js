@@ -5,14 +5,18 @@
 
 import 'react-quill/dist/quill.snow.css'
 import styled from 'styled-components'
-import { useRef, useState } from 'react'
-import ReactQuill from 'react-quill'
+import { useRef, useState, useMemo } from 'react'
+import ReactQuill, { Quill } from 'react-quill'
 import Button from '@mui/material/Button'
 import { useRouter } from 'next/navigation'
 import TextField from '@mui/material/TextField'
 import Grid from '@mui/material/Grid'
+import AWS from 'aws-sdk'
+import ImageResize from 'quill-image-resize-module-react'
 
-const modules = {
+Quill.register('modules/imageResize', ImageResize) //이미지 사이즈 조절할 때 쓰임
+
+const toolBars = {
   // Quill의 동작과 기능을 사용자 정의. 화면에 tool이 보이게 함.
   toolbar: [
     [{ header: '1' }, { header: '2' }, { font: [] }],
@@ -28,9 +32,6 @@ const modules = {
     ['image'],
     ['clean'],
   ],
-  clipboard: {
-    matchVisual: false,
-  },
 }
 
 const formats = [
@@ -47,6 +48,9 @@ const formats = [
   'bullet',
   'indent',
   'image',
+  'float',
+  'height',
+  'width',
 ]
 
 const StyledTextEditor = styled.div`
@@ -88,9 +92,86 @@ const TextEditor = (props) => {
   // Form일 경우, TextField의 상태를 관리할 useState
   const [formFields, setFormFields] = useState(['', '', ''])
 
+  AWS.config.update({
+    accessKeyId: process.env.NEXT_PUBLIC_S3_accessKeyId,
+    secretAccessKey: process.env.NEXT_PUBLIC_S3_secretAccessKey,
+    region: process.env.NEXT_PUBLIC_S3_region,
+  })
+  const s3 = new AWS.S3()
+
   // const toggleAnonymous = () => {
   //   setIsAnonPost(!isAnonPost) // 사용자가 익명 여부 선택함에 따른 state 저장
   // }
+
+  // 이미지 처리를 하는 핸들러
+  const imageHandler = () => {
+    console.log('에디터에서 이미지 버튼을 클릭하면 이 핸들러가 시작됩니다!')
+
+    // 1. 이미지를 저장할 input type=file DOM을 만든다.
+    const input = document.createElement('input')
+    // 속성 써주기
+    input.setAttribute('type', 'file')
+    input.setAttribute('accept', 'image/*')
+    input.click() // 에디터 이미지버튼을 클릭하면 이 input이 클릭된다.
+    // input이 클릭되면 파일 선택창이 나타난다.
+
+    // input에 변화가 생긴다면 = 이미지를 선택
+    input.addEventListener('change', async () => {
+      const file = input.files[0]
+
+      const url = s3.getSignedUrl('putObject', {
+        Bucket: process.env.NEXT_PUBLIC_S3_bucketName,
+        Key: file.name,
+        Expires: 60 * 5,
+        ContentType: 'image/*',
+      })
+
+      // s3에 이미지를 보낸다.
+      try {
+        const response = fetch(url, {
+          method: 'PUT',
+          body: file,
+        }).then((res) => {
+          if (!res.ok) {
+            throw new Error('Network response was not ok', error)
+          }
+
+          const cleanUrl = res.url.split('?')[0]
+          const IMG_URL = cleanUrl
+          // 이 URL을 img 태그의 src에 넣은 요소를 현재 에디터의 커서에 넣어주면 에디터 내에서 이미지가 나타난다
+          // src가 base64가 아닌 짧은 URL이기 때문에 데이터베이스에 에디터의 전체 글 내용을 저장할 수있게된다
+          // 이미지는 꼭 로컬 백엔드 uploads 폴더가 아닌 다른 곳에 저장해 URL로 사용하면된다.
+
+          // 이미지 태그를 에디터에 써주기
+          const editor = quillRef.current.getEditor() // 에디터 객체 가져오기
+          // 현재 에디터 커서 위치값을 가져온다
+          const range = editor.getSelection()
+          // 가져온 위치에 이미지를 삽입한다
+          editor.insertEmbed(range.index, 'image', IMG_URL)
+        })
+      } catch (error) {
+        console.log('error', error)
+      }
+    })
+  }
+
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: toolBars.toolbar,
+        handlers: { image: imageHandler },
+      },
+      clipboard: {
+        matchVisual: false,
+      },
+      imageResize: {
+        // 이미지 사이즈 조절하기 위한 부분
+        parchment: Quill.import('parchment'),
+        modules: ['Resize', 'DisplaySize', 'Toolbar'],
+      },
+    }),
+    [],
+  )
 
   const toggleWriteForm = () => {
     setIsWriteForm(!isWriteForm) // 사용자가 익명 여부 선택함에 따른 state 저장
@@ -101,6 +182,41 @@ const TextEditor = (props) => {
     setTitle(event.target.value)
   }
 
+  const previousImagesRef = useRef([]) // 이미지 삭제를 탐지하기 위한 부분
+  const detectDeletedImages = () => {
+    //이미지 삭제 탐지 함수
+    const currentImages = Array.from(
+      document.querySelectorAll('.ql-editor img'),
+    ).map((img) => img.src)
+
+    const deletedImages = previousImagesRef.current.filter(
+      (src) => !currentImages.includes(src),
+    )
+
+    if (deletedImages.length > 0) {
+      const key = deletedImages[0].split('/').pop() //key값이 될 파일이름 추출
+
+      // 여기서 필요한 작업 수행 (예: 서버에서 이미지 삭제)
+      s3.deleteObject(
+        {
+          Bucket: process.env.NEXT_PUBLIC_S3_bucketName,
+          Key: key,
+        },
+        (err, data) => {
+          if (err) {
+            console.error(err)
+            console.log(data)
+          } else {
+            console.log('이미지 삭제 성공')
+          }
+        },
+      )
+    }
+
+    // 현재 이미지를 이전 이미지 목록에 저장
+    previousImagesRef.current = currentImages
+  }
+
   const handleChange = (content, delta, source, editor) => {
     const newText = content
     const quillEditor = quillRef.current.getEditor()
@@ -108,6 +224,8 @@ const TextEditor = (props) => {
 
     setWritingContent(writingContent)
     setDisplayCounting(counting)
+
+    detectDeletedImages() // 사용자가 이미지를 삭제하는지 탐지
 
     if (counting.length <= maxCharacters) {
       setWritingContent(newText) // 변경된 텍스트를 상위 컴포넌트로 전달
