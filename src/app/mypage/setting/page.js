@@ -35,30 +35,27 @@ function submitProfile(file) {
     })
 }
 
-function updateNickname(nickName) {
-  console.log('업데이트 될 닉네임 확인: ', nickName)
+function saveProfileInfo(profileInfo) {
+  console.log('프로필 변경 확인: ', profileInfo)
   fetch(
-    'https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/mypage/edit',
+    'https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/saveProfile',
     {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: nickName,
+      body: profileInfo,
       cache: 'no-store',
     },
   )
     .then((response) => {
       if (!response.ok) {
-        throw new Error('수정에 실패했습니다.')
+        throw new Error('프로필 저장 실패')
       }
-      return response.json()
-    })
-    .then((data) => {
-      console.log('수정 성공', data)
+      console.log('프로필 저장 성공')
     })
     .catch((error) => {
-      console.error('에러', error)
+      console.error('프로필 저장 에러', error)
     })
 }
 
@@ -86,8 +83,10 @@ export default function SettingPage() {
   const [editedUserInfo, setEditedUserInfo] = useState({ ...getProfileInfo() }) // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태
   const [selectedImage, setSelectedImage] = useState(getProfileImage()) // 선택된 이미지를 관리
   const [isEditingNickName, setIsEditingNickName] = useState(false)
+  const [isEditingDescription, setIsEditingDescription] = useState(false)
   const inputRef = useRef(null) // ref 생성
   const nicknameInputRef = useRef(null)
+  const descriptionInputRef = useRef(null)
 
   useEffect(() => {
     // const profileImageTemp = getProfileImage()
@@ -103,11 +102,18 @@ export default function SettingPage() {
     console.log('check')
   }, [])
 
+  // useEffect(() => {
+  //   if (isEditingNickName) {
+  //     nicknameInputRef.current.focus()
+  //   }
+  // }, [isEditingNickName])
   useEffect(() => {
     if (isEditingNickName) {
       nicknameInputRef.current.focus()
+    } else if (isEditingDescription) {
+      descriptionInputRef.current.focus()
     }
-  }, [isEditingNickName])
+  }, [isEditingNickName, isEditingDescription])
 
   const handleImageChange = (e) => {
     const file = e.target.files[0]
@@ -124,7 +130,6 @@ export default function SettingPage() {
   const handleNicknameKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault()
-      updateNickname(editedUserInfo.nickName)
       setIsEditingNickName(false)
     }
   }
@@ -133,8 +138,24 @@ export default function SettingPage() {
     setEditedUserInfo({ ...editedUserInfo, nickName: e.target.value })
   }
 
+  // const handleDescriptionKeyDown = (e) => {
+  //   if (e.key === 'Enter') {
+  //     e.preventDefault()
+  //     setIsEditingDescription(false)
+  //   }
+  // }
+
+  // const handleDescriptionChange = (e) => {
+  //   setEditedUserInfo({ ...editedUserInfo, description: e.target.value })
+  // }
+
   const handleImageClick = () => {
     inputRef.current.click() // 파일 선택 창 열기
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    saveProfileInfo(editedUserInfo)
   }
 
   if (isLoading) {
@@ -312,6 +333,7 @@ export default function SettingPage() {
                     <button
                       className="text-black bg-white border border-gray-300 w-full text-base px-4 py-3 rounded-md outline-blue-500"
                       type="submit"
+                      onClick={handleSubmit}
                     >
                       저장
                     </button>
