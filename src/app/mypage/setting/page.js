@@ -3,9 +3,37 @@
 import Modal from '@/components/Modal'
 import RectangleSkeleton from '@/components/loading-skeleton/rectangle-skeleton'
 import { getProfileImage, getProfileInfo } from '@/services/profile-data'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { RenewalToken, checkRenewalToken } from '@/services/CookieManage'
 import { getCookie } from 'cookies-next'
+
+function submitProfile(file) {
+  // 이미지를 백엔드 서버로 전송
+
+  // 이미지를 업로드할 FormData 객체 생성
+  const formData = new FormData()
+  formData.append('text', 'hello')
+  formData.append('image', file)
+  console.log('file: ', file)
+
+  fetch(
+    'https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/submitProfile',
+    {
+      method: 'POST',
+      body: formData,
+      cache: 'no-store',
+    },
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('이미지 업로드 실패')
+      }
+      console.log('이미지 업로드 성공')
+    })
+    .catch((error) => {
+      console.error('이미지 업로드 에러', error)
+    })
+}
 
 export default function SettingPage() {
   if (
@@ -14,20 +42,23 @@ export default function SettingPage() {
   ) {
     RenewalToken()
   }
-  let profileImage = ''
-  let profileInfo = {
-    name: '',
-    nickName: '',
-    email: '',
-    postCount: Math.floor(Math.random() * 1001),
-    followerCount: Math.floor(Math.random() * 1001),
-    followingCount: Math.floor(Math.random() * 1001),
-    description: '',
-    userVerified: false,
-  }
+
+  // let profileImage = ''
+  // let profileInfo = {
+  //   name: '',
+  //   nickName: '',
+  //   email: '',
+  //   postCount: Math.floor(Math.random() * 1001),
+  //   followerCount: Math.floor(Math.random() * 1001),
+  //   followingCount: Math.floor(Math.random() * 1001),
+  //   description: '',
+  //   userVerified: false,
+  // }
+
   const [isLoading, setIsLoading] = useState(true)
-  const [editedUserInfo, setEditedUserInfo] = useState({ ...profileInfo }) // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태
-  const [selectedImage, setSelectedImage] = useState(profileImage) // 선택된 이미지를 관리
+  const [editedUserInfo, setEditedUserInfo] = useState({ ...getProfileInfo() }) // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태
+  const [selectedImage, setSelectedImage] = useState(getProfileImage()) // 선택된 이미지를 관리
+  const inputRef = useRef(null) // ref 생성
 
   useEffect(() => {
     // const profileImageTemp = getProfileImage()
@@ -43,6 +74,22 @@ export default function SettingPage() {
     console.log('check')
   }, [])
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setSelectedImage(reader.result)
+      }
+      reader.readAsDataURL(file)
+      submitProfile(file)
+    }
+  }
+
+  const handleImageClick = () => {
+    inputRef.current.click() // 파일 선택 창 열기
+  }
+
   if (isLoading) {
     return (
       <div>
@@ -50,6 +97,7 @@ export default function SettingPage() {
       </div>
     )
   }
+
   return (
     <div className="bg-white">
       <span className="mx-5 self-center text-6xl my-10 font-semibold">
@@ -64,9 +112,23 @@ export default function SettingPage() {
                 className="lg:max-w-[90%] w-full h-full object-contain block mb-10 mx-auto"
                 alt="login-image"
               />
-              <button className="text-black bg-white border border-gray-300 w-full text-base px-4 py-3 rounded-md outline-blue-500 mb-5 ">
+              <button
+                type="button"
+                className="text-black bg-white border border-gray-300 w-full text-base px-4 py-3 rounded-md outline-blue-500 mb-5 "
+                onClick={handleImageClick}
+              >
                 프로필 사진 변경
               </button>
+              {/* 파일 선택 창 */}
+              <input
+                type="file"
+                ref={inputRef}
+                style={{ display: 'none' }}
+                accept="image/png, image/jpeg" // PNG 및 JPG 파일만 허용
+                onChange={(e) => {
+                  handleImageChange(e)
+                }}
+              />
               <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full md:w-full px-3 mb-6">
                   <label
@@ -128,6 +190,7 @@ export default function SettingPage() {
                       className="text-black bg-white border border-gray-300 w-full text-base px-4 py-3 rounded-md outline-blue-500"
                       id="grid-text-1"
                       type="text"
+                      value={editedUserInfo.phoneNumber}
                       placeholder="사용자 번호 받아오기"
                       disabled
                     />
