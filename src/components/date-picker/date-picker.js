@@ -37,8 +37,6 @@ export default function BoardDatePicker() {
       //이거 활성화되면 검색창 못쓰게 막는 것도 해야할거같은데..? 이거 api 어떻게 가려나
       // query에 넣어서 보낼거면 검색창 못쓰는게 맞고 새로 변수를 만들어서 보내면 검색창 써도 상관 없긴 해
       console.log('date change')
-      // const search = searchParams.get('query')
-      // const sortType = searchParams.get('sortType')
       const params = new URLSearchParams(searchParams)
       const sortType = searchParams.get('sortType')
       // 또는 sortType !== '작성일자순' 으로 해도 될듯

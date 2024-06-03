@@ -62,7 +62,7 @@ export default function SubTab() {
         </div>
         {isBoard && (
           <span className="mx-20 self-center text-4xl my-10 font-semibold whitespace-nowrap">
-            {title.title}
+            {title?.title}
           </span>
         )}
       </div>

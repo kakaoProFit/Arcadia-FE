@@ -8,23 +8,29 @@ export default function SearchWrapper() {
   const searchParams = useSearchParams()
 
   const [term, setTerm] = useState('')
-  const [typeOfQuery, setTypeOfQuery] = useState(0)
+  const [typeOfQuery, setTypeOfQuery] = useState('title')
 
   const handleSearchValue = (e) => {
     setTerm(e.target.value)
   }
-  const titleType = () => setTypeOfQuery(0)
-  const titleAndContentType = () => setTypeOfQuery(1)
-  const authorType = () => setTypeOfQuery(2)
+  const titleType = () => setTypeOfQuery('title')
+  const titleAndContentType = () => setTypeOfQuery('content')
+  const authorType = () => setTypeOfQuery('author')
 
-  // 이거 뭘로 검색하는지도 알아야 하는데? 어케 받는거지?
   const submitSearchContent = (e) => {
     e.preventDefault()
     const params = new URLSearchParams(searchParams)
+    // filtering
+    let value = term
+    value = value.replaceAll('<', '&lt;')
+    value = value.replaceAll('>', '&gt;')
+    value = value.replaceAll('\\(', '&#40;')
+    value = value.replaceAll('\\)', '&#41;')
+    value = value.replaceAll("'", '&#x27;')
     params.set('page', 1)
     if (searchParams.get('sortType') !== null) params.delete('sortType')
     if (term) {
-      params.set('query', term)
+      params.set('query', value)
       params.set('queryType', typeOfQuery)
     } else {
       params.delete('query')
@@ -52,7 +58,7 @@ export default function SearchWrapper() {
           class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100"
           type="button"
         >
-          분류
+          {typeOfQuery}
         </button>
         <div
           id="dropdown"
@@ -71,7 +77,7 @@ export default function SearchWrapper() {
                 제목
               </button>
             </li>
-            <li>
+            {/* <li>
               <button
                 type="button"
                 class="inline-flex w-full px-4 py-2 hover:bg-gray-100"
@@ -79,7 +85,7 @@ export default function SearchWrapper() {
               >
                 제목+내용
               </button>
-            </li>
+            </li> */}
             <li>
               <button
                 type="button"
@@ -92,15 +98,6 @@ export default function SearchWrapper() {
           </ul>
         </div>
         <div class="relative w-full">
-          {/* <input
-              type="search"
-              id="search-dropdown"
-              class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="검색"
-              required="required"
-              onChange={handleSearchValue}
-              defaultValue={searchParams.get('query')?.toString}
-            /> */}
           <input
             type="search"
             id="search-dropdown"

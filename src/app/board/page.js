@@ -14,10 +14,24 @@ export default function BoardListPage({ searchParams }) {
   // Error: Text content does not match server-rendered HTML.
   const datas = TableData()
 
-  const query = searchParams?.query || ''
-  const queryType = Number(searchParams?.queryType) || 0 // default queryType : 제목
+  const query = searchParams?.query
+  const queryType = searchParams?.queryType // default queryType : 제목
   const currentPage = Number(searchParams?.page) || 1
   const sortType = searchParams?.sortType || '작성일자순'
+  const startDate = searchParams?.startDate // 없으면 null
+  const endDate = searchParams?.endDate
+  const category = searchParams?.category
+  const totalPageCount = Number(searchParams?.pageCount) || 1
+  // const sizePerPage = 12
+
+  // console.log("change searchParams, ", searchParams)
+  // const params = new URLSearchParams()
+  // console.log("check params, ", params)
+  // for (const [key, value] of params.entries()) console.log(`check ${key}, ${value}`)
+  // const d_data = fetch(`https://spring.arcadiaprofit.shop/board/list/${category}`, {
+  //   method: 'GET',
+  //   cache: 'no-store',
+  // }).then((res) => console.log("check", res))
 
   return (
     <div className="bg-white">
@@ -40,17 +54,23 @@ export default function BoardListPage({ searchParams }) {
           <Suspense fallback={<RectangleSkeleton width={1440} height={1100} />}>
             <Table
               data={datas}
-              count={12}
+              // count={sizePerPage}
               query={query}
               queryType={queryType}
               page={currentPage}
               sortType={sortType}
+              startDate={startDate}
+              endDate={endDate}
+              category={category}
             />
           </Suspense>
         </div>
         <Suspense fallback={<RectangleSkeleton width={300} height={50} />}>
           {/* 원래는 props를 전달해주어야 숫자도 같이 나옴 */}
-          <DiaryPagination test={currentPage} />
+          <DiaryPagination
+            totalPageCount={totalPageCount}
+            currentPage={currentPage}
+          />
         </Suspense>
         <div className="flex flex-end justify-end">
           {/* 여기도 수정 필요함. write 페이지를 바깥에 빼고 통합 페이지로 할거면 */}
