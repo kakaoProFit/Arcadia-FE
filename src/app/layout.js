@@ -4,6 +4,10 @@ import { CssBaseline } from '@mui/material'
 import theme from '@/styles/theme'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import { ThemeModeScript } from 'flowbite-react'
+import Head from 'next/head'
+import Script from 'next/script'
+import Link from 'next/link'
 
 export const metadata = {
   title: 'Arcadia',
@@ -18,12 +22,13 @@ export default function RootLayout({ children }) {
     <html>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <head>
-          <link
+        <Head>
+          <ThemeModeScript />
+          <Link
             href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"
             rel="stylesheet"
           />
-        </head>
+        </Head>
         <body className="bg-white">
           <header>
             <Header />
@@ -32,9 +37,9 @@ export default function RootLayout({ children }) {
           <footer>
             <Footer />
           </footer>
-          <script
+          <Script
             src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"
-            async
+            strategy="beforeInteractive"
           />
         </body>
       </ThemeProvider>

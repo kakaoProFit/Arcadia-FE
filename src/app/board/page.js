@@ -9,9 +9,6 @@ import SearchWrapper from '@/components/search/migration-search'
 import BoardDatePicker from '@/components/date-picker/date-picker'
 
 export default function BoardListPage({ searchParams }) {
-  // useState 훅을 사용하여 login 상태와 상태를 변경하는 함수를 선언합니다.
-  // state 변수를 return에서 사용하는데 uesEffect를 사용하지 않아서 아래 오류가 발생하는 걸로 예측됨.
-  // Error: Text content does not match server-rendered HTML.
   const datas = TableData()
 
   const query = searchParams?.query
@@ -24,21 +21,9 @@ export default function BoardListPage({ searchParams }) {
   const totalPageCount = Number(searchParams?.pageCount) || 1
   // const sizePerPage = 12
 
-  // console.log("change searchParams, ", searchParams)
-  // const params = new URLSearchParams()
-  // console.log("check params, ", params)
-  // for (const [key, value] of params.entries()) console.log(`check ${key}, ${value}`)
-  // const d_data = fetch(`https://spring.arcadiaprofit.shop/board/list/${category}`, {
-  //   method: 'GET',
-  //   cache: 'no-store',
-  // }).then((res) => console.log("check", res))
-
   return (
     <div className="bg-white">
       <div className="mx-20 font-tenada">
-        {/* <span className="mx-5 self-center text-3xl my-10 font-semibold whitespace-nowrap">
-          자유 게시판
-        </span> */}
         <div className="flex flex-end justify-end">
           <Suspense fallback={<RectangleSkeleton width={500} height={40} />}>
             <SearchWrapper />

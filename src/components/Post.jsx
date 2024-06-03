@@ -9,18 +9,17 @@ const Post = ({ props }) => {
   return (
     <div className="container my-24 mx-auto md:px-6 w-8/12">
       <section className="mb-32">
-        <img
-          src="images/user5.jpg"
+        {/* <img
+          src="/images/user2.jpg"
           className="mb-6 w-full rounded-lg shadow-lg"
           alt="image"
-        />
+        /> */}
 
         <div className="mb-6 flex items-center">
           <img
-            src="images/user1.jpg"
+            src="/images/user1.jpg"
             className="mr-2 h-8 rounded-full"
             alt="avatar"
-            loading="lazy"
           />
           <div>
             <span>
@@ -45,7 +44,7 @@ const Post = ({ props }) => {
             theme="bubble"
             value={props.content}
             readOnly={true}
-            style={{ height: '100%', minHeight: 400, fontSize: '30px' }}
+            style={{ height: '100%', fontSize: '30px' }}
           />
         </p>
       </section>

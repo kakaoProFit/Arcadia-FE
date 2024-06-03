@@ -42,8 +42,8 @@ export default function Table(props) {
     params.set('category', category)
     router.replace(`${pathname}?${params.toString()}`)
   }, [])
+
   // 여기 코드는 나중에 다른 파일로 뺄 예정
-  // 근데 path에 따라서 보내주는 곳이 달라야 할 것 같은데? 얘네도 분류를 알아야 하잖아
   const getBoardList = async (category, params) => {
     const url = `https://spring.arcadiaprofit.shop/board/list/${category}`
     const requestUrl = url + params
@@ -89,16 +89,6 @@ export default function Table(props) {
     getBoardList(props['category'], params)
     params = ''
   }, [query, sortType, page, startDate, category])
-
-  // 버리자 이코드는 에바다.
-  // useEffect(() => {
-  //   // 일단 의도한대로 페이지네이션이랑 쿼리 바뀔때 돌긴 돌음.
-  //   // 문제는 그냥 새로고침을 갈겨도 돈다는것임. 그래서 일단은 쿼리값이 없거나 page값이 1이면 안돌게 했음.
-  //   if (query !== '' || page !== 1) {
-  //     getSearchAndPaginationResult()
-  //   }
-  //   console.log('check datas ', datas)
-  // }, [query, page])
 
   return (
     <table className="w-full text-sm text-left text-gray-500">

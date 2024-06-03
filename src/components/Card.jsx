@@ -1,7 +1,7 @@
 export default function Card({ data, count }) {
   // data[0].tap => 게시판 이름
   return (
-    <div className="bg-white justify-between">
+    <div className="bg-white justify-between font-tenada">
       <span className="bg-white mx-5 font-tenada self-center text-4xl my-10 font-semibold whitespace-nowrap">
         {data[0].tap}
       </span>

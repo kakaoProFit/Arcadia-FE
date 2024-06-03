@@ -4,28 +4,66 @@ import * as React from 'react'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import { useRef, useEffect, useState } from 'react'
-import axios from 'axios'
 import { Button } from '@mui/material'
 import { List, ListItem } from '@mui/material'
 
-const tempComment = [
-  //댓글 테스트 데이터
-  {
-    userNickname: '우울증유저',
-    comment: '잘 보고 갑니다.',
-  },
-  {
-    userNickname: '헤헤',
-    comment: '좋은 글이네요.',
-  },
-]
+function getComment(props) {
+  // 일기 아이디를 props로 받아서 서버에서 댓글 목록 가져옴
+  // const response = fetch(
+  //   '/diaryInquery',
+  //   {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     cache: 'no-store',
+  //     body: props
+  //   },
+  // )
 
-function Comment(props) {
-  console.log(props.props) //일기의 ID 확인
+  // const data = response.json()
+  const data = [
+    //댓글 테스트 데이터
+    {
+      userNickname: '우울증유저',
+      comment: '잘 보고 갑니다.',
+    },
+    {
+      userNickname: '헤헤',
+      comment: '좋은 글이네요.',
+    },
+  ]
+  return data
+}
+
+function postComment(props) {
+  // 작성된 댓글을 서버로 전송
+  console.log('propspropspropsprops: ', props)
+  fetch(`/diary/${props}/comment`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: props,
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText)
+      }
+    })
+    .then((data) => {
+      console.log('성공', data)
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+}
+
+function Comment({ props }) {
+  console.log('diary ID: ', props.props) //일기의 ID 확인
 
   const commentRef = useRef(null)
   const [comments, setComments] = useState([]) // 댓글 상태 관리
-  const [currentUser, setCurrentUser] = useState('') // 현재 로그인 된 유저가 누군지 저장
 
   const handleFocus = () => {
     // 기본값으로 '댓글을 입력하세요...'라는 문구를 넣고, 사용자가 댓글 창을 클릭하면 이 글씨가 지워짐.
@@ -45,6 +83,9 @@ function Comment(props) {
       return // "댓글을 입력하세요..."일 때는 저장 버튼 클릭 무시
     }
 
+    // 현재 유저의 닉네임이 필요한데, 이거 어떻게 관리할건지 물어보기. 일단은 하드코딩으로 함. -> 아마 토큰으로 할거같은데 그럼 댓글 등록할때 작성자 닉네임이 필요한데, 이게 애매함.
+    let currentUser = '끼끼끼'
+
     // 댓글 추가
     const newComment = commentRef.current.value
     setComments([
@@ -63,97 +104,102 @@ function Comment(props) {
     }
 
     // POST 요청 보내기 - 새 댓글 저장
-    axios
-      .post(`/diary/${props.props}/comment`, data) //props.props는 일기의 ID임.
-      .then((response) => {
-        console.log('성공')
-      })
-      .catch((error) => console.error('Error adding comment:', error))
+    postComment(data)
   }
 
   useEffect(() => {
-    setComments(tempComment) //테스트 데이터 넣기 - 추후 api 연동되면 이 부분 지우기.
-
-    // 로컬 스토리지에서 현재 로그인된 사용자 정보를 가져옵니다.
-    const loggedInUser = localStorage.getItem('userId')
-    setCurrentUser('홍길동') // 추후에 홍길동 부분 loggedInUser로 바꾸기
-
     // 처음 컴포넌트가 로딩될 때 API 요청
-    axios
-      .get(`/diary/${props.props}/comment`)
-      .then((response) => {
-        // API 응답을 받아와 댓글 상태 업데이트
-        setComments(response.data.comments)
-      })
-      .catch((error) => console.error('Error fetching comments:', error))
+    const commentList = getComment(props.props)
+    setComments(commentList)
   }, [])
 
+  const sjn = [
+    {
+      id: 1,
+      name: '우울증유저',
+      comment: '잘 보고 갑니다.',
+    },
+    {
+      id: 2,
+      name: '헤헤',
+      comment: '좋은 글이네요.',
+    },
+  ]
+
   return (
-    <>
-      {/* 댓글 목록 */}
-      <Box
-        mt={0}
-        sx={{
-          '& .MuiTextField-root': { m: 1, width: '100ch' },
-        }}
-      >
-        <List>
-          {comments.map((comment, index) => (
-            <ListItem key={index} alignItems="center">
-              {/* 댓글 단 유저의 닉네임이 표시되는 것은 일정 크기를 정해놨음. 이거 안하면 닉네임의 길이에 따라 위치가 달라짐 */}
-              <p
-                style={{
-                  minWidth: '15ch',
-                  maxWidth: '15ch',
-                  marginRight: '1ch',
-                }}
-              >
-                <strong>{comment.userNickname}</strong>
-              </p>
-              <TextField
-                multiline
-                fullWidth
-                variant="outlined"
-                value={comment.comment}
-                InputProps={{
-                  readOnly: true,
-                }}
-                sx={{
-                  '& .MuiInputBase-root': {
-                    // 내용의 글자 크기를 조절
-                    fontSize: '0.9rem',
-                  },
-                }}
-              />
-            </ListItem>
-          ))}
-        </List>
-      </Box>
-      <Box
-        component="form"
-        sx={{
-          '& .MuiTextField-root': { m: 1, width: '100ch' },
-        }}
-        noValidate
-        autoComplete="off"
-      >
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <TextField
-            id="outlined-multiline-static"
-            label="댓글"
-            multiline
-            rows={2}
-            defaultValue="댓글을 입력하세요..."
-            inputRef={commentRef}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-          />
-          <Button variant="contained" onClick={handleCommentSubmit}>
-            저장
-          </Button>
+    <section className="bg-white">
+      <div className="mx-auto w-10/12 px-4">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-lg lg:text-2xl font-bold text-gray-900">
+            댓글 ({props.length})
+          </h2>
         </div>
-      </Box>
-    </>
+        <form className="mb-6">
+          {' '}
+          {/* 댓글 입력창 */}
+          <div className="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200">
+            <label for="comment" className="sr-only">
+              Your comment
+            </label>
+            <textarea
+              id="comment"
+              rows="6"
+              className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none"
+              placeholder="Write a comment..."
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="font-tenada text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
+          >
+            댓글 작성
+          </button>
+        </form>
+        {props.map((comment, key) => (
+          <article key={key} className="p-6 text-base bg-white rounded-lg">
+            {' '}
+            {/* 댓글 목록 */}
+            <footer className="flex justify-between items-center mb-2">
+              <div className="flex items-center">
+                <p className="inline-flex items-center mr-3 text-sm text-gray-900 font-semibold">
+                  <img
+                    className="mr-2 w-6 h-6 rounded-full"
+                    src="/images/user1.jpg"
+                    alt="user"
+                  />
+                  {comment.name}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <time
+                    pubdate
+                    datetime="2022-02-08"
+                    title="February 8th, 2022"
+                  >
+                    Feb. 8, 2022
+                  </time>
+                </p>
+              </div>
+            </footer>
+            <p className="text-gray-500">{comment.comment}</p>
+            <div className="flex items-center mt-4 space-x-4">
+              <button
+                type="button"
+                className="flex items-center text-sm text-black-500 hover:underline font-medium"
+              >
+                삭제
+              </button>
+              <button
+                type="button"
+                className="flex items-center text-sm text-black-500 hover:underline font-medium"
+              >
+                수정
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
   )
 }
 

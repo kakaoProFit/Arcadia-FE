@@ -2,6 +2,7 @@
 import dynamic from 'next/dynamic'
 import Stack from '@mui/material/Stack'
 import Comment from '@/components/comment/comment'
+import Post from '@/components/Post'
 
 // react-quill을 동적으로 임포트
 const ReadDirInquery = dynamic(
@@ -11,50 +12,57 @@ const ReadDirInquery = dynamic(
   },
 )
 
-function DirInquery(props) {
+async function getDiary(props) {
+  // 일기 ID를 이용하여 일기 내용 및 일기 정보들 가져오기
+  // const response = await fetch(
+  //   '/diaryInquery',
+  //   {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     cache: 'no-store',
+  //     body: props
+  //   },
+  // )
+  // const data = await response.json()
+  const data = {
+    member_id: 1,
+    diary_id: 10,
+    title: '테스트1',
+    diary: '테스트2테스트3',
+    writer: '홍길동',
+    hits: 100,
+  }
+
+  return data
+}
+
+async function DirInquery(props) {
   console.log('viewSlug: ', props.params.viewSlug) //viewSlug는 /diary/content/[viewSlug] 임. 따라서 일기 ID
 
-  let response_data = {
-    // 게시글 테스트 데이터
-    diaryId: 1,
-    writer: '홍길동',
-    title: '일기란 무엇인가',
-    content: '<h2>오늘의 일기</h2>\n<p>날이 좋았다.</p>',
-    dirViews: '100', //조회수
-  }
+  const response_data = await getDiary(props.params.viewSlug) // 일기 제목, 내용을 불러옴
+  console.log('diary: ', response_data)
 
-  const handleGetSpecification = () => {
-    fetch('/diary/list/DirInquery', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json() // JSON 형태의 응답  -> 이거 추후에 백엔드에서 넘어오는거 보고 수정 필요할듯
-        } else {
-          console.error('실패')
-        }
-      })
-      .then((data) => {
-        response_data = data
-      })
-      .catch((error) => {
-        console.error('오류 발생', error)
-      })
-  }
+  const comment = [
+    {
+      id: 1,
+      name: '우울증유저',
+      comment: '잘 보고 갑니다.',
+    },
+    {
+      id: 2,
+      name: '헤헤',
+      comment: '좋은 글이네요.',
+    },
+  ]
 
   return (
     <div>
-      <div style={{ marginLeft: '15%' }}>
-        <h2>일기 조회</h2>
-      </div>
-      <Stack direction="column" alignItems="center" spacing={2}>
-        <ReadDirInquery theme="snow" props={response_data} />
-        {/* 일기의 ID를 넘겨, 해당 일기에 대한 comment 조회 */}
-        <Comment props={response_data.diaryId} />
-      </Stack>
+      <Post props={response_data} />
+      {/* 일기의 ID를 넘겨, 해당 일기에 대한 comment 조회 */}
+      {/* <Comment props={response_data.diary_id} /> */}
+      <Comment props={comment} />
     </div>
   )
 }
