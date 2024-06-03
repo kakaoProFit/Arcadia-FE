@@ -1,9 +1,10 @@
 import Skeleton from '@mui/material/Skeleton'
 
-export default function RectangleSkeleton() {
+export default function RectangleSkeleton(props) {
+  const { width, height } = props
   return (
     <div>
-      <Skeleton variant="rectangle" width={300} height={10} />
+      <Skeleton variant="rectangle" width={width} height={height} />
     </div>
   )
 }

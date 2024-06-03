@@ -1,5 +1,6 @@
 export async function fetchCardData(currentPage, query) {
   const myHeaders = new Headers()
+  // 이 코드 좀 위험함 쿠키 나중에 받을 때 삭제되면 어캄? 나중에 테스트 꼭해보기!!!!!!!
   myHeaders.append('Content-Type', 'application/json')
 
   const raw_data = { currentPage: currentPage, query: query }
@@ -21,7 +22,7 @@ export async function fetchCardData(currentPage, query) {
   if (!res.ok) {
     throw new Error('Failed to card fetch data')
   }
-  const output_data = res.json()
+  const output_data = await res.json()
   // console.log(output_data)
   return output_data
 }

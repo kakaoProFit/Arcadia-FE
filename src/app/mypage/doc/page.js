@@ -17,7 +17,7 @@ export default async function MyPageDiary({ searchParams }) {
       <Suspense key={currentPage + query} fallback={<CardSkeleton />}>
         {/* <CardContainer currentPage={currentPage} query={query} /> */}
       </Suspense>
-      <Suspense fallback={<RectangleSkeleton />}>
+      <Suspense fallback={<RectangleSkeleton width={300} height={50} />}>
         <DiaryPagination diaryCount={itemCount} />
       </Suspense>
     </>
