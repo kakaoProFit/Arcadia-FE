@@ -11,7 +11,6 @@ import Button from '@mui/material/Button'
 import { useRouter } from 'next/navigation'
 import TextField from '@mui/material/TextField'
 import Grid from '@mui/material/Grid'
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import AWS from 'aws-sdk'
 import ImageResize from 'quill-image-resize-module-react'
 
@@ -118,24 +117,14 @@ const TextEditor = (props) => {
 
     // input에 변화가 생긴다면 = 이미지를 선택
     input.addEventListener('change', async () => {
-      console.log('온체인지')
       const file = input.files[0]
 
-      console.log('file.name: ', file.name)
-      console.log('tttt: ', process.env.NEXT_PUBLIC_S3_accessKeyId)
-      // AWS.config.update({
-      //   accessKeyId: process.env.NEXT_PUBLIC_S3_accessKeyId,
-      //   secretAccessKey: process.env.NEXT_PUBLIC_S3_secretAccessKey,
-      //   region: process.env.NEXT_PUBLIC_S3_region,
-      // })
-      // const s3 = new AWS.S3()
       const url = s3.getSignedUrl('putObject', {
         Bucket: process.env.NEXT_PUBLIC_S3_bucketName,
         Key: file.name,
         Expires: 60 * 5,
         ContentType: 'image/*',
       })
-      console.log('url: ', url)
 
       // s3에 이미지를 보낸다.
       try {
@@ -146,7 +135,6 @@ const TextEditor = (props) => {
           if (!res.ok) {
             throw new Error('Network response was not ok', error)
           }
-          console.log('res: ', res.url)
 
           const cleanUrl = res.url.split('?')[0]
           const IMG_URL = cleanUrl
@@ -206,11 +194,7 @@ const TextEditor = (props) => {
     )
 
     if (deletedImages.length > 0) {
-      console.log('Deleted images:', deletedImages)
-      console.log('??: ', deletedImages[0])
-
       const key = deletedImages[0].split('/').pop() //key값이 될 파일이름 추출
-      console.log('key: ', key)
 
       // 여기서 필요한 작업 수행 (예: 서버에서 이미지 삭제)
       s3.deleteObject(
