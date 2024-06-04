@@ -1,14 +1,14 @@
 'use client'
 export function getProfileImage() {
-  const response = fetch(
-    '/diary', // 이거 추후 프로필사진 s3 url로 바꿔야함. 지금은 테스트용으로 일기 분석서 이미지 가져옴
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      cache: 'no-store',
-    },
-  )
+  // const response = fetch(
+  //   '/diary', // 이거 추후 프로필사진 s3 url로 바꿔야함. 지금은 테스트용으로 일기 분석서 이미지 가져옴
+  //   {
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     cache: 'no-store',
+  //   },
+  // )
 
   // const data = response.json()
   const data =
@@ -18,17 +18,18 @@ export function getProfileImage() {
 }
 
 export function getProfileInfo() {
-  const response = fetch('/mypage', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
+  // const response = fetch('/mypage', {
+  //   method: 'GET',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  // })
 
   // const data = response.json()
   const data = {
     name: '홍길동',
     nickName: '홍박사',
+    phoneNumber: '010-1234-5678',
     email: 'honggildong@naver.com',
     postCount: Math.floor(Math.random() * 1001),
     followerCount: Math.floor(Math.random() * 1001),
