@@ -37,6 +37,7 @@ function submitProfile(file) {
 
 function saveProfileInfo(profileInfo) {
   console.log('프로필 변경 확인: ', profileInfo)
+
   fetch(
     'https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/saveProfile',
     {
@@ -67,53 +68,18 @@ export default function SettingPage() {
     RenewalToken()
   }
 
-  // let profileImage = ''
-  // let profileInfo = {
-  //   name: '',
-  //   nickName: '',
-  //   email: '',
-  //   postCount: Math.floor(Math.random() * 1001),
-  //   followerCount: Math.floor(Math.random() * 1001),
-  //   followingCount: Math.floor(Math.random() * 1001),
-  //   description: '',
-  //   userVerified: false,
-  // }
-
   const [isLoading, setIsLoading] = useState(true)
   const [editedUserInfo, setEditedUserInfo] = useState({ ...getProfileInfo() }) // 원래 있던 user 정보 우선 입력. 추후 정보 수정을 위한 상태
   const [selectedImage, setSelectedImage] = useState(getProfileImage()) // 선택된 이미지를 관리
   const [isEditingNickName, setIsEditingNickName] = useState(false)
-  const [isEditingDescription, setIsEditingDescription] = useState(false)
   const inputRef = useRef(null) // ref 생성
   const nicknameInputRef = useRef(null)
-  const descriptionInputRef = useRef(null)
 
   useEffect(() => {
-    // const profileImageTemp = getProfileImage()
-    // const profileInfoTemp = getProfileInfo()
-
-    // setSelectedImage(profileImageTemp)
-    // setEditedUserInfo(profileInfoTemp)
-
     setIsLoading(false)
 
-    // console.log('profileImage1111: ', profileImageTemp)
-    // console.log('profileInfo1111: ', profileInfoTemp)
     console.log('check')
   }, [])
-
-  // useEffect(() => {
-  //   if (isEditingNickName) {
-  //     nicknameInputRef.current.focus()
-  //   }
-  // }, [isEditingNickName])
-  useEffect(() => {
-    if (isEditingNickName) {
-      nicknameInputRef.current.focus()
-    } else if (isEditingDescription) {
-      descriptionInputRef.current.focus()
-    }
-  }, [isEditingNickName, isEditingDescription])
 
   const handleImageChange = (e) => {
     const file = e.target.files[0]
@@ -138,23 +104,12 @@ export default function SettingPage() {
     setEditedUserInfo({ ...editedUserInfo, nickName: e.target.value })
   }
 
-  // const handleDescriptionKeyDown = (e) => {
-  //   if (e.key === 'Enter') {
-  //     e.preventDefault()
-  //     setIsEditingDescription(false)
-  //   }
-  // }
-
-  // const handleDescriptionChange = (e) => {
-  //   setEditedUserInfo({ ...editedUserInfo, description: e.target.value })
-  // }
-
   const handleImageClick = () => {
     inputRef.current.click() // 파일 선택 창 열기
   }
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    // e.preventDefault()
     saveProfileInfo(editedUserInfo)
   }
 
