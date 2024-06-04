@@ -38,14 +38,18 @@ export default function Login() {
   async function onSubmit(data) {
     console.log('fetching')
     try {
-      const response = await fetch('https://arcadia-spring.p-e.kr/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        'https://spring.arcadiaprofit.shop/auth/login',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
         },
-        body: JSON.stringify(data),
-      })
+      )
       const resData = await response.json()
+      console.log(resData)
       if (response.status === 401) {
         setRes({ error: resData.message })
         console.log('로그인 실패')
@@ -53,6 +57,7 @@ export default function Login() {
         return
       }
       await setRes(resData)
+      console.log(resData)
       await setCookie('accessToken', resData.accestoken, {
         maxAge: resData.expiresIn,
       })

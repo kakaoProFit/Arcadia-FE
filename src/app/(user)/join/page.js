@@ -79,21 +79,24 @@ export default function SignUp() {
     )
   }
   async function onSubmit(data) {
-    // try {
-    //   console.log('fetch')
-    //   console.log(data)
-    //   const response = await fetch('https://arcadia-spring.p-e.kr/auth/signup', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(data),
-    //   })
-    //   const resData = await response.json()
-    //   console.log(resData)
-    // } catch (error) {
-    //   console.error('Error during fetch:', error)
-    // }
+    try {
+      console.log('fetch')
+      console.log(data)
+      const response = await fetch(
+        'https://spring.arcadiaprofit.shop/auth/signup',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        },
+      )
+      const resData = await response.json()
+      console.log(resData)
+    } catch (error) {
+      console.error('Error during fetch:', error)
+    }
     console.log(data)
   }
 

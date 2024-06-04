@@ -19,12 +19,12 @@ export default function CardData() {
     for (let i = 0; i < 20; i++) {
       const newObj = {
         id: i + 1,
-        tap: getRandomItem(categories),
+        tap: '2022-03-02',
         url: '#',
         title: `제목 ${i + 1}`,
         image: getRandomItem(images),
         alt: `user${i + 1}`,
-        description: '설명',
+        description: '작성자1',
       }
       data.push(newObj)
     }
