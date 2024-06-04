@@ -1,8 +1,3 @@
-import DiaryPagination from '@/components/pagination/pagination'
-import { Suspense } from 'react'
-import RectangleSkeleton from '@/components/loading-skeleton/rectangle-skeleton'
-import CardSkeleton from '@/components/loading-skeleton/card-skeleton'
-import CardContainer from '@/components/card/card-container'
 import Card from '@/components/Card'
 import CardData from '@/components/CardData'
 

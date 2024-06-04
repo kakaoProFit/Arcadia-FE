@@ -378,23 +378,31 @@ const TextEditor = (props) => {
 
   return (
     <>
-      {props.isDiaryMode == 'isDiaryMode' && ( // diary mode(일기)일 때 제목 적는 field 나옴.
-        <div className="flex justify-center w-full">
-          <input
-            className="my-3 text-black bg-white border border-gray-300 w-full text-lg px-4 py-3 rounded-md outline-blue-500"
-            type="text"
-            id="title"
-            name="title"
-            style={{ width: '50%' }}
-            placeholder="제목을 입력하세요"
-            onChange={handleTitleChange}
-          />
-        </div>
-      )}
       <StyledTextEditor>
-        {props.writeForm !== undefined && ( // writeForm이라는 props가 있을때만 폼 스위치 표시. (=일기)
+        {props.writeForm && ( // writeForm이라는 props가 있을때만 폼 스위치 표시. (=일기)
           <div>
-            <label class="inline-flex items-center mb-5 cursor-pointer">
+            <div className="justify-center w-full">
+              <form className="flex-row flex">
+                <select
+                  id="board"
+                  class="mr-4 py-3 bg-gray-200 w-min h-min border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="free">자유게시판</option>
+                  <option value="inform">정보게시판</option>
+                  <option value="question">질문게시판</option>
+                  <option value="diary">일기게시판</option>
+                </select>
+                <input
+                  className=" text-black bg-white border border-gray-300 w-full text-xl py-3 rounded-md outline-blue-500"
+                  type="text"
+                  id="title"
+                  name="title"
+                  placeholder="제목을 입력하세요"
+                  onChange={handleTitleChange}
+                />
+              </form>
+            </div>
+            <label class="inline-flex items-center my-5 cursor-pointer">
               <input
                 type="checkbox"
                 value=""
@@ -409,7 +417,7 @@ const TextEditor = (props) => {
         )}
 
         {/* 작성 폼이 아닌 경우, 텍스트 편집기 보여주기 */}
-        {isWriteForm == false ? (
+        {isWriteForm ? (
           <>
             <ReactQuill
               ref={quillRef}
@@ -422,6 +430,14 @@ const TextEditor = (props) => {
               {/* quill은 기본적으로 1글자를 차지하고 있음. 그래서 -1 해서 카운트 함. */}
               {displayCounting.length - 1}/{maxCharacters}
             </p>
+            <form class="bg-white mb-3">
+              <input
+                className="text-black bg-white border border-gray-300 w-4/12 text-base px-4 py-3 rounded-md outline-blue-500"
+                type="number"
+                name="point"
+                placeholder="포인트를 입력하세요"
+              />
+            </form>
             <button
               className="font-tenada text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
               onClick={handleSubmit}

@@ -7,6 +7,7 @@ import DiaryPagination from '@/components/pagination/pagination'
 import RectangleSkeleton from '@/components/loading-skeleton/rectangle-skeleton'
 import SearchWrapper from '@/components/search/migration-search'
 import BoardDatePicker from '@/components/date-picker/date-picker'
+import ReadTextEditor from '@/components/textEditor/readTextEditor'
 
 export default function BoardListPage({ searchParams }) {
   const datas = TableData()
@@ -61,6 +62,7 @@ export default function BoardListPage({ searchParams }) {
           {/* 여기도 수정 필요함. write 페이지를 바깥에 빼고 통합 페이지로 할거면 */}
           <Button name="작성" href="/board/diary/write" />
         </div>
+        <ReadTextEditor />
       </div>
     </div>
   )
