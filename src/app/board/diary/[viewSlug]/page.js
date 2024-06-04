@@ -30,7 +30,7 @@ async function getDiary(props) {
     member_id: 1,
     diary_id: 10,
     title: '테스트1',
-    diary: '테스트2테스트3',
+    content: '테스트2sdasdasdaasdasd테스트3',
     writer: '홍길동',
     hits: 100,
   }

@@ -24,6 +24,11 @@ function RenewalToken() {
           jwtDecode(resData.accessToken).exp - Math.floor(Date.now() / 1000),
       })
 
+      await setCookie('refreshToken', resData.refreshToken, {
+        maxAge:
+          jwtDecode(resData.refreshToken).exp - Math.floor(Date.now() / 1000),
+      })
+
       // 이후에 리다이렉트
     } catch (error) {
       console.error('Error during fetch:', error)
