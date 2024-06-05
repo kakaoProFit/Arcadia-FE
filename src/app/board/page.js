@@ -7,7 +7,6 @@ import DiaryPagination from '@/components/pagination/pagination'
 import RectangleSkeleton from '@/components/loading-skeleton/rectangle-skeleton'
 import SearchWrapper from '@/components/search/migration-search'
 import BoardDatePicker from '@/components/date-picker/date-picker'
-import ReadTextEditor from '@/components/textEditor/readTextEditor'
 
 export default function BoardListPage({ searchParams }) {
   const datas = TableData()
@@ -30,9 +29,8 @@ export default function BoardListPage({ searchParams }) {
             <SearchWrapper />
           </Suspense>
         </div>
-        <div className="flex flex-end justify-end mt-3">
+        <div className="flex flex-end justify-end mt-3 font-tenada">
           <Suspense fallback={<RectangleSkeleton width={500} height={40} />}>
-            {/* 이 녀석 다시 배치되어야함. */}
             <BoardDatePicker />
           </Suspense>
         </div>
@@ -62,7 +60,6 @@ export default function BoardListPage({ searchParams }) {
           {/* 여기도 수정 필요함. write 페이지를 바깥에 빼고 통합 페이지로 할거면 */}
           <Button name="작성" href="/board/diary/write" />
         </div>
-        <ReadTextEditor />
       </div>
     </div>
   )

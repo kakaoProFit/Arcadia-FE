@@ -15,7 +15,7 @@ const baseUrl =
 const formUrl = 'http://61.109.216.248:8000/diary'
 const submitUrl = '/diary/content/psyAnlz' // 등록 후에 분석 페이지로 이동
 // const anonPost = false // 일기를 익명으로 할건지 아닌지 판별. 기본값은 false
-const writeForm = true // 일기의 작성 폼. 기본으로는 false
+const writeForm = false // 일기의 작성 폼. 기본으로는 false
 const isDiaryMode = 'isDiaryMode' // text editor가 여러군데서 쓰이기 때문에 일기일 경우 '제목' 적는 부분이 필요함. 그걸 하기 위한 변수
 
 export default function DiaryWritePage() {
@@ -26,6 +26,7 @@ export default function DiaryWritePage() {
       <TextEditor
         baseUrl={baseUrl}
         submitUrl={submitUrl}
+        category="diary"
         // anonPost={anonPost}
         writeForm={writeForm}
         formUrl={formUrl}

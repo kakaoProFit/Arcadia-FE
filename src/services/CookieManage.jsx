@@ -36,4 +36,14 @@ function RenewalToken() {
   }
 }
 
-export { RenewalToken }
+function getUid() {
+  if (!getCookie('accessToken')) throw new Error('No accessToken')
+  else if (getCookie('refreshToken')) {
+    RenewalToken()
+  } else {
+    window.location.href = '/login'
+  }
+  return jwtDecode(getCookie('accessToken')).userId
+}
+
+export { RenewalToken, getUid }
