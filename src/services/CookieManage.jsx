@@ -37,6 +37,7 @@ function RenewalToken() {
 }
 
 function getUid() {
+  // 지금 현재 로그인 한 유저의 id를 받아옴
   if (!getCookie('accessToken')) throw new Error('No accessToken')
   else if (getCookie('refreshToken')) {
     RenewalToken()
