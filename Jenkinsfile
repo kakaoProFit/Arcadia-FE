@@ -27,6 +27,7 @@ pipeline {
                 }
             }
         }
+
         stage('Docker build') {
             steps {
                 script {
@@ -44,11 +45,13 @@ pipeline {
                 }
             }
         }
+
         stage('Login') {
             steps {
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login gcu-profit-dev.kr-central-2.kcr.dev -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
             }
         }
+
         stage('Deploy our image') {
             steps {
                 script {
@@ -57,6 +60,7 @@ pipeline {
                 }
             }
         }
+        
         stage('Clone from GitHub') {
             steps {
                 git branch: "${githubbranch}", credentialsId: 'githubToken', url: "${githuburl}"
