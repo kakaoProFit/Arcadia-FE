@@ -3,7 +3,6 @@ pipeline {
         repository = 'gcu-profit-dev.kr-central-2.kcr.dev/arcadia-nextjs/arcadia-fe'
         DOCKERHUB_CREDENTIALS = credentials('kicToken')
         dockerImage = ''
-        CONTAINER_NAME = 'arcadia_homepage'
         gitlaburl = 'http://172.16.212.109/kakaoProFit/Arcadia-FE'
         gitlabbranch = 'develop'
         githuburl = 'https://github.com/kakaoProFit/arcadia-manifest'
@@ -60,7 +59,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Clone from GitHub') {
             steps {
                 git branch: "${githubbranch}", credentialsId: 'githubToken', url: "${githuburl}"
