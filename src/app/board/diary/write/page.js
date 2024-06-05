@@ -19,12 +19,14 @@ const writeForm = false // 일기의 작성 폼. 기본으로는 false
 const isDiaryMode = 'isDiaryMode' // text editor가 여러군데서 쓰이기 때문에 일기일 경우 '제목' 적는 부분이 필요함. 그걸 하기 위한 변수
 
 export default function DiaryWritePage() {
+  // writeForm -> [board, question, diary]
   return (
     <div>
-      <p className="flex justify-center text-4xl">일기 작성</p>
+      <p className="flex justify-center text-4xl">글 작성</p>
       <TextEditor
         baseUrl={baseUrl}
         submitUrl={submitUrl}
+        category="diary"
         // anonPost={anonPost}
         writeForm={writeForm}
         formUrl={formUrl}

@@ -26,7 +26,7 @@ export default function BoardListPage({ searchParams }) {
             <SearchWrapper />
           </Suspense>
         </div>
-        <div className="flex flex-end justify-end mt-3">
+        <div className="flex flex-end justify-end mt-3 font-tenada">
           <Suspense fallback={<RectangleSkeleton width={500} height={40} />}>
             <BoardDatePicker />
           </Suspense>

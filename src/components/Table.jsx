@@ -100,7 +100,12 @@ export default function Table(props) {
               scope="row"
               className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
             >
-              {data.title}
+              {data.title}{' '}
+              {data.commentLength > 0 ? (
+                <span className="ml-6 text-gray-500">
+                  ({data.commentLength})
+                </span>
+              ) : null}
             </th>
             <td className="px-6 py-4">{data.id}</td>
             <td className="px-6 py-4">{`${data.createdAt[0]}-${data.createdAt[1]}-${data.createdAt[2]}`}</td>

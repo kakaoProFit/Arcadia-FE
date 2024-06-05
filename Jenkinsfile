@@ -3,32 +3,54 @@ pipeline {
         repository = 'gcu-profit-dev.kr-central-2.kcr.dev/arcadia-nextjs/arcadia-fe'
         DOCKERHUB_CREDENTIALS = credentials('kicToken')
         dockerImage = ''
-        CONTAINER_NAME = 'arcadia_homepage'
         gitlaburl = 'http://172.16.212.109/kakaoProFit/Arcadia-FE'
         gitlabbranch = 'develop'
         githuburl = 'https://github.com/kakaoProFit/arcadia-manifest'
         githubbranch = 'main'
+        SLACK_CHANNEL = '#jenkins-alert'
+        SLACK_CREDENTIALS = credentials('slack_alert_token')
+        COMMIT_MESSAGE = ''
     }
     agent any
     stages {
         stage('Prepare') {
             steps {
-                git branch: "$gitlabbranch", credentialsId: 'gitlabToken', url: "$gitlaburl"
+                script {
+                    git branch: "$gitlabbranch", credentialsId: 'gitlabToken', url: "$gitlaburl"
+                    COMMIT_MESSAGE = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
+                    slackSend (
+                        channel: SLACK_CHANNEL, 
+                        color: '#FFFF00', 
+                        message: "Build Started: ${env.JOB_NAME} - ${env.BUILD_NUMBER}\nCommit Message: ${COMMIT_MESSAGE}"
+                    )
+                }
             }
         }
+
         stage('Docker build') {
             steps {
                 script {
-                    dockerImage = docker.build repository + ":$BUILD_NUMBER"
+                    try {
+                        dockerImage = docker.build repository + ":$BUILD_NUMBER"
+                        sh 'docker image tag $repository:$BUILD_NUMBER $repository:latest'
+                    } catch (Exception e) {
+                        slackSend (
+                            channel: SLACK_CHANNEL, 
+                            color: 'danger', 
+                            message: "Docker Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+                        )
+                        throw e
+                    }
                 }
-                sh 'docker image tag $repository:$BUILD_NUMBER $repository:latest'
             }
         }
+
         stage('Login') {
             steps {
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login gcu-profit-dev.kr-central-2.kcr.dev -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
             }
         }
+
         stage('Deploy our image') {
             steps {
                 script {
@@ -37,6 +59,7 @@ pipeline {
                 }
             }
         }
+
         stage('Clone from GitHub') {
             steps {
                 git branch: "${githubbranch}", credentialsId: 'githubToken', url: "${githuburl}"
@@ -62,6 +85,22 @@ pipeline {
                     }
                 }
             }
+        }
+    }
+    post {
+        success {
+            slackSend (
+                channel: SLACK_CHANNEL, 
+                color: 'good', 
+                message: "Build Successful: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+            )
+        }
+        failure {
+            slackSend (
+                channel: SLACK_CHANNEL, 
+                color: 'danger', 
+                message: "Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+            )
         }
     }
 }

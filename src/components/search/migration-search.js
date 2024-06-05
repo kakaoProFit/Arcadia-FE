@@ -8,7 +8,7 @@ export default function SearchWrapper() {
   const searchParams = useSearchParams()
 
   const [term, setTerm] = useState('')
-  const [typeOfQuery, setTypeOfQuery] = useState('title')
+  const [typeOfQuery, setTypeOfQuery] = useState('')
 
   const handleSearchValue = (e) => {
     setTerm(e.target.value)

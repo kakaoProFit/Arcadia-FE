@@ -1,96 +1,60 @@
-import { Box, Grid } from '@mui/material'
+'use client'
+
+import React from 'react'
+import Post from '@/components/Post'
+import MoodIcon from '@mui/icons-material/Mood'
 import Player from '@/components/musicPlayer/Player'
-import dynamic from 'next/dynamic'
-import AnalyzeResults from '@/components/readDiary/analyze-result'
 
-const ReadDirInquery = dynamic(
-  () => import('@/components/readDiary/readDirInquery'),
-  {
-    ssr: false,
-  },
-)
-
-async function getDiaryAnlz() {
-  // 이미지 url, 음악 url 등 정보 가져오기
-  const response = await fetch('/diary', {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    cache: 'no-store',
-  })
-
-  const data = await response.json()
-
-  return data
+const diaryContent = {
+  writer: '우울증유저',
+  title: '우울증이란?',
+  dirViews: 0,
+  content: `asdasdsadsadasdas`,
 }
-
-async function getDiaryContent() {
-  // 키워드 분석, 감정분석 가져오기
-  const response = await fetch('/analyze', {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    cache: 'no-store',
-  })
-
-  const data = await response.json()
-
-  return data
-}
-
-async function PsyAnlz() {
-  const analyze = await getDiaryAnlz() // 음악, 그림 등 분석 후 나오는 데이터들 불러옴.
-  const diaryContent = await getDiaryContent() // 일기 내용, 제목, 조회수 등 일기에 대한 데이터들 불러옴.
-
-  const psyAnlz_boolean = true //분석 화면일때 넘기는 데이터.
-
+export default function PsyAnlz() {
   return (
-    <div style={{ marginTop: '2%' }}>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container columnSpacing={2} rowSpacing={1}>
-          <Grid xs={6} md={7}>
-            {' '}
-            {/* 화면 크기에 따라 너비 조정 */}
-            <ReadDirInquery
-              props={diaryContent}
-              psyAnlz_boolean={psyAnlz_boolean}
-            />
-          </Grid>
-
-          <Grid
-            container
-            xs={2}
-            md={5}
-            style={{ marginLeft: '-5%', marginTop: '1%' }}
-            columns={20}
-          >
-            <Grid
-              item
-              xs={7}
-              md={7}
-              style={{ marginLeft: '0%', marginTop: '8%' }}
-            >
+    <div>
+      <Post props={diaryContent} />
+      <div class="container my-24 mx-auto md:px-6">
+        <section class="mb-32 p-4 shadow-xl">
+          <p className="my-10 text-center text-3xl font-semibold md:mb-6">
+            분석 결과
+          </p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col mx-auto">
+              <div className="flex items-center">
+                <MoodIcon color="primary" sx={{ fontSize: 100 }} />
+                <p className="ml-4 text-2xl font-semibold">기쁨: 90</p>
+              </div>
+              <div className="flex items-center">
+                <MoodIcon color="primary" sx={{ fontSize: 100 }} />
+                <p className="ml-4 text-2xl font-semibold">슬픔: 2</p>
+              </div>
+              <div className="flex items-center">
+                <MoodIcon color="primary" sx={{ fontSize: 100 }} />
+                <p className="ml-4 text-2xl font-semibold">분노: 1</p>
+              </div>
+              <div className="flex items-center">
+                <MoodIcon color="primary" sx={{ fontSize: 100 }} />
+                <p className="ml-4 text-2xl font-semibold">재앙: 7</p>
+              </div>
+            </div>
+            <div>
               <img
-                style={{ width: '250px', height: '250px' }}
-                src={analyze.image_s3_url}
-                loading="lazy"
+                src="/images/user1.jpg"
+                alt="psy"
+                width="500px"
+                height="500px"
               />
-            </Grid>
-
-            <Grid
-              item
-              xs={13}
-              md={13}
-              style={{ marginLeft: '0%', marginTop: '4%' }}
-            ></Grid>
-            <AnalyzeResults props={diaryContent} />
-          </Grid>
-        </Grid>
-      </Box>
-
-      <Player props={analyze.music_s3_url1} />
+              <p className="mt-3 text-2xl font-semibold">추천 이미지</p>
+            </div>
+          </div>
+          <p className="my-10 text-center text-3xl font-semibold md:mb-6">
+            추천 음악
+          </p>
+          <Player props="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" />
+        </section>
+      </div>
     </div>
   )
 }
-
-export default PsyAnlz

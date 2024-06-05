@@ -80,6 +80,7 @@ const testData = {
 }
 
 const testUser = {
+  userId: 1532,
   name: '홍길동',
   email: 'honggildong@naver.com',
   postCount: Math.floor(Math.random() * 1001),
