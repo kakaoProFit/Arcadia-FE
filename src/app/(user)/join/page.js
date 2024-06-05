@@ -201,22 +201,6 @@ export default function SignUp() {
                 회원가입
               </button>
             </div>
-            <div className="!mt-3">
-              <button
-                type="submit"
-                className="w-full py-3 px-4 text-base font-semibold rounded text-white bg-yellow-300 hover:bg-yellow-400 focus:outline-none"
-              >
-                카카오 회원가입
-              </button>
-            </div>
-            <div className="!mt-3">
-              <button
-                type="submit"
-                className="w-full py-3 px-4 text-base font-semibold rounded text-white bg-green-500 hover:bg-green-600 focus:outline-none"
-              >
-                네이버 회원가입
-              </button>
-            </div>
             <p className="text-black text-sm mt-6 text-center">
               이미 회원 가입을 했다면?{' '}
               <a

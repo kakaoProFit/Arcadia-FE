@@ -10,6 +10,7 @@ export default function TableData() {
     const date = '2021-09-01' // 일정한 날짜로 설정 (선택사항)
     const views = getRandomNumber(50, 500) // 랜덤한 조회수 생성
     const likes = getRandomNumber(5, 50) // 랜덤한 좋아요 수 생성
+    const commentLength = getRandomNumber(0, 10) // 랜덤한 댓글 수 생성
 
     dummyData.push({
       id: id,
@@ -18,6 +19,7 @@ export default function TableData() {
       date: date,
       views: views,
       likes: likes,
+      commentLength: commentLength,
     })
   }
   return dummyData

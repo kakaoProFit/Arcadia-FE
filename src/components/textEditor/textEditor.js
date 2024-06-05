@@ -7,10 +7,7 @@ import 'react-quill/dist/quill.snow.css'
 import styled from 'styled-components'
 import { useRef, useState, useMemo } from 'react'
 import ReactQuill, { Quill } from 'react-quill'
-import Button from '@mui/material/Button'
 import { useRouter } from 'next/navigation'
-import TextField from '@mui/material/TextField'
-import Grid from '@mui/material/Grid'
 import AWS from 'aws-sdk'
 import ImageResize from 'quill-image-resize-module-react'
 
@@ -376,33 +373,36 @@ const TextEditor = (props) => {
       })
   }
 
+  const [category, setCategory] = useState('free')
+
   return (
     <>
       <StyledTextEditor>
-        {props.writeForm && ( // writeForm이라는 props가 있을때만 폼 스위치 표시. (=일기)
-          <div>
-            <div className="justify-center w-full">
-              <form className="flex-row flex">
-                <select
-                  id="board"
-                  class="mr-4 py-3 bg-gray-200 w-min h-min border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                >
-                  <option value="free">자유게시판</option>
-                  <option value="inform">정보게시판</option>
-                  <option value="question">질문게시판</option>
-                  <option value="diary">일기게시판</option>
-                </select>
-                <input
-                  className=" text-black bg-white border border-gray-300 w-full text-xl py-3 rounded-md outline-blue-500"
-                  type="text"
-                  id="title"
-                  name="title"
-                  placeholder="제목을 입력하세요"
-                  onChange={handleTitleChange}
-                />
-              </form>
-            </div>
-            <label class="inline-flex items-center my-5 cursor-pointer">
+        <div className="mb-4">
+          <div className="justify-center w-full">
+            <form className="flex-row flex">
+              <select
+                id="board"
+                onChange={(e) => setCategory(e.target.value)}
+                class="mr-4 py-3 bg-gray-200 w-min h-min border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="free">자유게시판</option>
+                <option value="inform">정보게시판</option>
+                <option value="question">질문게시판</option>
+                <option value="diary">일기게시판</option>
+              </select>
+              <input
+                className=" text-black bg-white border border-gray-300 w-full text-xl py-3 rounded-md outline-blue-500"
+                type="text"
+                id="title"
+                name="title"
+                placeholder="제목을 입력하세요"
+                onChange={handleTitleChange}
+              />
+            </form>
+          </div>
+          {category === 'diary' ? ( // 토글
+            <label class="inline-flex items-center mt-3 cursor-pointer">
               <input
                 type="checkbox"
                 value=""
@@ -411,13 +411,15 @@ const TextEditor = (props) => {
                 onChange={toggleWriteForm}
               />
               <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-              <span class="ms-3 text-sm font-medium text-gray-900">Toggle</span>
+              <span class="ms-3 text-sm font-medium text-gray-900">
+                질문 형식
+              </span>
             </label>
-          </div>
-        )}
+          ) : null}
+        </div>
 
         {/* 작성 폼이 아닌 경우, 텍스트 편집기 보여주기 */}
-        {isWriteForm ? (
+        {!isWriteForm ? (
           <>
             <ReactQuill
               ref={quillRef}
@@ -431,12 +433,14 @@ const TextEditor = (props) => {
               {displayCounting.length - 1}/{maxCharacters}
             </p>
             <form class="bg-white mb-3">
-              <input
-                className="text-black bg-white border border-gray-300 w-4/12 text-base px-4 py-3 rounded-md outline-blue-500"
-                type="number"
-                name="point"
-                placeholder="포인트를 입력하세요"
-              />
+              {category === 'question' ? (
+                <input
+                  className="text-black bg-white border border-gray-300 w-4/12 text-base px-4 py-3 rounded-md outline-blue-500"
+                  type="number"
+                  name="point"
+                  placeholder="포인트를 입력하세요"
+                />
+              ) : null}
             </form>
             <button
               className="font-tenada text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none"
@@ -447,7 +451,7 @@ const TextEditor = (props) => {
           </>
         ) : (
           <>
-            {/* 반응형을 위해 Grid사용 */}
+            {/* 일기 관련 컴포넌트 */}
             <div>
               {formFields.map((field, index) => (
                 <div key="index" className="flex flex-col">
