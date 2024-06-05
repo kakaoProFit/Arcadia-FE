@@ -8,6 +8,8 @@ pipeline {
         gitlabbranch = 'develop'
         githuburl = 'https://github.com/kakaoProFit/arcadia-manifest'
         githubbranch = 'main'
+        SLACK_CHANNEL = '#jenkins-alert'
+        SLACK_CREDENTIALS = credentials('slack_alert_token')
     }
     agent any
     stages {
@@ -19,9 +21,18 @@ pipeline {
         stage('Docker build') {
             steps {
                 script {
-                    dockerImage = docker.build repository + ":$BUILD_NUMBER"
+                    try {
+                        dockerImage = docker.build repository + ":$BUILD_NUMBER"
+                        sh 'docker image tag $repository:$BUILD_NUMBER $repository:latest'
+                    } catch (Exception e) {
+                        slackSend (
+                            channel: SLACK_CHANNEL, 
+                            color: 'danger', 
+                            message: "Docker Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+                        )
+                        throw e
+                    }
                 }
-                sh 'docker image tag $repository:$BUILD_NUMBER $repository:latest'
             }
         }
         stage('Login') {
@@ -62,6 +73,22 @@ pipeline {
                     }
                 }
             }
+        }
+    }
+    post {
+        success {
+            slackSend (
+                channel: SLACK_CHANNEL, 
+                color: 'good', 
+                message: "Build Successful: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+            )
+        }
+        failure {
+            slackSend (
+                channel: SLACK_CHANNEL, 
+                color: 'danger', 
+                message: "Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+            )
         }
     }
 }
