@@ -1,9 +1,8 @@
 'use client'
-import { useState } from 'react'
 import { Container, Pagination } from '@mui/material'
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 
-export default function DiaryPagination(props) {
+export default function BoardPagination(props) {
   const searchParams = useSearchParams()
   const pathname = usePathname()
   const router = useRouter()

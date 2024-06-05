@@ -15,7 +15,9 @@ export default function Card({ data, count }) {
               <h5 className="font-tenada mb-2 text-xl font-medium leading-tight">
                 {card.title}
               </h5>
+              {/* 작성자로 바꾸자는 의견 */}
               <p className="font-tenada mb-4 text-base">{card.description}</p>
+              {/* 작성일자를 쓰는게 나을듯? */}
               <p className="font-tenada mt-10 text-sm">카테고리: {card.tap}</p>
             </div>
           </div>

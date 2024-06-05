@@ -7,10 +7,8 @@ export default function TableHeader() {
   const router = useRouter()
   const pathname = usePathname()
 
-  const [sortType, setSortType] = useState(0)
+  const [sortType, setSortType] = useState(null)
   // 한 번에 하나의 정렬만 요청 가능 (다른 거 요청시 기존이 풀림)
-  // 어차피 데이터 갈아끼워주는 과정이라서 그냥 식별자만 받으면 될 것 같음.
-  // 호출은 하나만 해도 족할 듯 (api)
   function sortDates() {
     setSortType(0)
   }
@@ -31,14 +29,13 @@ export default function TableHeader() {
       params.delete('query')
       params.delete('queryType')
     }
-    if (sortType === 0) params.set('sortType', '작성일자순')
-    else if (sortType === 1) params.set('sortType', '조회순')
-    else if (sortType === 2) params.set('sortType', '좋아요순')
+    if (sortType === 0) params.set('sortType', 'date')
+    else if (sortType === 1) params.set('sortType', 'hits')
+    else if (sortType === 2) params.set('sortType', 'like')
     router.replace(`${pathname}?${params.toString()}`)
   }
 
   useEffect(() => {
-    console.log('check sortType')
     updateSortType()
   }, [sortType])
 
