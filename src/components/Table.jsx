@@ -2,50 +2,44 @@
 import React, { useEffect, useState } from 'react'
 import TableHeader from './TableHeader'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+// 파싱을 테스트하기 위한 더미 데이터
+import { listResponse } from './TableData'
 
 export default function Table(props) {
-  const {
-    data,
-    query,
-    queryType,
-    page,
-    sortType,
-    startDate,
-    endDate,
-    category,
-  } = props
-  //임시 변수
-  const count = 12
-  const [datas, setDatas] = useState(data.slice(0, count))
+  const { query, queryType, page, sortType, startDate, endDate, category } =
+    props
+
+  const [dataSet, setDataSet] = useState([])
   const pathname = usePathname()
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  useEffect(() => {
-    // table을 사용하는 페이지에 대해서 category 선언
-    // usePathname대신 useSelectedLayoutSegment로 대체 가능
-    let category = ''
-    if (pathname === '/board/free') {
-      category = 'free'
-    } else if (pathname === '/board/inform') {
-      category = 'inform'
-    } else if (pathname === '/board/question') {
-      category = 'question'
-    } else if (pathname === '/board/diary') {
-      category = 'diary'
-    }
-    // 사라질 녀석
-    else if (pathname === '/board') {
-      category = 'free' // 임시
-    }
-    const params = new URLSearchParams(searchParams)
-    params.set('category', category)
-    router.replace(`${pathname}?${params.toString()}`)
-  }, [])
+  // 더미데이터
+  const example_data = listResponse
 
-  // 여기 코드는 나중에 다른 파일로 뺄 예정
+  // useEffect(() => {
+  //   // table을 사용하는 페이지에 대해서 category 선언
+  //   let category = ''
+  //   if (pathname === '/board/free') {
+  //     category = 'free'
+  //   } else if (pathname === '/board/inform') {
+  //     category = 'inform'
+  //   } else if (pathname === '/board/question') {
+  //     category = 'question'
+  //   } else if (pathname === '/board/diary') {
+  //     category = 'diary'
+  //   }
+  //   // 사라질 녀석
+  //   else if (pathname === '/board') {
+  //     category = 'free' // 임시
+  //   }
+  //   const params = new URLSearchParams(searchParams)
+  //   params.set('category', category)
+  //   router.replace(`${pathname}?${params.toString()}`)
+  // }, [])
+
   const getBoardList = async (category, params) => {
-    const url = `https://spring.arcadiaprofit.shop/board/list/${category}`
+    const url = `https://spring.arcadiaprofit.shop/boards/list/${category}`
     const requestUrl = url + params
     const requestOptions = {
       method: 'GET',
@@ -53,40 +47,46 @@ export default function Table(props) {
     }
     console.log('request URL : ', requestUrl)
     // 나중에 return 형식으로 바꿔야 함. 그렇게 전달 된 녀석을 받아서 사용하면 될 듯
-    const temp = await fetch(requestUrl, requestOptions)
-      .then((res) => (res.ok ? res.json() : data.slice(0, count)))
-      .then((data) => {
-        console.log('check set ', data)
-        // setDatas(data)
-      })
-    console.log('check temp ', temp)
-    // return
+    const responseData = await fetch(requestUrl, requestOptions)
+    if (!responseData.ok) throw new Error('board list request fail')
+    const returnData = await responseData.json()
+    return returnData.boards
   }
 
-  // 이런식으로 하면 동작하긴 한다. props로 받기 때문인 것 같다.
-  // 그래도 여전히 비효율적이라는 생각이 들긴한다..
-  // 그러나 페이지마다 바뀌는 것을 호환하려면 이렇게 해야한다..
-  // 공통적인 페이지를 하나로 좁히고 데이터를 받으면 이렇게 안해도 되지 않을까?
+  // 더미데이터 테스트용 함수
+  const getExampleData = () => {
+    const pageCount = example_data.boards.totalPages
+    const ex_data = example_data.boards
+    const params = new URLSearchParams(searchParams)
+    params.set('pageCount', pageCount)
+    router.replace(`${pathname}?${params.toString()}`)
+    return ex_data
+  }
+
   useEffect(() => {
-    console.log('render check')
+    console.log('check render')
     let params = '?'
     for (let key in props) {
-      if (key !== 'data' && key !== 'category') {
+      if (key !== 'data' && key !== 'category' && key !== 'pageCount') {
         const value = props[key]
         if (value !== NaN) {
           params += `${key}=${value}`
           params += '&'
-          // setParams(params+`${key}+${value}&`)
-          console.log('key ', key)
-          console.log('value ', value)
         }
       }
     }
     const checkParams = params.length - 1
-    // setParams(params.substring(0, checkParams))
     params = params.substring(0, checkParams)
-    console.log('check params ', params)
-    getBoardList(props['category'], params)
+    // console.log("check params : ", params)
+    getBoardList(props['category'], params).then((data) => {
+      setDataSet(data.content)
+      console.log('data has : ', data)
+      console.log('check dataSet ', dataSet)
+      const pageCount = data.totalPages
+      const deliveryParam = new URLSearchParams(searchParams)
+      deliveryParam.set('pageCount', pageCount)
+      router.replace(`${pathname}?${deliveryParam.toString()}`)
+    })
     params = ''
   }, [query, sortType, page, startDate, category])
 
@@ -94,7 +94,7 @@ export default function Table(props) {
     <table className="w-full text-sm text-left text-gray-500">
       <TableHeader />
       <tbody>
-        {datas.map((data) => (
+        {dataSet.map((data) => (
           <tr key={data.id} className="bg-white border-b">
             <th
               scope="row"
@@ -107,10 +107,10 @@ export default function Table(props) {
                 </span>
               ) : null}
             </th>
-            <td className="px-6 py-4">{data.writer}</td>
-            <td className="px-6 py-4">{data.date}</td>
-            <td className="px-6 py-4">{data.views}</td>
-            <td className="px-6 py-4">{data.likes}</td>
+            <td className="px-6 py-4">{data.id}</td>
+            <td className="px-6 py-4">{`${data.createdAt[0]}-${data.createdAt[1]}-${data.createdAt[2]}`}</td>
+            <td className="px-6 py-4">{data.hits}</td>
+            <td className="px-6 py-4">{data.likeCnt}</td>
           </tr>
         ))}
       </tbody>

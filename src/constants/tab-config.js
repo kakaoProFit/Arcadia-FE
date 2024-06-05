@@ -3,7 +3,7 @@ export const board_tab_config = [
   {
     id: 0,
     name: '와글와글(통합게시판)',
-    href: '/board',
+    href: '/board?category=free',
     title: '임시 게시판',
   },
   {
