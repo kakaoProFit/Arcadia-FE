@@ -10,12 +10,19 @@ pipeline {
         githubbranch = 'main'
         SLACK_CHANNEL = '#jenkins-alert'
         SLACK_CREDENTIALS = credentials('slack_alert_token')
+        COMMIT_MESSAGE = ''
     }
     agent any
     stages {
         stage('Prepare') {
             steps {
                 git branch: "$gitlabbranch", credentialsId: 'gitlabToken', url: "$gitlaburl"
+                COMMIT_MESSAGE = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
+                slackSend (
+                    channel: SLACK_CHANNEL, 
+                    color: '#FFFF00', 
+                    message: "Build Started: ${env.JOB_NAME} - ${env.BUILD_NUMBER}\nCommit Message: ${COMMIT_MESSAGE}"
+                )
             }
         }
         stage('Docker build') {
