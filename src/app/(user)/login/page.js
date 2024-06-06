@@ -38,14 +38,18 @@ export default function Login() {
   async function onSubmit(data) {
     console.log('fetching')
     try {
-      const response = await fetch('https://arcadia-spring.p-e.kr/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        'https://spring.arcadiaprofit.shop/auth/login',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
         },
-        body: JSON.stringify(data),
-      })
+      )
       const resData = await response.json()
+      console.log(resData)
       if (response.status === 401) {
         setRes({ error: resData.message })
         console.log('로그인 실패')
@@ -53,6 +57,7 @@ export default function Login() {
         return
       }
       await setRes(resData)
+      console.log(resData)
       await setCookie('accessToken', resData.accestoken, {
         maxAge: resData.expiresIn,
       })
@@ -111,7 +116,7 @@ export default function Login() {
           </div>
           <div className="!mt-3 text-center">
             <button
-              type="submit"
+              type="button"
               className="w-full py-3 px-4 text-base font-semibold rounded text-white bg-yellow-300 hover:bg-yellow-400 focus:outline-none"
             >
               카카오 로그인
@@ -119,11 +124,21 @@ export default function Login() {
           </div>
           <div className="!mt-3 text-center">
             <button
-              type="submit"
+              type="button"
               className="w-full py-3 px-4 text-base font-semibold rounded text-white bg-green-500 hover:bg-green-600 focus:outline-none"
             >
               네이버 로그인
             </button>
+          </div>
+          <div className="!mt-3 text-center">
+            <a href="/join">
+              <button
+                type="button"
+                className="w-full py-3 px-4 text-base font-semibold rounded text-white bg-green-500 hover:bg-green-600 focus:outline-none"
+              >
+                회원 가입
+              </button>
+            </a>
           </div>
         </form>
         <div className="max-md:order-1 p-4">
@@ -134,11 +149,11 @@ export default function Login() {
           />
         </div>
       </div>
-
       <Modal
         className="font-tenada"
         show={show}
         handleClose={() => setShow(false)}
+        onClose={() => setShow(false)}
       >
         <Modal.Header>로그인 실패</Modal.Header>
         <Modal.Body>

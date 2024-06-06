@@ -79,21 +79,24 @@ export default function SignUp() {
     )
   }
   async function onSubmit(data) {
-    // try {
-    //   console.log('fetch')
-    //   console.log(data)
-    //   const response = await fetch('https://arcadia-spring.p-e.kr/auth/signup', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(data),
-    //   })
-    //   const resData = await response.json()
-    //   console.log(resData)
-    // } catch (error) {
-    //   console.error('Error during fetch:', error)
-    // }
+    try {
+      console.log('fetch')
+      console.log(data)
+      const response = await fetch(
+        'https://spring.arcadiaprofit.shop/auth/signup',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        },
+      )
+      const resData = await response.json()
+      console.log(resData)
+    } catch (error) {
+      console.error('Error during fetch:', error)
+    }
     console.log(data)
   }
 
@@ -196,22 +199,6 @@ export default function SignUp() {
                 className="w-full py-3 px-4 text-base font-semibold rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
               >
                 회원가입
-              </button>
-            </div>
-            <div className="!mt-3">
-              <button
-                type="submit"
-                className="w-full py-3 px-4 text-base font-semibold rounded text-white bg-yellow-300 hover:bg-yellow-400 focus:outline-none"
-              >
-                카카오 회원가입
-              </button>
-            </div>
-            <div className="!mt-3">
-              <button
-                type="submit"
-                className="w-full py-3 px-4 text-base font-semibold rounded text-white bg-green-500 hover:bg-green-600 focus:outline-none"
-              >
-                네이버 회원가입
               </button>
             </div>
             <p className="text-black text-sm mt-6 text-center">

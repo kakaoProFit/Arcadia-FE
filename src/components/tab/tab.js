@@ -5,16 +5,10 @@ import { usePathname } from 'next/navigation'
 import React, { useState } from 'react'
 
 export default function SubTab() {
-  // let tab_config_data=mypage_tab_config;
   let tab_config_data = []
   const pathname = usePathname()
-  // const [isBoard, setIsBoard] = useState(true)
   let isBoard = true
   // 마이페이지와 일반 게시판에 대한 탭을 다르게 띄워주기 위한 분기처리
-
-  // 이런 방식으로 안하면 matcher라는 미들웨어를 도입하면 가능하긴 함.
-  // 근데 다른 것도 그런식으로 묶여서 문제가 생길 수도 있지 않을까
-  // tab container랑 똑같이 하면 되는 듯..
   if (
     pathname === '/board' ||
     pathname === '/board/diary' ||

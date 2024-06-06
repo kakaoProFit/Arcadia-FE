@@ -1,6 +1,6 @@
 'use client'
 
-import Modal from '@/components/Modal'
+import { Modal, Button } from 'flowbite-react'
 import RectangleSkeleton from '@/components/loading-skeleton/rectangle-skeleton'
 import { getProfileImage, getProfileInfo } from '@/services/profile-data'
 import { useState, useEffect, useRef } from 'react'
@@ -57,6 +57,7 @@ function saveProfileInfo(profileInfo) {
 }
 
 export default function SettingPage() {
+  const [show, setShow] = useState(false)
   if (
     getCookie('accessToken') === undefined &&
     getCookie('refreshToken') !== undefined
@@ -305,20 +306,35 @@ export default function SettingPage() {
           <hr className="my-5" />
           <div className="text-center">
             <button
-              data-modal-target="user-resign"
-              data-modal-toggle="user-resign"
               className="text-black bg-red-700 border border-red-300 w-4/12 text-base text-white px-4 py-3 rounded-md outline-blue-500"
-              type="submit"
+              type="button"
+              onClick={() => setShow(true)}
             >
               회원 탈퇴
             </button>
           </div>
           <Modal
-            modalId="user-resign"
-            modalTitle="회원 탈퇴"
-            modalContent="정말로 탈퇴하시겠습니까?"
-            modalType={false}
-          />
+            className="font-tenada"
+            show={show}
+            handleClose={() => setShow(false)}
+            onClose={() => setShow(false)}
+          >
+            <Modal.Header>회원 탈퇴</Modal.Header>
+            <Modal.Body>
+              <div className="space-y-6">
+                <p className="text-base leading-relaxed text-gray-500">
+                  회원 탈퇴 시, 작성한 게시물, 댓글 등 모든 데이터가 다 사라져요
+                </p>
+                <p className="text-base leading-relaxed text-gray-500">
+                  다시 한 번 생각해보쇼
+                </p>
+              </div>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button onClick={() => setShow(false)}>진짜 탈퇴하기</Button>
+              <Button onClick={() => setShow(false)}>다시 생각해보기</Button>
+            </Modal.Footer>
+          </Modal>
         </div>
       </div>
     </div>

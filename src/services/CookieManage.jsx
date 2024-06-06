@@ -24,6 +24,11 @@ function RenewalToken() {
           jwtDecode(resData.accessToken).exp - Math.floor(Date.now() / 1000),
       })
 
+      await setCookie('refreshToken', resData.refreshToken, {
+        maxAge:
+          jwtDecode(resData.refreshToken).exp - Math.floor(Date.now() / 1000),
+      })
+
       // 이후에 리다이렉트
     } catch (error) {
       console.error('Error during fetch:', error)
@@ -31,4 +36,15 @@ function RenewalToken() {
   }
 }
 
-export { RenewalToken }
+function getUid() {
+  // 지금 현재 로그인 한 유저의 id를 받아옴
+  if (!getCookie('accessToken')) throw new Error('No accessToken')
+  else if (getCookie('refreshToken')) {
+    RenewalToken()
+  } else {
+    window.location.href = '/login'
+  }
+  return jwtDecode(getCookie('accessToken')).userId
+}
+
+export { RenewalToken, getUid }

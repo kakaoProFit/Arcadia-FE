@@ -60,8 +60,6 @@ function postComment(props) {
 }
 
 function Comment({ props }) {
-  console.log('diary ID: ', props.props) //일기의 ID 확인
-
   const commentRef = useRef(null)
   const [comments, setComments] = useState([]) // 댓글 상태 관리
 
@@ -138,9 +136,7 @@ function Comment({ props }) {
           {' '}
           {/* 댓글 입력창 */}
           <div className="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200">
-            <label for="comment" className="sr-only">
-              Your comment
-            </label>
+            <label className="sr-only">Your comment</label>
             <textarea
               id="comment"
               rows="6"
@@ -157,7 +153,7 @@ function Comment({ props }) {
           </button>
         </form>
         {props.map((comment, key) => (
-          <article key={key} className="p-6 text-base bg-white rounded-lg">
+          <div key={key} className="p-6 text-base bg-white rounded-lg">
             {' '}
             {/* 댓글 목록 */}
             <footer className="flex justify-between items-center mb-2">
@@ -171,11 +167,7 @@ function Comment({ props }) {
                   {comment.name}
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  <time
-                    pubdate
-                    datetime="2022-02-08"
-                    title="February 8th, 2022"
-                  >
+                  <time dateTime="2022-02-08" title="February 8th, 2022">
                     Feb. 8, 2022
                   </time>
                 </p>
@@ -196,7 +188,7 @@ function Comment({ props }) {
                 수정
               </button>
             </div>
-          </article>
+          </div>
         ))}
       </div>
     </section>
