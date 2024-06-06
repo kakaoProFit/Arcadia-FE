@@ -40,8 +40,8 @@ export default function SubTab() {
 
   return (
     <div className="bg-white mb-10 lg:px-6 py-2.5">
-      <div class="mx-auto font-tenada">
-        <div class="mx-10 border-b border-gray-200 dark:border-gray-700 mb-10">
+      <div className="mx-auto font-tenada">
+        <div className="mx-10 border-b border-gray-200 dark:border-gray-700 mb-10">
           <ul
             className="flex flex-wrap -mb-px"
             id="myTab"

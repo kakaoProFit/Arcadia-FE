@@ -149,11 +149,11 @@ export default function Login() {
           />
         </div>
       </div>
-
       <Modal
         className="font-tenada"
         show={show}
         handleClose={() => setShow(false)}
+        onClose={() => setShow(false)}
       >
         <Modal.Header>로그인 실패</Modal.Header>
         <Modal.Body>

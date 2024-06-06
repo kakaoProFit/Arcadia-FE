@@ -32,6 +32,16 @@ function addAnswer(data) {
   )
 }
 
+function formatCreatedAt(createdAtArray) {
+  // createdAt 배열에서 연, 월, 일을 추출
+  const [year, month, day] = createdAtArray.slice(0, 3)
+  // Date 객체 생성
+  const createdAtDate = new Date(year, month - 1, day)
+  // YYYY-MM-DD 형식으로 변환
+  const formattedCreatedAt = createdAtDate.toISOString().slice(0, 10)
+  return formattedCreatedAt
+}
+
 const Post = ({ props }) => {
   const date = new Date()
   return (
@@ -44,9 +54,7 @@ const Post = ({ props }) => {
             alt="avatar"
           />
           <div>
-            <span>
-              <u>{date.toLocaleDateString()}</u> by{' '}
-            </span>
+            <span>{formatCreatedAt(props.createdAt)} by </span>
             <a href="#!">{props.writer}</a>
           </div>
         </div>
@@ -59,16 +67,16 @@ const Post = ({ props }) => {
         </h1>
         <p>
           <span className="mr-2">조회수: {props.dirViews}</span>
-          <span className="mr-2">추천수: {props.dirViews}</span>
+          <span className="mr-2">추천수: {props.likeCnt}</span>
         </p>
-        <p className="my-3 shadow-lg border-sm">
+        <div className="my-3 shadow-lg border-sm">
           <ReactQuill
             theme="bubble"
-            value={props.content}
+            value={props.body}
             readOnly={true}
             style={{ height: '100%', fontSize: '30px' }}
           />
-        </p>
+        </div>
       </section>
       {props.category === 'question' ? (
         <div className="my-3">
