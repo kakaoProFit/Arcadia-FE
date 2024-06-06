@@ -1,12 +1,48 @@
 'use client'
-// 일기 조회(자세히 보기) 페이지
+
 import Comment from '@/components/comment/comment'
 import Answer from '@/components/comment/Answer'
 import Post from '@/components/Post'
-import React, { useState } from 'react'
-// react-quill을 동적으로 임포트
+import React, { useState, useEffect } from 'react'
 
-export default function ViewPost() {
+export default function ViewPost({ params }) {
+  const [post, setPost] = useState(null) // 포스트 상태 추가
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch(
+          `https://spring.arcadiaprofit.shop/boards/read/free/${params.viewSlug}`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        )
+        const postData = await response.json()
+        setPost(postData) // 데이터 도착시 상태 업데이트
+      } catch (error) {
+        console.error('Error during fetch:', error)
+      }
+    }
+
+    fetchData() // useEffect에서 데이터 가져오기
+  }, [params.viewSlug]) // params.viewSlug이 변경될 때마다 호출
+
+  const commentData = [
+    {
+      id: 1,
+      name: '우울증유저',
+      comment: '잘 보고 갑니다.',
+    },
+    {
+      id: 2,
+      name: '헤헤',
+      comment: '좋은 글이네요.',
+    },
+  ]
+
   const answerData = [
     {
       avatar: '/images/user2.jpg',
@@ -38,35 +74,12 @@ export default function ViewPost() {
     },
   ]
 
-  const postData = {
-    member_id: 1,
-    diary_id: 10,
-    title: '테스트1',
-    content:
-      '테스트2sdasdasdaasdasd테스트3<br>dasdsad테스트2sdasdasdaasdasd테스트3<br>dasdsad테스트2sdasdasdaasdasd테스트3<br>dasdsad테스트2sdasdasdaasdasd테스트3<br>dasdsad테스트2sdasdasdaasdasd테스트3<br>dasdsad테스트2sdasdasdaasdasd테스트3<br>dasdsad테스트2sdasdasdaasdasd테스트3<br>dasdsad',
-    writer: '홍길동',
-    hits: 100,
-    category: 'question',
-    answerList: answerData,
-  }
-
-  const commentData = [
-    {
-      id: 1,
-      name: '우울증유저',
-      comment: '잘 보고 갑니다.',
-    },
-    {
-      id: 2,
-      name: '헤헤',
-      comment: '좋은 글이네요.',
-    },
-  ]
-
   const [category, setCategory] = useState('free')
+  console.log(post)
   return (
     <div>
-      <Post props={postData} />
+      {post && <Post props={post} />}{' '}
+      {/* 데이터가 도착한 경우에만 Post 컴포넌트 렌더링 */}
       <button onClick={() => setCategory('question')}>질문</button>
       <button onClick={() => setCategory('free')}>질문이 아닌 경우</button>
       {category === 'question' ? (
