@@ -85,6 +85,8 @@ const TextEditor = (props) => {
 
   // 일기 제목을 저장할 state
   const [title, setTitle] = useState('')
+  // question에서 채택시 전달할 포인트를 저장할 state
+  const [point, setPoint] = useState(0)
 
   // Form일 경우, TextField의 상태를 관리할 useState
   const [formFields, setFormFields] = useState(['', '', ''])
@@ -179,6 +181,11 @@ const TextEditor = (props) => {
     setTitle(event.target.value)
   }
 
+  // 포인트를 변경하는 함수
+  const handlePointChange = (event) => {
+    setPoint(Number(event.target.value))
+  }
+
   const previousImagesRef = useRef([]) // 이미지 삭제를 탐지하기 위한 부분
   const detectDeletedImages = () => {
     //이미지 삭제 탐지 함수
@@ -236,6 +243,8 @@ const TextEditor = (props) => {
 
   // 등록 버튼을 클릭했을 때 실행될 함수
   const handleSubmit = () => {
+    // 인증 코드 들어와야 하는 부분임.
+
     console.log(writingContent) //작성된 내용물
 
     // 내용물에서 html 태그 제거. 감정분석 때문에 파싱 한거임.
@@ -247,59 +256,59 @@ const TextEditor = (props) => {
     console.log('html태그 제거 ', tempWritingContent.body.textContent)
     const postDiary = tempWritingContent.body.textContent
 
-    fetch(props.baseUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        member_id: 1,
+    if (category === 'diary') {
+      // diary fetch 코드임. category에 맞게 갈릴 수 있도록 해야 함.
+      fetch(props.baseUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          member_id: 1,
+          title: title,
+          diary: postDiary,
+        }),
+      })
+        .then((response) => {
+          if (response.ok) {
+            console.log('전송 성공!')
+            return response.json()
+          }
+          throw new Error('전송 실패')
+        })
+        .then((data) => {
+          console.log('감정 분석 결과 ', JSON.stringify(data))
+          localStorage.setItem('content', JSON.stringify(writingContent))
+          localStorage.setItem('analyze', JSON.stringify(data))
+          router.push(props.submitUrl)
+        })
+        .catch((error) => {
+          console.error('오류 발생', error)
+        })
+    } // end of if
+    // category : free, inform, question
+    else {
+      const requestBody = {
         title: title,
-        diary: postDiary,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log('전송 성공!')
-          return response.json()
-        }
-        throw new Error('전송 실패')
-      })
-      .then((data) => {
-        console.log('감정 분석 결과 ', JSON.stringify(data))
-        localStorage.setItem('content', JSON.stringify(writingContent))
-        localStorage.setItem('analyze', JSON.stringify(data))
-        router.push(props.submitUrl)
-      })
-      .catch((error) => {
-        console.error('오류 발생', error)
-      })
+        body: writingContent,
+      }
+      // question일 떄는 point 값을 추가
+      if (category === 'question') requestBody.point = point
+      console.log('check requestBody, ', requestBody)
+      const url = `https://spring.arcadiaprofit.shop/boards/write/${category}`
+      const requestOptions = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        body: JSON.stringify(requestBody),
+      }
 
-    fetch('http://61.109.216.248:8000/keyphrase', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        member_id: 1,
-        title: title,
-        diary: postDiary,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log('전송 성공!')
-          return response.json()
-        }
-        throw new Error('전송 실패')
+      fetch(url, requestOptions).then((res) => {
+        if (!res.ok) throw new Error('post write-request fail')
+        console.log('check res : ', res.json())
       })
-      .then((data) => {
-        console.log('키워드 데이터 ', JSON.stringify(data))
-        localStorage.setItem('keyword', JSON.stringify(data))
-      })
-      .catch((error) => {
-        console.error('오류 발생', error)
-      })
+    } // end of else (category : free, inform, question)
   }
 
   const handleFormChange = (index, value) => {
@@ -342,34 +351,6 @@ const TextEditor = (props) => {
       .catch((error) => {
         console.log('실패')
         console.error('There was a problem with the fetch operation:', error)
-      })
-
-    fetch('http://61.109.216.248:8000/keyphrase', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        // 작성 내용과 익명 여부 전달. 이거는 form으로 작성한거라 title이 없음.
-        member_id: 1,
-        diary: postData,
-        // isAnonPost: isAnonPost,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json()
-        } else {
-          throw new Error('전송 실패')
-        }
-      })
-      .then((data) => {
-        console.log('키워드 분석 결과 ', JSON.stringify(data))
-        localStorage.setItem('keyword', JSON.stringify(data))
-        // router.push(props.submitUrl);
-      })
-      .catch((error) => {
-        console.error('오류 발생', error)
       })
   }
 
@@ -439,6 +420,7 @@ const TextEditor = (props) => {
                   type="number"
                   name="point"
                   placeholder="포인트를 입력하세요"
+                  onChange={handlePointChange}
                 />
               ) : null}
             </form>

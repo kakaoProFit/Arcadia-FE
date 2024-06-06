@@ -6,8 +6,9 @@ function RenewalToken() {
   async function renewTokenAndRedirect() {
     try {
       console.log('renew')
+      const userId = jwtDecode(getCookie('refreshToken')).userId
       const response = await fetch(
-        'https://arcadia-spring.p-e.kr/auth/refresh/52',
+        `https://arcadia-spring.p-e.kr/auth/refresh/${userId}`,
         {
           method: 'POST',
           headers: {

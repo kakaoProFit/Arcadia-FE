@@ -90,6 +90,16 @@ export default function Table(props) {
     params = ''
   }, [query, sortType, page, startDate, category])
 
+  function formatCreatedAt(createdAtArray) {
+    // createdAt 배열에서 연, 월, 일을 추출
+    const [year, month, day] = createdAtArray.slice(0, 3)
+    // Date 객체 생성
+    const createdAtDate = new Date(year, month - 1, day)
+    // YYYY-MM-DD 형식으로 변환
+    const formattedCreatedAt = createdAtDate.toISOString().slice(0, 10)
+    return formattedCreatedAt
+  }
+
   return (
     <table className="w-full text-sm text-left text-gray-500">
       <TableHeader />
@@ -108,7 +118,8 @@ export default function Table(props) {
               ) : null}
             </th>
             <td className="px-6 py-4">{data.id}</td>
-            <td className="px-6 py-4">{`${data.createdAt[0]}-${data.createdAt[1]}-${data.createdAt[2]}`}</td>
+            {/* <td className="px-6 py-4">{`${data.createdAt[0]}-${data.createdAt[1]}-${data.createdAt[2]}`}</td> */}
+            <td className="px-6 py-4">{formatCreatedAt(data.createdAt)}</td>
             <td className="px-6 py-4">{data.hits}</td>
             <td className="px-6 py-4">{data.likeCnt}</td>
           </tr>
