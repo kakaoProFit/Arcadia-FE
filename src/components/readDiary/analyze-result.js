@@ -11,7 +11,7 @@ export default function AnalyzeResults(props) {
         variant="outlined"
         value={
           `일기 키워드\n${props.props.key_phrase} \n\n당신의 기분은?\n ` +
-          `${JSON.stringify(props.props.emotion).substring(1, JSON.stringify(props.props.emotion).length - 1)}` +
+          // `${JSON.stringify(props.props.emotion).substring(1, JSON.stringify(props.props.emotion).length - 1)}` +
           `\n\n\n오늘 하루도 수고했어요!`
         }
         InputProps={{
