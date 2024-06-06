@@ -113,7 +113,7 @@ export default function SettingPage() {
   }
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    // e.preventDefault()
     saveProfileInfo(editedUserInfo)
   }
 
