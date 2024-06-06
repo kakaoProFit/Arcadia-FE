@@ -2,8 +2,26 @@
 import { setCookie, getCookie } from 'cookies-next'
 import { jwtDecode } from 'jwt-decode'
 
+function checkAccessToken() {
+  if (!getCookie('accessToken')) {
+    return false
+  } else return true
+}
+
+function checkRefreshToken() {
+  if (!getCookie('refreshToken')) {
+    return false
+  } else return true
+}
+
 function RenewalToken() {
   async function renewTokenAndRedirect() {
+    if (!checkAccessToken() && checkRefreshToken()) {
+      const id = jwtDecode(getCookie('refreshToken')).userId
+    } else {
+      window.location.href = '/login'
+    }
+
     try {
       console.log('renew')
       const response = await fetch(
