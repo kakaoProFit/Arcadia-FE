@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 const nextConfig = {
-    reactStrictMode: true,
+    reactStrictMode: false,
     env: {
         NEXT_PUBLIC_S3_accessKeyId: process.env.NEXT_PUBLIC_S3_accessKeyId,
         NEXT_PUBLIC_S3_secretAccessKey: process.env.NEXT_PUBLIC_S3_secretAccessKey,

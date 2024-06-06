@@ -13,6 +13,8 @@ import TextField from '@mui/material/TextField'
 import Grid from '@mui/material/Grid'
 import AWS from 'aws-sdk'
 import ImageResize from 'quill-image-resize-module-react'
+import { RenewalToken, checkRenewalToken } from '@/services/CookieManage'
+import { getCookie } from 'cookies-next'
 
 Quill.register('modules/imageResize', ImageResize) //이미지 사이즈 조절할 때 쓰임
 
@@ -75,6 +77,13 @@ const questions = [
 ]
 
 const TextEditor = (props) => {
+  if (
+    getCookie('accessToken') === undefined &&
+    getCookie('refreshToken') !== undefined
+  ) {
+    RenewalToken()
+  }
+
   // props에는 baseUrl, submitUrl, (anonPost: 생략가능) 의 데이터가 넘어옴
   const quillRef = useRef()
   const maxCharacters = 500 //입력 최대 글자수
@@ -258,6 +267,7 @@ const TextEditor = (props) => {
       body: JSON.stringify({
         member_id: 1,
         title: title,
+        diary_tag: writingContent,
         diary: postDiary,
       }),
     })
@@ -269,40 +279,40 @@ const TextEditor = (props) => {
         throw new Error('전송 실패')
       })
       .then((data) => {
-        console.log('감정 분석 결과 ', JSON.stringify(data))
-        localStorage.setItem('content', JSON.stringify(writingContent))
-        localStorage.setItem('analyze', JSON.stringify(data))
-        router.push(props.submitUrl)
+        console.log('data: ', JSON.stringify(data))
+        // localStorage.setItem('content', JSON.stringify(writingContent))
+        // localStorage.setItem('analyze', JSON.stringify(data))
+        //router.push(props.submitUrl)
       })
       .catch((error) => {
         console.error('오류 발생', error)
       })
 
-    fetch('http://61.109.216.248:8000/keyphrase', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        member_id: 1,
-        title: title,
-        diary: postDiary,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log('전송 성공!')
-          return response.json()
-        }
-        throw new Error('전송 실패')
-      })
-      .then((data) => {
-        console.log('키워드 데이터 ', JSON.stringify(data))
-        localStorage.setItem('keyword', JSON.stringify(data))
-      })
-      .catch((error) => {
-        console.error('오류 발생', error)
-      })
+    // fetch('http://61.109.216.248:8000/keyphrase', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     // member_id: 1,
+    //     title: title,
+    //     diary: postDiary,
+    //   }),
+    // })
+    //   .then((response) => {
+    //     if (response.ok) {
+    //       console.log('전송 성공!')
+    //       return response.json()
+    //     }
+    //     throw new Error('전송 실패')
+    //   })
+    //   .then((data) => {
+    //     console.log('키워드 데이터 ', JSON.stringify(data))
+    //     localStorage.setItem('keyword', JSON.stringify(data))
+    //   })
+    //   .catch((error) => {
+    //     console.error('오류 발생', error)
+    //   })
   }
 
   const handleFormChange = (index, value) => {

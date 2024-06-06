@@ -12,12 +12,15 @@ const ReadDirInquery = dynamic(
 
 async function getDiaryAnlz() {
   // 이미지 url, 음악 url 등 정보 가져오기
-  const response = await fetch('/diary', {
-    headers: {
-      'Content-Type': 'application/json',
+  const response = await fetch(
+    'https://api.arcadiaprofit.shop/diary/DirAnalyze',
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-store',
     },
-    cache: 'no-store',
-  })
+  )
 
   const data = await response.json()
 
@@ -26,7 +29,7 @@ async function getDiaryAnlz() {
 
 async function getDiaryContent() {
   // 키워드 분석, 감정분석 가져오기
-  const response = await fetch('/analyze', {
+  const response = await fetch('https://api.arcadiaprofit.shop/diary/analyze', {
     headers: {
       'Content-Type': 'application/json',
     },
