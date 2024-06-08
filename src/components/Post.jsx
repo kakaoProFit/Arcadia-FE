@@ -65,7 +65,7 @@ const Post = ({ props }) => {
           />
           <div>
             <span>{formatCreatedAt(props.createdAt)} by </span>
-            <a href="#!">{props.writer}</a>
+            <a href="#!">{props.userNickname}</a>
             {/* null 값을 로딩중이라고 보여주면 될듯 */}
             {props.loadedAnalysis ? (
               <span className="absolute top-0 right-0 mt-2 ml-2">
@@ -87,7 +87,7 @@ const Post = ({ props }) => {
           </button>
         </h1>
         <p>
-          <span className="mr-2">조회수: {props.dirViews}</span>
+          <span className="mr-2">조회수: {props.viewCount}</span>
           <span className="mr-2">추천수: {props.likeCnt}</span>
         </p>
         <div className="my-3 shadow-lg border-sm">
