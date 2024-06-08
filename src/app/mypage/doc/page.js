@@ -1,30 +1,25 @@
-import DiaryPagination from '@/components/pagination/pagination'
 import { Suspense } from 'react'
+import MiniTable from '@/components/MiniTable'
 import RectangleSkeleton from '@/components/loading-skeleton/rectangle-skeleton'
-import CardSkeleton from '@/components/loading-skeleton/card-skeleton'
-import CardContainer from '@/components/card/card-container'
-// import TabContainer from '@/components/tab/tab-container'
+import VerticalTab from '@/components/tab/vertical-tab'
 
 export default async function MyPageDiary({ searchParams }) {
-  // 현재 url 매개 변수를 받아옴.
-  const query = searchParams?.query || '원우형'
-  const currentPage = Number(searchParams?.page) || 1
+  // default는 question
+  const category = searchParams?.category || 'question'
 
-  // 해당 사용자 또는 불러온 일기 개수 -> api 호출로 확인하자. 사용자 이름에 대해서 count()들어간 부분을 만들어달라는 느낌으로 ㄱㄱ?
-  let itemCount = 50
-  let ori = `<>
-      <Suspense key={currentPage + query} fallback={<CardSkeleton />}>
-        {/* <CardContainer currentPage={currentPage} query={query} /> */}
-        </Suspense>
-        <Suspense fallback={<RectangleSkeleton width={300} height={50} />}>
-          <DiaryPagination diaryCount={itemCount} />
-        </Suspense>
-      </>`
   return (
-    <div>
-      <button className="bg-white hover:bg-gray-400 mx-5 py-1 px-1 rounded inline-flex items-center">
-        내가 쓴 글
-      </button>
+    <div className="md:flex mb-10">
+      <VerticalTab />
+      <div className="p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+          내 글 모아보기
+        </h3>
+        <Suspense fallback={<RectangleSkeleton width={1000} height={1000} />}>
+          <div className="mb-2">
+            <MiniTable category={category} />
+          </div>
+        </Suspense>
+      </div>
     </div>
   )
 }

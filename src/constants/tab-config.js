@@ -45,16 +45,11 @@ export const mypage_tab_config = [
   },
   {
     id: 2,
-    name: '주간 분석서',
-    href: '/mypage/weekly-report',
+    name: '주간/월간 분석서',
+    href: '/mypage/report',
   },
   {
     id: 3,
-    name: '월간 분석서',
-    href: '/mypage/monthly-report',
-  },
-  {
-    id: 4,
     name: '설정',
     href: '/mypage/setting',
   },

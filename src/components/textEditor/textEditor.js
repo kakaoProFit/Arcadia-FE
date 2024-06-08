@@ -10,6 +10,8 @@ import ReactQuill, { Quill } from 'react-quill'
 import { useRouter } from 'next/navigation'
 import AWS from 'aws-sdk'
 import ImageResize from 'quill-image-resize-module-react'
+import { getCookie } from 'cookies-next'
+import { RenewalToken } from '@/services/CookieManage'
 
 Quill.register('modules/imageResize', ImageResize) //이미지 사이즈 조절할 때 쓰임
 
@@ -243,8 +245,6 @@ const TextEditor = (props) => {
 
   // 등록 버튼을 클릭했을 때 실행될 함수
   const handleSubmit = () => {
-    // 인증 코드 들어와야 하는 부분임.
-
     console.log(writingContent) //작성된 내용물
 
     // 내용물에서 html 태그 제거. 감정분석 때문에 파싱 한거임.
@@ -256,59 +256,67 @@ const TextEditor = (props) => {
     console.log('html태그 제거 ', tempWritingContent.body.textContent)
     const postDiary = tempWritingContent.body.textContent
 
-    if (category === 'diary') {
-      // diary fetch 코드임. category에 맞게 갈릴 수 있도록 해야 함.
-      fetch(props.baseUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          member_id: 1,
+    const access = getCookie('accessToken')
+    const refresh = getCookie('refreshToken')
+    if (refresh === undefined) {
+      router.push('/logout')
+      return null
+    } else {
+      if (access === undefined) {
+        RenewalToken()
+      }
+      if (category === 'diary') {
+        fetch(props.baseUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            member_id: 1,
+            title: title,
+            diary: postDiary,
+          }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              console.log('전송 성공!')
+              return response.json()
+            }
+            throw new Error('전송 실패')
+          })
+          .then((data) => {
+            console.log('감정 분석 결과 ', JSON.stringify(data))
+            localStorage.setItem('content', JSON.stringify(writingContent))
+            localStorage.setItem('analyze', JSON.stringify(data))
+            router.push(props.submitUrl)
+          })
+          .catch((error) => {
+            console.error('오류 발생', error)
+          })
+      } else {
+        // category : free, inform, question
+        const requestBody = {
           title: title,
-          diary: postDiary,
-        }),
-      })
-        .then((response) => {
-          if (response.ok) {
-            console.log('전송 성공!')
-            return response.json()
-          }
-          throw new Error('전송 실패')
-        })
-        .then((data) => {
-          console.log('감정 분석 결과 ', JSON.stringify(data))
-          localStorage.setItem('content', JSON.stringify(writingContent))
-          localStorage.setItem('analyze', JSON.stringify(data))
-          router.push(props.submitUrl)
-        })
-        .catch((error) => {
-          console.error('오류 발생', error)
-        })
-    } // end of if
-    // category : free, inform, question
-    else {
-      const requestBody = {
-        title: title,
-        body: writingContent,
-      }
-      // question일 떄는 point 값을 추가
-      if (category === 'question') requestBody.point = point
-      console.log('check requestBody, ', requestBody)
-      const url = `https://spring.arcadiaprofit.shop/boards/write/${category}`
-      const requestOptions = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
-        body: JSON.stringify(requestBody),
-      }
+          body: writingContent,
+        }
+        // question일 떄는 point 값을 추가
+        if (category === 'question') requestBody.point = point
+        console.log('check requestBody, ', requestBody)
+        const url = `https://spring.arcadiaprofit.shop/boards/write/${category}`
+        const requestOptions = {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          body: JSON.stringify(requestBody),
+        }
 
-      fetch(url, requestOptions).then((res) => {
-        if (!res.ok) throw new Error('post write-request fail')
-        console.log('check res : ', res.json())
-      })
-    } // end of else (category : free, inform, question)
+        fetch(url, requestOptions).then((res) => {
+          if (!res.ok) throw new Error('post write-request fail')
+          console.log('check res : ', res.json())
+        })
+      }
+    }
   }
 
   const handleFormChange = (index, value) => {
@@ -365,7 +373,7 @@ const TextEditor = (props) => {
               <select
                 id="board"
                 onChange={(e) => setCategory(e.target.value)}
-                class="mr-4 py-3 bg-gray-200 w-min h-min border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                className="mr-4 py-3 bg-gray-200 w-min h-min border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="free">자유게시판</option>
                 <option value="inform">정보게시판</option>
@@ -383,16 +391,16 @@ const TextEditor = (props) => {
             </form>
           </div>
           {category === 'diary' ? ( // 토글
-            <label class="inline-flex items-center mt-3 cursor-pointer">
+            <label className="inline-flex items-center mt-3 cursor-pointer">
               <input
                 type="checkbox"
                 value=""
-                class="sr-only peer"
+                className="sr-only peer"
                 checked={isWriteForm}
                 onChange={toggleWriteForm}
               />
-              <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-              <span class="ms-3 text-sm font-medium text-gray-900">
+              <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              <span className="ms-3 text-sm font-medium text-gray-900">
                 질문 형식
               </span>
             </label>
@@ -413,7 +421,7 @@ const TextEditor = (props) => {
               {/* quill은 기본적으로 1글자를 차지하고 있음. 그래서 -1 해서 카운트 함. */}
               {displayCounting.length - 1}/{maxCharacters}
             </p>
-            <form class="bg-white mb-3">
+            <form className="bg-white mb-3">
               {category === 'question' ? (
                 <input
                   className="text-black bg-white border border-gray-300 w-4/12 text-base px-4 py-3 rounded-md outline-blue-500"
@@ -439,7 +447,7 @@ const TextEditor = (props) => {
                 <div key="index" className="flex flex-col">
                   <label
                     for="message"
-                    class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
                   >
                     {questions[index]}
                   </label>

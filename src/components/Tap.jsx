@@ -35,9 +35,9 @@ export default function Tap() {
             role="tablist"
           >
             {data.map((item) => (
-              <li key={item.id} class="mr-2" role="presentation">
+              <li key={item.id} className="mr-2" role="presentation">
                 <button
-                  class="text-lg inline-block text-gray-500 hover:text-gray-600 hover:border-gray-300 rounded-t-lg py-4 px-4 font-medium text-center border-transparent border-b-2 dark:text-gray-400 dark:hover:text-gray-300"
+                  className="text-lg inline-block text-gray-500 hover:text-gray-600 hover:border-gray-300 rounded-t-lg py-4 px-4 font-medium text-center border-transparent border-b-2 dark:text-gray-400 dark:hover:text-gray-300"
                   id={item.id}
                 >
                   <a href={item.href}>{item.name}</a>

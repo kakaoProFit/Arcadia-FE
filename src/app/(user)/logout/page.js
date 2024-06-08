@@ -11,8 +11,7 @@ export default function Logout() {
       console.log(getCookie('accessToken'))
       deleteCookie('accessToken')
       deleteCookie('refreshToken')
-      // window.location.href = '/'
-      router.push('/')
+      // router.push('/')
     }
   }, [])
 

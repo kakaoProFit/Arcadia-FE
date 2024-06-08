@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import Alert from '@mui/material/Alert'
 import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
 
 const JoinRules = {
   email: {
@@ -61,6 +62,7 @@ export default function SignUp() {
   } = useForm()
   const [res, setRes] = useState(null)
   const [error, setError] = useState(null)
+  const router = useRouter()
 
   function InputField({ label, type, name, register, rules }) {
     return (
@@ -97,7 +99,7 @@ export default function SignUp() {
     } catch (error) {
       console.error('Error during fetch:', error)
     }
-    console.log(data)
+    if (resData !== undefined) router.push('/')
   }
 
   const input = [

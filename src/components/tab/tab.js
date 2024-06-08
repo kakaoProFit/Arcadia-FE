@@ -19,11 +19,9 @@ export default function SubTab() {
     tab_config_data = board_tab_config
     isBoard = true
   } else if (
-    pathname === '/mypage' ||
     pathname === '/mypage/doc' ||
     pathname === '/mypage/info' ||
-    pathname === '/mypage/weekly-report' ||
-    pathname === '/mypage/monthly-report' ||
+    pathname === '/mypage/report' ||
     pathname === '/mypage/setting'
   ) {
     tab_config_data = mypage_tab_config

@@ -1,4 +1,4 @@
-export default function test() {
+export default function ReportPage() {
   return (
     <section className="bg-white font-tenada">
       <div className="py-8 px-4 mx-auto max-w-screen-xl">
