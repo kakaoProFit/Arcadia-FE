@@ -1,12 +1,14 @@
-'use client'
-
 import * as React from 'react'
 import { useRef, useEffect, useState } from 'react'
 import { getUid, getAccessToken } from '@/services/CookieManage'
-import RefreshIcon from '@mui/icons-material/Refresh'
+import { Button, Modal } from 'flowbite-react'
+import { Alert } from 'flowbite-react'
 
 function Comment({ props, boardId }) {
   const [comments, setComments] = useState(props) // 댓글 상태 관리
+  const [show, setShow] = useState(false)
+  const [editMode, setEditMode] = useState(false) // 수정 모드 상태 관리
+  const [editingCommentId, setEditingCommentId] = useState(null) // 수정 중인 댓글의 ID
 
   async function postComment(data) {
     console.log('fetching')
@@ -23,15 +25,15 @@ function Comment({ props, boardId }) {
         },
       )
       const newComment = await response.json()
-
-      // 댓글 목록 갱신
-      setComments((prevComments) => [...prevComments, newComment])
+      return newComment
     } catch (error) {
       console.error('Error during fetch:', error)
+      return null
     }
   }
 
   async function deleteComment(commentId) {
+    setShow(false)
     try {
       const response = await fetch(
         `https://spring.arcadiaprofit.shop/comments/${commentId}/delete`,
@@ -43,12 +45,40 @@ function Comment({ props, boardId }) {
           },
         },
       )
+      // 댓글 목록 갱신
+      setComments((prevComments) =>
+        prevComments.filter((comment) => comment.id !== commentId),
+      )
     } catch (error) {
       console.error('Error during fetch:', error)
     }
   }
 
-  console.log('boardId', boardId)
+  async function updateComment(commentId, newBody) {
+    try {
+      const response = await fetch(
+        `https://spring.arcadiaprofit.shop/comments/1/edit`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+          body: JSON.stringify({ body: newBody }),
+        },
+      )
+      // 댓글 목록 갱신
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment.id === commentId ? { ...comment, body: newBody } : comment,
+        ),
+      )
+      setEditMode(false) // 수정 모드 종료
+      setEditingCommentId(null) // 수정 중인 댓글 ID 초기화
+    } catch (error) {
+      console.error('Error during fetch:', error)
+    }
+  }
 
   const commentRef = useRef(null)
 
@@ -66,7 +96,7 @@ function Comment({ props, boardId }) {
     }
   }
 
-  const handleCommentSubmit = (event) => {
+  const handleCommentSubmit = async (event) => {
     event.preventDefault()
     if (commentRef.current.value === '댓글을 입력하세요...') {
       return // "댓글을 입력하세요..."일 때는 저장 버튼 클릭 무시
@@ -83,11 +113,33 @@ function Comment({ props, boardId }) {
       body: newComment,
     }
 
-    postComment(data)
+    const addedComment = await postComment(data)
+    const representComment = {
+      id: comments.length + 1,
+      userNickname: currentUser,
+      body: newComment,
+    }
+    setComments((comments) => [...comments, representComment])
+  }
+
+  function toggleEditMode(commentId) {
+    setEditingCommentId(commentId)
+    setEditMode((prevEditMode) => !prevEditMode)
+  }
+
+  function formatCreatedAt(createdAtArray) {
+    // createdAt 배열에서 연, 월, 일을 추출
+    const [year, month, day] = createdAtArray.slice(0, 3)
+    // Date 객체 생성
+    const createdAtDate = new Date(year, month - 1, day)
+    // YYYY-MM-DD 형식으로 변환
+    const formattedCreatedAt = createdAtDate.toISOString().slice(0, 10)
+    return formattedCreatedAt
   }
 
   function addComment(comment) {
-    console.log('comment', comment)
+    let commentId = comment.id
+    let newBody = comment.body
     return (
       <form>
         <div className="p-6 text-base bg-white rounded-lg">
@@ -104,27 +156,95 @@ function Comment({ props, boardId }) {
               </p>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 <time dateTime="2022-02-08" title="February 8th, 2022">
-                  Feb. 8, 2022
+                  {formatCreatedAt(comment.createdAt)}
                 </time>
               </p>
             </div>
           </footer>
-          <p className="text-gray-500">{comment.body}</p>
-          <div className="flex items-center mt-4 space-x-4">
-            <button
-              type="button"
-              className="flex items-center text-sm text-black-500 hover:underline font-medium"
-              onClick={() => deleteComment(comment.id)}
-            >
-              삭제
-            </button>
-            <button
-              type="button"
-              className="flex items-center text-sm text-black-500 hover:underline font-medium"
-            >
-              수정
-            </button>
-          </div>
+          {editMode && editingCommentId === commentId ? (
+            <textarea
+              className="w-full px-2 text-sm text-gray-900 bg-white border border-gray-200 rounded-lg bg-gray-50"
+              defaultValue={comment.body}
+              onChange={(e) => {
+                newBody = e.target.value
+                setComments((prevComments) =>
+                  prevComments.map((prevComment) =>
+                    prevComment.id === comment.id
+                      ? { ...prevComment, body: newBody }
+                      : prevComment,
+                  ),
+                )
+              }}
+            />
+          ) : (
+            <p className="text-gray-500">{comment.body}</p>
+          )}
+          {getUid() === 2 ? (
+            <div className="flex items-center mt-4 space-x-4">
+              <button
+                type="button"
+                className="flex items-center text-sm text-black-500 hover:underline font-medium"
+                onClick={() => setShow(true)}
+              >
+                삭제
+              </button>
+              {editMode && editingCommentId === commentId ? (
+                <>
+                  <button
+                    type="button"
+                    className="flex items-center text-sm text-black-500 hover:underline font-medium"
+                    onClick={() => updateComment(commentId, newBody)}
+                  >
+                    저장
+                  </button>
+                  <button
+                    type="button"
+                    className="flex items-center text-sm text-black-500 hover:underline font-medium"
+                    onClick={() => {
+                      toggleEditMode(commentId)
+                      // 수정 모드 취소 시, 원래 댓글 내용으로 복원
+                      setComments((prevComments) =>
+                        prevComments.map((prevComment) =>
+                          prevComment.id === commentId
+                            ? { ...prevComment, body: newBody }
+                            : prevComment,
+                        ),
+                      )
+                    }}
+                  >
+                    취소
+                  </button>
+                </>
+              ) : (
+                <button
+                  type="button"
+                  className="flex items-center text-sm text-black-500 hover:underline font-medium"
+                  onClick={() => toggleEditMode(commentId)}
+                >
+                  수정
+                </button>
+              )}
+              <Modal
+                className="font-tenada"
+                show={show}
+                handleClose={() => setShow(false)}
+                onClose={() => setShow(false)}
+              >
+                <Modal.Header>댓글 삭제</Modal.Header>
+                <Modal.Body>
+                  <div className="space-y-6">
+                    <p className="text-base leading-relaxed text-gray-500">
+                      정말로 삭제하시겠습니까?
+                    </p>
+                  </div>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button onClick={() => deleteComment(commentId)}>삭제</Button>
+                  <Button onClick={() => setShow(false)}>취소</Button>
+                </Modal.Footer>
+              </Modal>
+            </div>
+          ) : null}
         </div>
       </form>
     )
@@ -136,11 +256,6 @@ function Comment({ props, boardId }) {
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-lg lg:text-2xl font-bold text-gray-900">
             댓글 ({comments.length})
-            <RefreshIcon
-              className="cursor-pointer"
-              onClick={() => setComments([])}
-              sx={{ fontSize: '40px' }}
-            />
           </h2>
         </div>
         <form className="mb-6" onSubmit={handleCommentSubmit}>
