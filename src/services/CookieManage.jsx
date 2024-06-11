@@ -24,8 +24,9 @@ function RenewalToken() {
 
     try {
       console.log('renew')
+      id = getUid()
       const response = await fetch(
-        'https://arcadia-spring.p-e.kr/auth/refresh/52',
+        `https://arcadia-spring.p-e.kr/auth/refresh/${id}`,
         {
           method: 'POST',
           headers: {
