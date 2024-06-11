@@ -1,8 +1,9 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { getCookie } from 'cookies-next'
+
 const pages = [
   {
     page: '일기',
@@ -19,12 +20,17 @@ const pages = [
 ]
 
 function Header() {
-  // if (getCookie('accessToken') === undefined && getCookie('refreshToken') != undefined) {
-  //   window.location.href = '/renewal'
-  // }
-  // if (getCookie('accessToken') === undefined && getCookie('refreshToken') === undefined) {
-  //   window.location.href = '/login'
-  // }
+  const [isLogin, setIsLogin] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsLogin(getCookie('accessToken') ? true : false)
+    setIsMounted(true)
+  }, [])
+
+  if (!isMounted) {
+    return null // 로딩 중에는 아무것도 보여주지 않음
+  }
 
   return (
     <nav className="w-full top-0 left-0 bg-white border-gray-200 px-4 lg:px-6 py-2.5">
@@ -46,11 +52,8 @@ function Header() {
               {page.page}
             </a>
           ))}
-          <a
-            href={getCookie('accessToken') ? '/logout' : '/login'}
-            className="nav-link"
-          >
-            {getCookie('accessToken') ? '로그아웃' : '로그인'}
+          <a href={isLogin ? '/logout' : '/login'} className="nav-link">
+            {isLogin ? '로그아웃' : '로그인'}
           </a>
         </div>
       </div>
