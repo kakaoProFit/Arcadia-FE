@@ -4,50 +4,60 @@ import 'react-quill/dist/quill.bubble.css'
 import ReactQuill from 'react-quill'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 
-function addAnswer(data) {
-  return (
-    <div className="my-3 shadow-sm border-l p-3">
-      <div className="flex items-center mb-3">
-        <a href="#!" className="flex items-center mt-2">
-          <img
-            src={data.avatar}
-            className="mr-2 h-10 rounded-full"
-            alt="avatar"
+const Post = ({ props }) => {
+  function addAnswer(data) {
+    return (
+      <div className="relative my-3 shadow-sm border-l p-3">
+        {data.isAdopted ? (
+          <span className="bg-blue-100 p-4 text-blue-800 text-xs font-medium rounded-full absolute top-0 right-0 mt-2 ml-2">
+            채택됨
+          </span>
+        ) : null}
+        <div className="flex items-center mb-3">
+          <a href="#!" className="flex items-center mt-2">
+            <img
+              src={data.avatar}
+              className="mr-2 h-10 rounded-full"
+              alt="avatar"
+            />
+            <span className="text-2xl">{data.writer}</span>
+          </a>
+        </div>
+        <div className="relative" style={{ height: '100%' }}>
+          <ReactQuill
+            theme="bubble"
+            value={data.content}
+            readOnly={true}
+            style={{ height: '200%', fontSize: '30px' }}
           />
-          <span className="text-2xl">{data.writer}</span>
-        </a>
-      </div>
-      <div className="relative" style={{ height: '100%' }}>
-        <ReactQuill
-          theme="bubble"
-          value={data.content}
-          readOnly={true}
-          style={{ height: '200%', fontSize: '30px' }}
-        />
-        <div className="flex justify-end items-end h-full">
-          <span className="mb-2 mr-2">{data.date}</span>
+          <div className="flex justify-end items-end h-full">
+            <span className="mb-2 mr-2">{data.date}</span>
+          </div>
+          {props.possibleAdopt ? (
+            <button className="bg-blue-500 text-white hover:bg-gray-400 mx-5 py-2 px-2 rounded inline-flex items-center">
+              채택하기
+            </button>
+          ) : null}
         </div>
       </div>
-    </div>
-  )
-}
+    )
+  }
 
-function formatCreatedAt(createdAtArray) {
-  // createdAt 배열에서 연, 월, 일을 추출
-  const [year, month, day] = createdAtArray.slice(0, 3)
-  // Date 객체 생성
-  const createdAtDate = new Date(year, month - 1, day)
-  // YYYY-MM-DD 형식으로 변환
-  const formattedCreatedAt = createdAtDate.toISOString().slice(0, 10)
-  return formattedCreatedAt
-}
+  function formatCreatedAt(createdAtArray) {
+    // createdAt 배열에서 연, 월, 일을 추출
+    const [year, month, day] = createdAtArray.slice(0, 3)
+    // Date 객체 생성
+    const createdAtDate = new Date(year, month - 1, day)
+    // YYYY-MM-DD 형식으로 변환
+    const formattedCreatedAt = createdAtDate.toISOString().slice(0, 10)
+    return formattedCreatedAt
+  }
 
-const Post = ({ props }) => {
   const date = new Date()
   return (
     <div className="container my-24 mx-auto md:px-6 w-8/12">
       <section className="mb-32">
-        <div className="mb-6 flex items-center">
+        <div className="relative mb-6 flex items-center">
           <img
             src="/images/user1.jpg"
             className="mr-2 h-8 rounded-full"
@@ -56,6 +66,17 @@ const Post = ({ props }) => {
           <div>
             <span>{formatCreatedAt(props.createdAt)} by </span>
             <a href="#!">{props.writer}</a>
+            {/* null 값을 로딩중이라고 보여주면 될듯 */}
+            {props.loadedAnalysis ? (
+              <span className="absolute top-0 right-0 mt-2 ml-2">
+                <button
+                  type="button"
+                  className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                >
+                  일기 분석서로 이동
+                </button>
+              </span>
+            ) : null}
           </div>
         </div>
 

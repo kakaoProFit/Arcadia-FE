@@ -174,7 +174,7 @@ function ModifyEditor(props) {
     const postDiary = tempWritingContent.body.textContent
 
     fetch(props.baseUrl, {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },

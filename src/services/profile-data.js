@@ -1,43 +1,47 @@
 'use client'
 export function getProfileImage() {
-  // const response = fetch(
-  //   '/diary', // 이거 추후 프로필사진 s3 url로 바꿔야함. 지금은 테스트용으로 일기 분석서 이미지 가져옴
-  //   {
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     cache: 'no-store',
-  //   },
-  // )
-
-  // const data = response.json()
-  const data =
-    'https://arcadiaimage.s3.ap-northeast-2.amazonaws.com/663952185e1c8a8b1bec4ecf.png'
-
-  return data
+  return fetch(
+    `https://spring.arcadiaprofit.shop/profileimage/download?user_id=1`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(
+          '네트워크 응답에 문제가 있습니다: ' + response.statusText,
+        )
+      }
+      return response.url // 이미지url 이용
+    })
+    .catch((error) => {
+      console.error('fetch 작업에 문제가 발생했습니다:', error)
+    })
 }
 
 export function getProfileInfo() {
-  // const response = fetch('/mypage', {
-  //   method: 'GET',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   },
-  // })
-
-  // const data = response.json()
-  const data = {
-    name: '홍길동',
-    nickName: '홍박사',
-    phoneNumber: '010-1234-5678',
-    email: 'honggildong@naver.com',
-    postCount: Math.floor(Math.random() * 1001),
-    followerCount: Math.floor(Math.random() * 1001),
-    followingCount: Math.floor(Math.random() * 1001),
-    description:
-      '안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요',
-    userVerified: false,
-  }
-
-  return data
+  return fetch(`https://spring.arcadiaprofit.shop/users/read/1`, {
+    //${userId}
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText)
+      }
+      //data = response.json() // JSON으로 파싱
+      return response.json() // 파싱된 데이터를 반환
+    })
+    .catch((error) => {
+      console.error(
+        'There has been a problem with your fetch operation:',
+        error,
+      )
+    })
 }

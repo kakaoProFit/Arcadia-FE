@@ -12,12 +12,10 @@ function submitProfile(file) {
 
   // 이미지를 업로드할 FormData 객체 생성
   const formData = new FormData()
-  formData.append('text', 'hello')
-  formData.append('image', file)
-  console.log('file: ', file)
+  formData.append('file', file)
 
   fetch(
-    'https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/submitProfile',
+    'https:/spring.arcadiaprofit.shop/profileimage/upload?user_id=1', // ${user_id}
     {
       method: 'POST',
       body: formData,
@@ -36,16 +34,14 @@ function submitProfile(file) {
 }
 
 function saveProfileInfo(profileInfo) {
-  console.log('프로필 변경 확인: ', profileInfo)
-
   fetch(
-    'https://c2fa1327-2fa1-46f2-b030-eba4d6b65b37.mock.pstmn.io/saveProfile',
+    `https:/spring.arcadiaprofit.shop/users/update/1`, // ${userId}
     {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: profileInfo,
+      body: JSON.stringify(profileInfo),
       cache: 'no-store',
     },
   )
@@ -77,7 +73,15 @@ export default function SettingPage() {
   const nicknameInputRef = useRef(null)
 
   useEffect(() => {
-    setIsLoading(false)
+    getProfileInfo().then((data) => {
+      // 비동기로 받아오고 난 후, 값 다시 업데이트
+      setEditedUserInfo(data)
+      setIsLoading(false)
+    })
+    getProfileImage().then((data) => {
+      setSelectedImage(data)
+      setIsLoading(false)
+    })
 
     console.log('check')
   }, [])
@@ -102,7 +106,7 @@ export default function SettingPage() {
   }
 
   const handleNicknameChange = (e) => {
-    setEditedUserInfo({ ...editedUserInfo, nickName: e.target.value })
+    setEditedUserInfo({ ...editedUserInfo, fullName: e.target.value })
   }
 
   const handleImageClick = () => {
@@ -135,6 +139,7 @@ export default function SettingPage() {
                 src={selectedImage}
                 className="lg:max-w-[90%] w-full h-full object-contain block mb-10 mx-auto"
                 alt="login-image"
+                style={{ width: '500px', height: 'auto', objectFit: 'cover' }} // 프로필 사진의 크기를 고정
               />
               <button
                 type="button"
@@ -184,7 +189,7 @@ export default function SettingPage() {
                         className="text-black bg-white border border-gray-300 w-full text-base px-4 py-3 rounded-md outline-blue-500"
                         id="grid-text-1"
                         type="text"
-                        value={editedUserInfo.nickName}
+                        value={editedUserInfo.fullName}
                         onChange={handleNicknameChange}
                         onKeyDown={handleNicknameKeyDown}
                       />
@@ -193,7 +198,7 @@ export default function SettingPage() {
                         className="text-black bg-white border border-gray-300 w-full text-base px-4 py-3 rounded-md outline-blue-500"
                         id="grid-text-1"
                         type="text"
-                        value={editedUserInfo.nickName}
+                        value={editedUserInfo.fullName}
                         disabled
                       />
                     )}
@@ -226,7 +231,7 @@ export default function SettingPage() {
                       className="text-black bg-white border border-gray-300 w-full text-base px-4 py-3 rounded-md outline-blue-500"
                       id="grid-text-1"
                       type="text"
-                      value={editedUserInfo.phoneNumber}
+                      value={editedUserInfo.phone}
                       placeholder="사용자 번호 받아오기"
                       disabled
                     />

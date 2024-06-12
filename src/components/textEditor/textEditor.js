@@ -74,6 +74,13 @@ const questions = [
 ]
 
 const TextEditor = (props) => {
+  if (
+    getCookie('accessToken') === undefined &&
+    getCookie('refreshToken') !== undefined
+  ) {
+    RenewalToken()
+  }
+
   // props에는 baseUrl, submitUrl, (anonPost: 생략가능) 의 데이터가 넘어옴
   const quillRef = useRef()
   const maxCharacters = 500 //입력 최대 글자수
