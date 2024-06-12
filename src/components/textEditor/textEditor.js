@@ -10,8 +10,8 @@ import ReactQuill, { Quill } from 'react-quill'
 import { useRouter } from 'next/navigation'
 import AWS from 'aws-sdk'
 import ImageResize from 'quill-image-resize-module-react'
-import { RenewalToken, checkRenewalToken } from '@/services/CookieManage'
 import { getCookie } from 'cookies-next'
+import { RenewalToken } from '@/services/CookieManage'
 
 Quill.register('modules/imageResize', ImageResize) //이미지 사이즈 조절할 때 쓰임
 
@@ -94,6 +94,8 @@ const TextEditor = (props) => {
 
   // 일기 제목을 저장할 state
   const [title, setTitle] = useState('')
+  // question에서 채택시 전달할 포인트를 저장할 state
+  const [point, setPoint] = useState(0)
 
   // Form일 경우, TextField의 상태를 관리할 useState
   const [formFields, setFormFields] = useState(['', '', ''])
@@ -188,6 +190,11 @@ const TextEditor = (props) => {
     setTitle(event.target.value)
   }
 
+  // 포인트를 변경하는 함수
+  const handlePointChange = (event) => {
+    setPoint(Number(event.target.value))
+  }
+
   const previousImagesRef = useRef([]) // 이미지 삭제를 탐지하기 위한 부분
   const detectDeletedImages = () => {
     //이미지 삭제 탐지 함수
@@ -253,63 +260,78 @@ const TextEditor = (props) => {
       writingContent,
       'text/html',
     )
-    console.log('html태그 제거 ', tempWritingContent.body.textContent)
+    // console.log('html태그 제거 ', tempWritingContent.body.textContent)
     const postDiary = tempWritingContent.body.textContent
 
-    fetch(props.baseUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        member_id: 1,
-        title: title,
-        diary_tag: writingContent,
-        diary: postDiary,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log('전송 성공!')
-          return response.json()
+    const access = getCookie('accessToken')
+    const refresh = getCookie('refreshToken')
+    if (refresh === undefined) {
+      router.push('/logout')
+      return null
+    } else {
+      if (access === undefined) {
+        RenewalToken()
+      }
+      if (category === 'diary') {
+        fetch(props.baseUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            member_id: 1,
+            title: title,
+            diary: postDiary,
+          }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              console.log('전송 성공!')
+              return response.json()
+            }
+            throw new Error('전송 실패')
+          })
+          .then((data) => {
+            console.log('감정 분석 결과 ', JSON.stringify(data))
+            router.push(props.submitUrl)
+          })
+          .catch((error) => {
+            console.error('오류 발생', error)
+          })
+      } else {
+        // category : free, inform, question
+        const requestBody = {
+          title: title,
+          body: writingContent,
         }
-        throw new Error('전송 실패')
-      })
-      .then((data) => {
-        console.log('data: ', JSON.stringify(data))
-        // localStorage.setItem('content', JSON.stringify(writingContent))
-        // localStorage.setItem('analyze', JSON.stringify(data))
-        //router.push(props.submitUrl)
-      })
-      .catch((error) => {
-        console.error('오류 발생', error)
-      })
+        // question일 떄는 point 값을 추가
+        if (category === 'question') requestBody.point = point
+        console.log('check requestBody, ', requestBody)
+        const url = `https://spring.arcadiaprofit.shop/boards/write/${category}`
+        const requestOptions = {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${access}`,
+          },
+          method: 'POST',
+          body: JSON.stringify(requestBody),
+        }
 
-    // fetch('http://61.109.216.248:8000/keyphrase', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     // member_id: 1,
-    //     title: title,
-    //     diary: postDiary,
-    //   }),
-    // })
-    //   .then((response) => {
-    //     if (response.ok) {
-    //       console.log('전송 성공!')
-    //       return response.json()
-    //     }
-    //     throw new Error('전송 실패')
-    //   })
-    //   .then((data) => {
-    //     console.log('키워드 데이터 ', JSON.stringify(data))
-    //     localStorage.setItem('keyword', JSON.stringify(data))
-    //   })
-    //   .catch((error) => {
-    //     console.error('오류 발생', error)
-    //   })
+        fetch(url, requestOptions).then((res) => {
+          if (!res.ok) {
+            throw new Error('post write-request fail')
+          }
+          console.log('check res : ', res)
+          res.json().then((data) => {
+            console.log('check data : ', data)
+            const temp = data.nextUrl
+            const nextInform = temp.split('/')
+            console.log('check next inform, ', nextInform)
+            // router.push(`/board/${nextInform[2].toString()}/${nextInform[3].toString()}`)
+          })
+        })
+      }
+    }
   }
 
   const handleFormChange = (index, value) => {
@@ -353,34 +375,6 @@ const TextEditor = (props) => {
         console.log('실패')
         console.error('There was a problem with the fetch operation:', error)
       })
-
-    fetch('http://61.109.216.248:8000/keyphrase', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        // 작성 내용과 익명 여부 전달. 이거는 form으로 작성한거라 title이 없음.
-        member_id: 1,
-        diary: postData,
-        // isAnonPost: isAnonPost,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json()
-        } else {
-          throw new Error('전송 실패')
-        }
-      })
-      .then((data) => {
-        console.log('키워드 분석 결과 ', JSON.stringify(data))
-        localStorage.setItem('keyword', JSON.stringify(data))
-        // router.push(props.submitUrl);
-      })
-      .catch((error) => {
-        console.error('오류 발생', error)
-      })
   }
 
   const [category, setCategory] = useState('free')
@@ -394,7 +388,7 @@ const TextEditor = (props) => {
               <select
                 id="board"
                 onChange={(e) => setCategory(e.target.value)}
-                class="mr-4 py-3 bg-gray-200 w-min h-min border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                className="mr-4 py-3 bg-gray-200 w-min h-min border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="free">자유게시판</option>
                 <option value="inform">정보게시판</option>
@@ -412,16 +406,16 @@ const TextEditor = (props) => {
             </form>
           </div>
           {category === 'diary' ? ( // 토글
-            <label class="inline-flex items-center mt-3 cursor-pointer">
+            <label className="inline-flex items-center mt-3 cursor-pointer">
               <input
                 type="checkbox"
                 value=""
-                class="sr-only peer"
+                className="sr-only peer"
                 checked={isWriteForm}
                 onChange={toggleWriteForm}
               />
-              <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-              <span class="ms-3 text-sm font-medium text-gray-900">
+              <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              <span className="ms-3 text-sm font-medium text-gray-900">
                 질문 형식
               </span>
             </label>
@@ -442,13 +436,14 @@ const TextEditor = (props) => {
               {/* quill은 기본적으로 1글자를 차지하고 있음. 그래서 -1 해서 카운트 함. */}
               {displayCounting.length - 1}/{maxCharacters}
             </p>
-            <form class="bg-white mb-3">
+            <form className="bg-white mb-3">
               {category === 'question' ? (
                 <input
                   className="text-black bg-white border border-gray-300 w-4/12 text-base px-4 py-3 rounded-md outline-blue-500"
                   type="number"
                   name="point"
                   placeholder="포인트를 입력하세요"
+                  onChange={handlePointChange}
                 />
               ) : null}
             </form>
@@ -467,7 +462,7 @@ const TextEditor = (props) => {
                 <div key="index" className="flex flex-col">
                   <label
                     for="message"
-                    class="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
                   >
                     {questions[index]}
                   </label>

@@ -7,15 +7,15 @@ import { getCookie } from 'cookies-next'
 const pages = [
   {
     page: '일기',
-    href: '/diary',
+    href: '/board/diary',
   },
   {
     page: '게시판',
-    href: '/board',
+    href: '/board?category=free',
   },
   {
     page: '마이 페이지',
-    href: '/mypage',
+    href: '/mypage/info',
   },
 ]
 
@@ -32,6 +32,14 @@ function Header() {
     return null // 로딩 중에는 아무것도 보여주지 않음
   }
 
+  useEffect(() => {
+    setIsLogin(getCookie('accessToken') ? true : false)
+    setIsMounted(true)
+  }, [])
+
+  if (!isMounted) {
+    return null // 로딩 중에는 아무것도 보여주지 않음
+  }
   return (
     <nav className="w-full top-0 left-0 bg-white border-gray-200 px-4 lg:px-6 py-2.5">
       <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">

@@ -15,8 +15,8 @@ export default function PsyAnlz() {
   return (
     <div>
       <Post props={diaryContent} />
-      <div class="container my-24 mx-auto md:px-6">
-        <section class="mb-32 p-4 shadow-xl">
+      <div className="container my-24 mx-auto md:px-6">
+        <section className="mb-32 p-4 shadow-xl">
           <p className="my-10 text-center text-3xl font-semibold md:mb-6">
             분석 결과
           </p>

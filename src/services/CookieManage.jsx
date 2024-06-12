@@ -1,6 +1,7 @@
 'use client'
 import { setCookie, getCookie } from 'cookies-next'
 import { jwtDecode } from 'jwt-decode'
+import { useRouter } from 'next/navigation'
 
 function checkAccessToken() {
   if (!getCookie('accessToken')) {
@@ -55,14 +56,15 @@ function RenewalToken() {
   }
 }
 
-function getUid() {
+function GetUid() {
+  const router = useRouter()
   // 지금 현재 로그인 한 유저의 id를 받아옴
   if (!getCookie('accessToken')) {
     return null
   } else if (getCookie('refreshToken')) {
     RenewalToken()
   } else {
-    window.location.href = '/login'
+    router.push('/login')
   }
   return jwtDecode(getCookie('accessToken')).userId
 }

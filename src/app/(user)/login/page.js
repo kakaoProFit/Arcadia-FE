@@ -79,6 +79,7 @@ export default function Login() {
       console.error('Error during fetch:', error)
       setRes({ error: 'Fetch error' })
     }
+    router.push('/')
   }
   return (
     <div className="font-[sans-serif] bg-white text-white md:h-screen">

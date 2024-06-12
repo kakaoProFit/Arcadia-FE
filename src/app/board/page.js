@@ -34,8 +34,8 @@ export default function BoardListPage({ searchParams }) {
         <div className="my-10 relative overflow-x-auto">
           <Suspense fallback={<RectangleSkeleton width={1440} height={1100} />}>
             <Table
-              query={query}
-              queryType={queryType}
+              keyword={query}
+              searchType={queryType}
               page={currentPage}
               sortType={sortType}
               startDate={startDate}
@@ -52,7 +52,7 @@ export default function BoardListPage({ searchParams }) {
         </Suspense>
         <div className="flex flex-end justify-end">
           {/* 여기도 수정 필요함. write 페이지를 바깥에 빼고 통합 페이지로 할거면 */}
-          <Button name="작성" href="/board/diary/write" />
+          <Button name="작성" href="/board/write" />
         </div>
       </div>
     </div>
