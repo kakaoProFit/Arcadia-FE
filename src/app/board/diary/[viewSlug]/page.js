@@ -65,13 +65,13 @@ export default function ViewPost({ params }) {
   const postData = {
     id: 1,
     userLoginId: 'david5451@gachon.ac.kr',
-    userNickname: null,
-    title: '제목',
-    body: '내용',
-    viewCount: 100,
-    likeCnt: 10,
+    userNickname: '초보맘',
+    title: '육아란 힘들다...',
+    body: '<img src=\'/images/11.jpg\' width="300px" height="auto" align-items="center"/>오늘도 하루가 어떻게 지나갔는지 모르겠다. 아이가 태어난 지 벌써 6개월이 지났지만, 아직도 매일매일이 새로운 도전이다. 모유수유부터 이유식까지, 매 순간이 어렵다. 특히 밤에 잠을 잘 자지 않아서 너무 힘들다. 몇 시간씩 깨있다가 겨우 잠들 때쯤이면 나도 기진맥진이다. 주변에선 다들 괜찮아질 거라고 하지만, 언제쯤 나아질지 모르겠다. <br><br>아이와의 시간을 즐기고 싶지만, 현실은 육아 스트레스로 인해 쉽지 않다. 그래도 아이가 웃을 때마다 모든 걱정이 사라지는 기분이다. 작은 손으로 내 손을 잡아줄 때, 그 따뜻함이 모든 피로를 잊게 해준다. 육아가 쉽지 않지만, 아이와 함께 성장해가며 배우는 과정이라고 생각하려고 노력 중이다. <br><br>앞으로도 많은 어려움이 있겠지만, 아이와 함께하는 이 시간들이 소중하다는 걸 잊지 말아야겠다. 오늘 하루도 무사히 지나갔다는 것에 감사하며, 내일은 좀 더 여유를 가지고 아이와의 시간을 보내야겠다.',
+    viewCount: 1,
+    likeCnt: 0,
     category: 'diary',
-    createdAt: ['2021', '10', '12'],
+    createdAt: ['2024', '6', '1'],
     answerList: answerData,
     possibleAdopt: false, // 채택 가능 여부
     loadedAnalysis: true, // 분석서 로드 여부
@@ -87,21 +87,34 @@ export default function ViewPost({ params }) {
     setComments([...comments, newComment]) // 댓글 상태 업데이트
   }
 
+  const commentData = [
+    // {
+    //   id: 1,
+    //   name: '우울증유저',
+    //   comment: '잘 보고 갑니다.',
+    // },
+    // {
+    //   id: 2,
+    //   name: '헤헤',
+    //   comment: '좋은 글이네요.',
+    // },
+  ]
+
   const [category, setCategory] = useState('diary')
   console.log(post)
   return (
     <div>
       {/* 데이터가 도착한 경우에만 Post 컴포넌트 렌더링 */}
-      <button onClick={() => setCategory('question')}>질문</button>
-      <button onClick={() => setCategory('free')}>질문이 아닌 경우</button>
-      <button onClick={addCommentData}>댓글 추가</button>
-      {post && (
+      {/* <button onClick={() => setCategory('question')}>질문</button> */}
+      {/* <button onClick={() => setCategory('free')}>질문이 아닌 경우</button>
+      <button onClick={addCommentData}>댓글 추가</button> */}
+      {postData && (
         <>
-          <Post props={post} />
+          <Post props={postData} />
           {category === 'question' ? (
             <Answer props={answerData} />
           ) : (
-            <Comment props={post.comments} boardId={post.id} />
+            <Comment props={commentData} boardId={postData.id} />
           )}
         </>
       )}

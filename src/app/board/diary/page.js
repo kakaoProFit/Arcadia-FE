@@ -20,7 +20,7 @@ export default async function DiaryListPage({ searchParams }) {
             data-carousel-item
             key={index}
           >
-            <Card data={CardData()} count={4} />
+            <Card data={CardData()} count={5} />
           </div>
         ))}
       </div>

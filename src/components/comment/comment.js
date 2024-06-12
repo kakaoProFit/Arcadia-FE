@@ -72,7 +72,8 @@ function Comment({ props, boardId }) {
       return // "댓글을 입력하세요..."일 때는 저장 버튼 클릭 무시
     }
 
-    let currentUser = getUid()
+    // let currentUser = getUid()
+    let currentUser = '초보엄마'
 
     const newComment = commentRef.current.value
 
@@ -97,19 +98,19 @@ function Comment({ props, boardId }) {
               <p className="inline-flex items-center mr-3 text-sm text-gray-900 font-semibold">
                 <img
                   className="mr-2 w-6 h-6 rounded-full"
-                  src="/images/user1.jpg"
+                  src="/images/default.png"
                   alt="user"
                 />
-                {comment.userNickname}
+                {comment.name}
               </p>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 <time dateTime="2022-02-08" title="February 8th, 2022">
-                  Feb. 8, 2022
+                  May. 31, 2024
                 </time>
               </p>
             </div>
           </footer>
-          <p className="text-gray-500">{comment.body}</p>
+          <p className="text-gray-500">{comment.comment}</p>
           <div className="flex items-center mt-4 space-x-4">
             <button
               type="button"

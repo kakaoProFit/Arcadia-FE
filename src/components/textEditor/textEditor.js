@@ -256,6 +256,8 @@ const TextEditor = (props) => {
     console.log('html태그 제거 ', tempWritingContent.body.textContent)
     const postDiary = tempWritingContent.body.textContent
 
+    // router.push("/board/diary/1")
+
     fetch(props.baseUrl, {
       method: 'POST',
       headers: {
@@ -271,6 +273,7 @@ const TextEditor = (props) => {
       .then((response) => {
         if (response.ok) {
           console.log('전송 성공!')
+          console.log('response: ', response)
           return response.json()
         }
         throw new Error('전송 실패')

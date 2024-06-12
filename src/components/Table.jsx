@@ -47,11 +47,34 @@ export default function Table(props) {
     }
     console.log('request URL : ', requestUrl)
     // 나중에 return 형식으로 바꿔야 함. 그렇게 전달 된 녀석을 받아서 사용하면 될 듯
-    const responseData = await fetch(requestUrl, requestOptions)
-    if (!responseData.ok) throw new Error('board list request fail')
-    const returnData = await responseData.json()
+    // const responseData = await fetch(requestUrl, requestOptions)
+    // const responseData = {
+    //   'id': 1,
+    //   'hits': 10,
+    //   'likeCnt': 100,
+    //   'writer': '홍길동'
+    // }
+    // if (!responseData.ok) throw new Error('board list request fail')
+    const returnData = await responseData
     return returnData.boards
   }
+
+  const responseData = [
+    {
+      id: 1,
+      hits: 10,
+      likeCnt: 100,
+      writer: '홍길동',
+      createdAt: [2024, 6, 9],
+    },
+    {
+      id: 2,
+      hits: 20,
+      likeCnt: 200,
+      writer: '홍길동2',
+      createdAt: [2024, 6, 10],
+    },
+  ]
 
   // 더미데이터 테스트용 함수
   const getExampleData = () => {
@@ -87,6 +110,7 @@ export default function Table(props) {
       deliveryParam.set('pageCount', pageCount)
       router.replace(`${pathname}?${deliveryParam.toString()}`)
     })
+    setDataSet(example_data)
     params = ''
   }, [query, sortType, page, startDate, category])
 
@@ -107,7 +131,7 @@ export default function Table(props) {
                 </span>
               ) : null}
             </th>
-            <td className="px-6 py-4">{data.id}</td>
+            <td className="px-6 py-4">{data.writer}</td>
             <td className="px-6 py-4">{`${data.createdAt[0]}-${data.createdAt[1]}-${data.createdAt[2]}`}</td>
             <td className="px-6 py-4">{data.hits}</td>
             <td className="px-6 py-4">{data.likeCnt}</td>

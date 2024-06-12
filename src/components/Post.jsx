@@ -3,8 +3,11 @@
 import 'react-quill/dist/quill.bubble.css'
 import ReactQuill from 'react-quill'
 import FavoriteIcon from '@mui/icons-material/Favorite'
+import { useRouter } from 'next/navigation'
 
 const Post = ({ props }) => {
+  const router = useRouter()
+  console.log('props: ', props)
   function addAnswer(data) {
     return (
       <div className="relative my-3 shadow-sm border-l p-3">
@@ -44,6 +47,7 @@ const Post = ({ props }) => {
   }
 
   function formatCreatedAt(createdAtArray) {
+    console.log('createdAtArray: ', createdAtArray)
     // createdAt 배열에서 연, 월, 일을 추출
     const [year, month, day] = createdAtArray.slice(0, 3)
     // Date 객체 생성
@@ -72,6 +76,7 @@ const Post = ({ props }) => {
                 <button
                   type="button"
                   className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                  onClick={() => router.push('/board/diary/analyze/1')}
                 >
                   일기 분석서로 이동
                 </button>
