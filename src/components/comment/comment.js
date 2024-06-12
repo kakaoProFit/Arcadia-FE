@@ -118,6 +118,7 @@ function Comment({ props, boardId }) {
       id: comments.length + 1,
       userNickname: currentUser,
       body: newComment,
+      createdAt: '방금 전',
     }
     setComments((comments) => [...comments, representComment])
   }
@@ -126,20 +127,16 @@ function Comment({ props, boardId }) {
     setEditingCommentId(commentId)
     setEditMode((prevEditMode) => !prevEditMode)
   }
-
-  function formatCreatedAt(createdAtArray) {
-    // createdAt 배열에서 연, 월, 일을 추출
-    const [year, month, day] = createdAtArray.slice(0, 3)
-    // Date 객체 생성
-    const createdAtDate = new Date(year, month - 1, day)
-    // YYYY-MM-DD 형식으로 변환
-    const formattedCreatedAt = createdAtDate.toISOString().slice(0, 10)
-    return formattedCreatedAt
+  function dateToString(createdAt) {
+    if (createdAt === '방금 전') return createdAt
+    const [year, month, day] = createdAt.slice(0, 3)
+    return `${year}년 ${month}월 ${day}일`
   }
 
   function addComment(comment) {
     let commentId = comment.id
     let newBody = comment.body
+    console.log(comment)
     return (
       <form>
         <div className="p-6 text-base bg-white rounded-lg">
@@ -152,11 +149,11 @@ function Comment({ props, boardId }) {
                   src="/images/user1.jpg"
                   alt="user"
                 />
-                {comment.userNickname}
+                {comment.nickname}
               </p>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 <time dateTime="2022-02-08" title="February 8th, 2022">
-                  {formatCreatedAt(comment.createdAt)}
+                  {dateToString(comment.createdAt)}
                 </time>
               </p>
             </div>
@@ -179,7 +176,7 @@ function Comment({ props, boardId }) {
           ) : (
             <p className="text-gray-500">{comment.body}</p>
           )}
-          {getUid() === 2 ? (
+          {getUid() === comment.commentUserId ? (
             <div className="flex items-center mt-4 space-x-4">
               <button
                 type="button"
