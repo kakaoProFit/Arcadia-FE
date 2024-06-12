@@ -22,20 +22,21 @@ const pages = [
 function Header() {
   const [isLogin, setIsLogin] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
+  const access = getCookie('accessToken')
 
   useEffect(() => {
-    setIsLogin(getCookie('accessToken') ? true : false)
+    setIsLogin(access ? true : false)
     setIsMounted(true)
-  }, [getCookie('accessToken')])
+  }, [access])
 
   if (!isMounted) {
     return null // 로딩 중에는 아무것도 보여주지 않음
   }
 
-  useEffect(() => {
-    setIsLogin(getCookie('accessToken') ? true : false)
-    setIsMounted(true)
-  }, [])
+  // useEffect(() => {
+  //   setIsLogin(access ? true : false)
+  //   setIsMounted(true)
+  // }, [])
 
   if (!isMounted) {
     return null // 로딩 중에는 아무것도 보여주지 않음
@@ -61,7 +62,7 @@ function Header() {
             </a>
           ))}
           <a href={isLogin ? '/logout' : '/login'} className="nav-link">
-            {isLogin ? '로그아웃' : '로그인'}
+            {/* {isLogin ? '로그아웃' : '로그인'} */}
           </a>
         </div>
       </div>
