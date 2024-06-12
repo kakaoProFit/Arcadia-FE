@@ -25,6 +25,14 @@ function InputField({ label, type, name, register }) {
 }
 export default function Login() {
   const router = useRouter()
+  function requestSocial({ type }) {
+    const redirect_url = 'https://arcadiaprofit.shop/social'
+    return `https://spring.arcadiaprofit.shop/oauth2/authorization/${type}?redirect_uri=${redirect_url}&mode=login`
+  }
+  const kakaoUrl =
+    'https://spring.arcadiaprofit.shop/oauth2/authorization/naver?redirect_uri=https://arcadiaprofit.shop/social&mode=login'
+  const naverUrl =
+    'https://spring.arcadiaprofit.shop/oauth2/authorization/naver?redirect_uri=https://arcadiaprofit.shop/social&mode=login'
   const [res, setRes] = useState(null)
   const [show, setShow] = useState(false)
 
@@ -66,6 +74,7 @@ export default function Login() {
       await setCookie('refreshToken', resData.refreshtoken, {
         maxAge: resData.expiresIn,
       })
+      router.push('/')
     } catch (error) {
       console.error('Error during fetch:', error)
       setRes({ error: 'Fetch error' })
@@ -118,20 +127,24 @@ export default function Login() {
             </button>
           </div>
           <div className="!mt-3 text-center">
-            <button
-              type="button"
-              className="w-full py-3 px-4 text-base font-semibold rounded text-white bg-yellow-300 hover:bg-yellow-400 focus:outline-none"
-            >
-              카카오 로그인
-            </button>
+            <a href={kakaoUrl}>
+              <button
+                type="button"
+                className="w-full py-3 px-4 text-base font-semibold rounded text-white bg-yellow-300 hover:bg-yellow-400 focus:outline-none"
+              >
+                카카오 로그인
+              </button>
+            </a>
           </div>
           <div className="!mt-3 text-center">
-            <button
-              type="button"
-              className="w-full py-3 px-4 text-base font-semibold rounded text-white bg-green-500 hover:bg-green-600 focus:outline-none"
-            >
-              네이버 로그인
-            </button>
+            <a href={naverUrl}>
+              <button
+                type="button"
+                className="w-full py-3 px-4 text-base font-semibold rounded text-white bg-green-500 hover:bg-green-600 focus:outline-none"
+              >
+                네이버 로그인
+              </button>
+            </a>
           </div>
           <div className="!mt-3 text-center">
             <a href="/join">

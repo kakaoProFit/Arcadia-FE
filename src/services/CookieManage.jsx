@@ -25,9 +25,9 @@ function RenewalToken() {
 
     try {
       console.log('renew')
-      const userId = jwtDecode(getCookie('refreshToken')).userId
+      id = getUid()
       const response = await fetch(
-        `https://arcadia-spring.p-e.kr/auth/refresh/${userId}`,
+        `https://arcadia-spring.p-e.kr/auth/refresh/${id}`,
         {
           method: 'POST',
           headers: {
@@ -59,8 +59,9 @@ function RenewalToken() {
 function GetUid() {
   const router = useRouter()
   // 지금 현재 로그인 한 유저의 id를 받아옴
-  if (!getCookie('accessToken')) throw new Error('No accessToken')
-  else if (getCookie('refreshToken')) {
+  if (!getCookie('accessToken')) {
+    return null
+  } else if (getCookie('refreshToken')) {
     RenewalToken()
   } else {
     router.push('/login')
@@ -68,4 +69,24 @@ function GetUid() {
   return jwtDecode(getCookie('accessToken')).userId
 }
 
-export { RenewalToken, GetUid }
+function getEmail() {
+  // 지금 현재 로그인 한 유저의 id를 받아옴
+  if (!getCookie('accessToken')) {
+    return null
+  } else if (getCookie('refreshToken')) {
+    RenewalToken()
+  } else {
+    window.location.href = '/login'
+  }
+  return jwtDecode(getCookie('accessToken')).email
+}
+
+function getAccessToken() {
+  return getCookie('accessToken')
+}
+
+function getRefreshToken() {
+  return getCookie('refreshToken')
+}
+
+export { RenewalToken, getUid, getEmail, getAccessToken, getRefreshToken }

@@ -7,10 +7,12 @@ import React, { useState, useEffect } from 'react'
 
 export default function ViewPost({ params }) {
   const [post, setPost] = useState(null) // 포스트 상태 추가
+  const [comments, setComments] = useState([])
 
   useEffect(() => {
     async function fetchData() {
       try {
+        console.log('fetch complete')
         const response = await fetch(
           `https://spring.arcadiaprofit.shop/boards/read/free/${params.viewSlug}`,
           {
@@ -22,26 +24,13 @@ export default function ViewPost({ params }) {
         )
         const postData = await response.json()
         setPost(postData) // 데이터 도착시 상태 업데이트
+        setComments(postData.comments || []) // 댓글 데이터 업데이트
       } catch (error) {
         console.error('Error during fetch:', error)
       }
     }
-
     fetchData() // useEffect에서 데이터 가져오기
-  }, [params.viewSlug]) // params.viewSlug이 변경될 때마다 호출
-
-  const commentData = [
-    {
-      id: 1,
-      name: '우울증유저',
-      comment: '잘 보고 갑니다.',
-    },
-    {
-      id: 2,
-      name: '헤헤',
-      comment: '좋은 글이네요.',
-    },
-  ]
+  }, []) // 빈 배열로 의존성 배열을 설정하여 처음 한 번만 호출
 
   const answerData = [
     {
@@ -75,33 +64,21 @@ export default function ViewPost({ params }) {
       isAdopted: true, // 채택된 답변인지 여부
     },
   ]
-  const postData = {
-    id: 1,
-    title: '제목',
-    writer: '작성자',
-    body: '내용',
-    dirViews: 100,
-    likeCnt: 10,
-    category: 'diary',
-    createdAt: ['2021', '10', '12'],
-    answerList: answerData,
-    possibleAdopt: false, // 채택 가능 여부
-    loadedAnalysis: true, // 분석서 로드 여부
-  }
 
-  const [category, setCategory] = useState('diary')
-  console.log(post)
+  const [category, setCategory] = useState('')
+
   return (
     <div>
-      {/* {post && <Post props={postData} />}{' '} */}
-      <Post props={postData} />
       {/* 데이터가 도착한 경우에만 Post 컴포넌트 렌더링 */}
-      <button onClick={() => setCategory('question')}>질문</button>
-      <button onClick={() => setCategory('free')}>질문이 아닌 경우</button>
-      {category === 'question' ? (
-        <Answer props={answerData} />
-      ) : (
-        <Comment props={commentData} />
+      {post && (
+        <>
+          <Post props={post} />
+          {category === 'question' ? (
+            <Answer props={answerData} />
+          ) : (
+            <Comment props={comments} boardId={post.id} />
+          )}
+        </>
       )}
     </div>
   )
