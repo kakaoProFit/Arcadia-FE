@@ -256,7 +256,7 @@ const TextEditor = (props) => {
     console.log('html태그 제거 ', tempWritingContent.body.textContent)
     const postDiary = tempWritingContent.body.textContent
 
-    // router.push("/board/diary/1")
+    router.push('/board/diary/1')
 
     fetch(props.baseUrl, {
       method: 'POST',
