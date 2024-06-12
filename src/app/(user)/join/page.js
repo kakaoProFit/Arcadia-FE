@@ -96,10 +96,10 @@ export default function SignUp() {
       )
       const resData = await response.json()
       console.log(resData)
+      if (resData !== undefined) router.push('/login')
     } catch (error) {
       console.error('Error during fetch:', error)
     }
-    if (resData !== undefined) router.push('/')
   }
 
   const input = [

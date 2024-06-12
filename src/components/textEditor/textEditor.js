@@ -253,7 +253,7 @@ const TextEditor = (props) => {
       writingContent,
       'text/html',
     )
-    console.log('html태그 제거 ', tempWritingContent.body.textContent)
+    // console.log('html태그 제거 ', tempWritingContent.body.textContent)
     const postDiary = tempWritingContent.body.textContent
 
     const access = getCookie('accessToken')
@@ -286,8 +286,6 @@ const TextEditor = (props) => {
           })
           .then((data) => {
             console.log('감정 분석 결과 ', JSON.stringify(data))
-            localStorage.setItem('content', JSON.stringify(writingContent))
-            localStorage.setItem('analyze', JSON.stringify(data))
             router.push(props.submitUrl)
           })
           .catch((error) => {
@@ -306,14 +304,24 @@ const TextEditor = (props) => {
         const requestOptions = {
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${access}`,
           },
           method: 'POST',
           body: JSON.stringify(requestBody),
         }
 
         fetch(url, requestOptions).then((res) => {
-          if (!res.ok) throw new Error('post write-request fail')
-          console.log('check res : ', res.json())
+          if (!res.ok) {
+            throw new Error('post write-request fail')
+          }
+          console.log('check res : ', res)
+          res.json().then((data) => {
+            console.log('check data : ', data)
+            const temp = data.nextUrl
+            const nextInform = temp.split('/')
+            console.log('check next inform, ', nextInform)
+            // router.push(`/board/${nextInform[2].toString()}/${nextInform[3].toString()}`)
+          })
         })
       }
     }

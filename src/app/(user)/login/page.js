@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import Alert from '@mui/material/Alert'
 import React, { useState } from 'react'
 import { setCookie } from 'cookies-next'
+import { useRouter } from 'next/navigation'
 
 function InputField({ label, type, name, register }) {
   return (
@@ -23,6 +24,7 @@ function InputField({ label, type, name, register }) {
   )
 }
 export default function Login() {
+  const router = useRouter()
   const [res, setRes] = useState(null)
   const [show, setShow] = useState(false)
 
@@ -68,6 +70,7 @@ export default function Login() {
       console.error('Error during fetch:', error)
       setRes({ error: 'Fetch error' })
     }
+    router.push('/')
   }
   return (
     <div className="font-[sans-serif] bg-white text-white md:h-screen">

@@ -11,10 +11,10 @@ export default function SubTab() {
   // 마이페이지와 일반 게시판에 대한 탭을 다르게 띄워주기 위한 분기처리
   if (
     pathname === '/board' ||
-    pathname === '/board/diary' ||
-    pathname === '/board/question' ||
-    pathname === '/board/free' ||
-    pathname === '/board/inform'
+    pathname === '/board/diary'
+    // pathname === '/board/question' ||
+    // pathname === '/board/free' ||
+    // pathname === '/board/inform'
   ) {
     tab_config_data = board_tab_config
     isBoard = true

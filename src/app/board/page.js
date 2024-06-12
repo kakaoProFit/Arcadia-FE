@@ -34,8 +34,8 @@ export default function BoardListPage({ searchParams }) {
         <div className="my-10 relative overflow-x-auto">
           <Suspense fallback={<RectangleSkeleton width={1440} height={1100} />}>
             <Table
-              query={query}
-              queryType={queryType}
+              keyword={query}
+              searchType={queryType}
               page={currentPage}
               sortType={sortType}
               startDate={startDate}

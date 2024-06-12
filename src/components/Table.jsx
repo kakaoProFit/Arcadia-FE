@@ -4,9 +4,10 @@ import TableHeader from './TableHeader'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 // 파싱을 테스트하기 위한 더미 데이터
 import { listResponse } from './TableData'
+import Link from 'next/link'
 
 export default function Table(props) {
-  const { query, queryType, page, sortType, startDate, endDate, category } =
+  const { keyword, searchType, page, sortType, startDate, endDate, category } =
     props
 
   const [dataSet, setDataSet] = useState([])
@@ -16,27 +17,6 @@ export default function Table(props) {
 
   // 더미데이터
   const example_data = listResponse
-
-  // useEffect(() => {
-  //   // table을 사용하는 페이지에 대해서 category 선언
-  //   let category = ''
-  //   if (pathname === '/board/free') {
-  //     category = 'free'
-  //   } else if (pathname === '/board/inform') {
-  //     category = 'inform'
-  //   } else if (pathname === '/board/question') {
-  //     category = 'question'
-  //   } else if (pathname === '/board/diary') {
-  //     category = 'diary'
-  //   }
-  //   // 사라질 녀석
-  //   else if (pathname === '/board') {
-  //     category = 'free' // 임시
-  //   }
-  //   const params = new URLSearchParams(searchParams)
-  //   params.set('category', category)
-  //   router.replace(`${pathname}?${params.toString()}`)
-  // }, [])
 
   const getBoardList = async (category, params) => {
     const url = `https://spring.arcadiaprofit.shop/boards/list/${category}`
@@ -67,7 +47,13 @@ export default function Table(props) {
     console.log('check render')
     let params = '?'
     for (let key in props) {
-      if (key !== 'data' && key !== 'category' && key !== 'pageCount') {
+      if (
+        key !== 'data' &&
+        key !== 'category' &&
+        key !== 'pageCount' &&
+        key !== 'startDate' &&
+        key !== 'endDate'
+      ) {
         const value = props[key]
         if (value !== NaN) {
           params += `${key}=${value}`
@@ -88,7 +74,7 @@ export default function Table(props) {
       router.replace(`${pathname}?${deliveryParam.toString()}`)
     })
     params = ''
-  }, [query, sortType, page, startDate, category])
+  }, [keyword, sortType, page, startDate, category])
 
   function formatCreatedAt(createdAtArray) {
     // createdAt 배열에서 연, 월, 일을 추출
@@ -106,21 +92,23 @@ export default function Table(props) {
       <tbody>
         {dataSet.map((data) => (
           <tr key={data.id} className="bg-white border-b">
-            <th
-              scope="row"
-              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-            >
-              {data.title}{' '}
-              {data.commentLength > 0 ? (
-                <span className="ml-6 text-gray-500">
-                  ({data.commentLength})
-                </span>
-              ) : null}
-            </th>
+            <Link href={`/board/diary/${data.id}`}>
+              <th
+                scope="row"
+                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+              >
+                {data.title}{' '}
+                {data.commentLength > 0 ? (
+                  <span className="ml-6 text-gray-500">
+                    ({data.commentLength})
+                  </span>
+                ) : null}
+              </th>
+            </Link>
             <td className="px-6 py-4">{data.id}</td>
             {/* <td className="px-6 py-4">{`${data.createdAt[0]}-${data.createdAt[1]}-${data.createdAt[2]}`}</td> */}
             <td className="px-6 py-4">{formatCreatedAt(data.createdAt)}</td>
-            <td className="px-6 py-4">{data.hits}</td>
+            <td className="px-6 py-4">{data.viewCount}</td>
             <td className="px-6 py-4">{data.likeCnt}</td>
           </tr>
         ))}

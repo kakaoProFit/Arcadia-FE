@@ -1,18 +1,48 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { RenewalToken } from './services/CookieManage'
+import { jwtDecode } from 'jwt-decode'
 
-export function middleware(request) {
-  // 인증을 확인하기 위한 미들웨어
-  if (!request.cookies.get('refreshToken')) {
+export async function middleware(request) {
+  const response = NextResponse.next()
+
+  const refresh = request.cookies.get('refreshToken')?.value
+  const access = request.cookies.get('accessToken')?.value
+  console.log('cookies get 확인 : ', request.cookies.getAll())
+
+  if (!refresh) {
     return NextResponse.redirect(new URL('/login', request.url))
   } else {
-    if (!request.cookies.get('accessToken')) {
-      // 자체적으로 fetch 이후에 set을 해줄 수 있음. 일단 동작하는지 확인하기
-      // return NextResponse.rewrite(new URL('/renewal'), request.url)
-      RenewalToken()
-      //아님 아예 fetch는 가능하다고 하니 fetch 직접 해버리고 set을 여기서 해버리기?
+    // access가 없는 경우
+    if (!access) {
+      const userId = jwtDecode(refresh).userId
+      const res = await fetch(
+        `https://spring.arcadiaprofit.shop/auth/refresh/${userId}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ refreshToken: refresh }),
+        },
+      )
+      if (!res.ok) {
+        throw new Error('refresh api fetch error')
+      }
+      const data = await res.json()
+      console.log('check access data ', data)
+      response.cookies.set({
+        name: 'accessToken',
+        value: data.accessToken,
+        maxAge: jwtDecode(data.accessToken).exp - Math.floor(Date.now() / 1000),
+      })
+      response.cookies.set({
+        name: 'refreshToken',
+        value: data.refreshToken,
+        maxAge:
+          jwtDecode(data.refreshToken).exp - Math.floor(Date.now() / 1000),
+      })
+      console.log('cookies set 확인 : ', response.cookies.getAll())
+      return response
     }
-    return NextResponse.next()
   }
 }
 

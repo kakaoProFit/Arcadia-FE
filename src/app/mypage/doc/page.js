@@ -3,7 +3,7 @@ import MiniTable from '@/components/MiniTable'
 import RectangleSkeleton from '@/components/loading-skeleton/rectangle-skeleton'
 import VerticalTab from '@/components/tab/vertical-tab'
 
-export default async function MyPageDiary({ searchParams }) {
+export default function MyPageDoc({ searchParams }) {
   // default는 question
   const category = searchParams?.category || 'question'
 
@@ -14,11 +14,11 @@ export default async function MyPageDiary({ searchParams }) {
         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
           내 글 모아보기
         </h3>
-        <Suspense fallback={<RectangleSkeleton width={1000} height={1000} />}>
-          <div className="mb-2">
-            <MiniTable category={category} />
-          </div>
-        </Suspense>
+        {/* <Suspense fallback={<RectangleSkeleton width={1000} height={500} />}> */}
+        <div className="mb-2">
+          <MiniTable category={category} />
+        </div>
+        {/* </Suspense> */}
       </div>
     </div>
   )

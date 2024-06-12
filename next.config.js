@@ -1,4 +1,5 @@
 module.exports = {
+  reactStrictMode: false,
   publicRuntimeConfig: {
     NEXT_PUBLIC_S3_accessKeyId: process.env.NEXT_PUBLIC_S3_accessKeyId,
     NEXT_PUBLIC_S3_secretAccessKey: process.env.NEXT_PUBLIC_S3_secretAccessKey,
